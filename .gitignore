@@ -102,4 +102,4 @@ ENV/
 .DS_STORE
 
 # DNA Analysis SQLite3 Database Files
-db/DNA_*.db
+data/DNA_*.db
