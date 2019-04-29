@@ -6,7 +6,7 @@ Automation for CyberArk's Discovery & Audit (DNA) reports.
 
 ```shell
 $ ./DNAmicAnalysis.py -h
-usage: DNAmicAnalysis.py [-h] [--debug] [-v] database_file
+usage: DNAmicAnalysis.py [-h] [-v] database_file
 
 CyberArk DNA report generation utility
 
@@ -15,7 +15,6 @@ positional arguments:
 
 optional arguments:
   -h, --help     show this help message and exit
-  --debug        Sets DEBUG as the minimum log level [Default: INFO]
   -v, --version  Displays current version information
 ```
 

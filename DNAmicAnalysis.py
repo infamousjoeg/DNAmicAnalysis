@@ -100,14 +100,6 @@ if __name__ == "__main__":
         "database_file",
         help="Path to the CyberArk DNA SQLite3 database file")
 
-    # Optional argument flag to set minimum log level to DEBUG - Default: INFO
-    parser.add_argument(
-        "--debug",
-        action="store_true",
-        dest="debug",
-        default=False,
-        help="Sets DEBUG as the minimum log level [Default: INFO]")
-
     # Optional argument flag to output current version
     parser.add_argument(
         "-v",
