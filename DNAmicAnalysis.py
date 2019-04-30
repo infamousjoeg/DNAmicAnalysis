@@ -26,7 +26,7 @@ def config_logger(logfile):
     logzero.logfile(logfile, disableStderrLogger=True)
 
     # Set a custom formatter
-    formatter = logging.Formatter('%(name)s - %(asctime)-15s - %(levelname)s: %(message)s');
+    formatter = logging.Formatter('DNAmicAnalysis - %(asctime)-15s - %(levelname)s: %(message)s');
     logzero.formatter(formatter)
 
 
@@ -34,7 +34,7 @@ def create_connection(dbfile):
     """ Create a database connection to the SQLite database """
     try:
         conn = sqlite3.connect(dbfile)
-        logger.info("Successfully connected to SQLite3 database at ", dbfile)
+        logger.info("Successfully connected to SQLite3 database at {}".format(dbfile))
         return conn
     except Error as e:
         logger.exception(e)
@@ -42,18 +42,21 @@ def create_connection(dbfile):
     return None
 
 
-def exec_fromfile(sqlfile):
+def exec_fromfile(dbfile, sqlfile):
     """ Executes the query from a SQL file and returns all rows """
     # Open and read the SQL file as a single buffer
     fileToRead = open(sqlfile, 'r')
-    logger.info("Opened ", sqlfile)
+    logger.info("Opened {}".format(sqlfile))
     sqlQuery = fileToRead.read()
-    logger.info("Read ", sqlfile)
+    logger.info("Read {}".format(sqlfile))
     fileToRead.close()
-    logger.info("Closed ", sqlfile)
+    logger.info("Closed {}".format(sqlfile))
+
+    # Create database connection
+    conn = create_connection(dbfile)
 
     # Create a cursor for the database connection
-    c = conn.cursor
+    c = conn.cursor()
     logger.info("Created database connection cursor")
 
     # Execute the SQL query
@@ -70,6 +73,9 @@ def exec_fromfile(sqlfile):
         logger.info("Fetched {} rows".format(row_count))
     except Error as e:
         logger.exception(e)
+    finally:
+        conn.close()
+
 
     # Return all rows returned from SQL query
     return fetched_rows
@@ -77,13 +83,15 @@ def exec_fromfile(sqlfile):
 
 def main(args):
     """ Main entry point of the app """
-    logger.debug("Arguments received: ", args)
+    logger.info("Arguments received: {}".format(args))
 
-    # Create database connection
-    conn = create_connection(database_file)
-    with conn:
-        expired_domain = exec_fromfile(data/sql/ExpiredDomainPrivID.sql)
-        expired_local = exec_fromfile(data/sql/UniqueExpiredLocalPrivID.sql)
+    # Execute SQL queries
+    expired_domain = exec_fromfile(args.database_file, "data/sql/ExpiredDomainPrivID.sql")
+    expired_local = exec_fromfile(args.database_file, "data/sql/UniqueExpiredLocalPrivID.sql")
+
+    print(expired_domain)
+    print("----------------------------------------")
+    print(expired_local)
 
 
 if __name__ == "__main__":
