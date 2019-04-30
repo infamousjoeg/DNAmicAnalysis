@@ -2,11 +2,20 @@
 
 Automation for CyberArk's Discovery & Audit (DNA) reports.
 
+## Installation
+
+```shell
+$ git clone git@github.com/infamousjoeg/DNAmicAnalysis.git
+$ cd DNAmicAnalysis
+$ pip install -r requirements.txt
+$ ./DNAmicAnalysis.py --version
+```
+
 ## Usage
 
 ```shell
 $ ./DNAmicAnalysis.py -h
-usage: DNAmicAnalysis.py [-h] [-v] database_file
+usage: DNAmicAnalysis.py [-h] [-t] [-v] database_file
 
 CyberArk DNA report generation utility
 
@@ -15,13 +24,14 @@ positional arguments:
 
 optional arguments:
   -h, --help     show this help message and exit
-  -v, --version  Displays current version information
+  -t, --test     For testing purposes only
+  --version  Displays current version information
 ```
 
 ## Version
 
 ```shell
-$ ./DNAmicAnalysis.py -v
+$ ./DNAmicAnalysis.py --version
 DNAmicAnalysis.py (version 0.1.0)
 ```
 

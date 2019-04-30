@@ -138,11 +138,10 @@ if __name__ == "__main__":
 
     # Optional argument flag to output current version
     parser.add_argument(
-        "-v",
         "--version",
         action="version",
         version="%(prog)s (version {version})".format(version=__version__),
-        help="Displays current version information")
+        help="Shows current version information and exit")
 
     args = parser.parse_args()
     main(args)
