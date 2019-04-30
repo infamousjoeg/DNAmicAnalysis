@@ -3,17 +3,19 @@
 Automation for CyberArk's Discovery & Audit (DNA) reports.
 """
 
-__author__ = "Joe Garcia, CISSP"
-__version__ = "0.1.0"
-__license__ = "MIT"
-
 import argparse
 import logging
 import sqlite3
 from sqlite3 import Error
 
 import logzero
+import tests.tests as tests
 from logzero import logger
+
+
+__author__ = "Joe Garcia, CISSP"
+__version__ = "0.1.0"
+__license__ = "MIT"
 
 LOGFILE = 'DNAmicAnalysis.log'
 
@@ -89,9 +91,25 @@ def main(args):
     expired_domain = exec_fromfile(args.database_file, "data/sql/ExpiredDomainPrivID.sql")
     expired_local = exec_fromfile(args.database_file, "data/sql/UniqueExpiredLocalPrivID.sql")
 
-    print(expired_domain)
-    print("----------------------------------------")
-    print(expired_local)
+    max_domain_sorted = sorted(expired_domain,
+                            key=lambda expired_domain: expired_domain[2],
+                            reverse=True)
+    avg_domain_sorted = sorted(expired_domain,
+                            key=lambda expired_domain: expired_domain[3],
+                            reverse=True)
+    max_local_sorted = sorted(expired_local,
+                            key=lambda expired_local: expired_local[2],
+                            reverse=True)
+    avg_local_sorted = sorted(expired_local,
+                            key=lambda expired_local: expired_local[3],
+                            reverse=True)
+
+    if args.test is True:
+        tests.print_sorted(
+            max_domain_sorted,
+            avg_domain_sorted,
+            max_local_sorted,
+            avg_local_sorted)
 
 
 if __name__ == "__main__":
@@ -107,6 +125,16 @@ if __name__ == "__main__":
     parser.add_argument(
         "database_file",
         help="Path to the CyberArk DNA SQLite3 database file")
+
+    # Optional argument flag for testing
+    parser.add_argument(
+        "-t",
+        "--test",
+        action="store_true",
+        dest="test",
+        help="For testing purposes only",
+        default=False
+    )
 
     # Optional argument flag to output current version
     parser.add_argument(

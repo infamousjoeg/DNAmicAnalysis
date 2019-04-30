@@ -1,8 +1,6 @@
-SELECT Accounts.Name, Accounts.Address, Accounts.AccountType, Accounts.IsPrivileged,
-	OSAccounts.DisplayName, OSAccounts.LastPasswordSet, OSAccounts.PasswordNeverExpires,
-	OSGroupModel.Name, OSGroupModel.Address,
-	OSGroupModel.DomainGroup, Machines.IpAddress, Machines.ScanResult,
-	Machines.Caption as OSVersion
+SELECT Accounts.Name, OSAccounts.LastPasswordSet,
+	MAX(Cast ((JulianDay(datetime('now')) - JulianDay(OSAccounts.LastPasswordSet)) As Integer)) as MaxPasswordAge,
+	AVG(Cast ((JulianDay(datetime('now')) - JulianDay(OSAccounts.LastPasswordSet)) As Integer)) as AvgPasswordAge
 FROM Accounts
 	LEFT OUTER JOIN OSAccounts
 		ON Accounts.Id = OSAccounts.AccountBase_id
@@ -12,4 +10,5 @@ FROM Accounts
 		ON Accounts.Machine_id = Machines.Id
 WHERE OSAccounts.LastPasswordSet >= datetime('now', '-90 days')
 	AND Accounts.AccountType = 'Local'
-AND OSGroupModel.Name = 'Administrators'
+	AND OSGroupModel.Name = 'Administrators'
+GROUP BY Accounts.Name
