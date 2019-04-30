@@ -25,7 +25,7 @@ positional arguments:
 optional arguments:
   -h, --help     show this help message and exit
   -t, --test     For testing purposes only
-  --version  Displays current version information
+  --version      Displays current version information
 ```
 
 ## Version
