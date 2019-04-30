@@ -12,7 +12,6 @@ import logzero
 import tests.tests as tests
 from logzero import logger
 
-
 __author__ = "Joe Garcia, CISSP"
 __version__ = "0.1.0"
 __license__ = "MIT"
@@ -103,13 +102,15 @@ def main(args):
     avg_local_sorted = sorted(expired_local,
                             key=lambda expired_local: expired_local[3],
                             reverse=True)
+    count_local_accounts = len(expired_local)
 
     if args.test is True:
         tests.print_sorted(
             max_domain_sorted,
             avg_domain_sorted,
             max_local_sorted,
-            avg_local_sorted)
+            avg_local_sorted,
+            count_local_accounts)
 
 
 if __name__ == "__main__":

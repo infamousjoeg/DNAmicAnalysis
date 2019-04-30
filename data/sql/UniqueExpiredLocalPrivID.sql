@@ -6,8 +6,6 @@ FROM Accounts
 		ON Accounts.Id = OSAccounts.AccountBase_id
 	LEFT OUTER JOIN OSGroupModel
 		ON Accounts.Id = OSGroupModel.OSAccount_id
-	LEFT OUTER JOIN Machines
-		ON Accounts.Machine_id = Machines.Id
 WHERE OSAccounts.LastPasswordSet >= datetime('now', '-90 days')
 	AND Accounts.AccountType = 'Local'
 	AND OSGroupModel.Name = 'Administrators'
