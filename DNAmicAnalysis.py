@@ -129,7 +129,6 @@ if __name__ == "__main__":
 
     # Optional argument flag for testing
     parser.add_argument(
-        "-t",
         "--test",
         action="store_true",
         dest="test",
