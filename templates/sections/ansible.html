@@ -1,0 +1,28 @@
+<div class="resume-item d-flex flex-column flex-md-row mb-5">
+    <div class="resume-content mr-auto">
+        <h3 class="mb-0">Ansible</h3>
+
+        <h4 class="subheading text-primary mb-3">Ansible Hard-coded Credentials</h4>
+
+        <div class="row">
+            <div class="col-md-8">
+                    <p>Configuration management is increasingly important, with the server footprint increasing as organizations leverage the power of the cloud. Using centralized, automated tools to apply configuration to these disparate machines in a controlled manner allows IT teams to maximize productivity whilst ensuring consistent delivery of solutions to the business.</p>
+                    <p>Ansible is a leader in the configuration management area, providing robust mechanisms for applying configuration to servers. However, the internal credential management capabilities of Ansible are fairly limited, and it is not uncommon to see hard-coded credentials within playbook files. As with application servers this represents a severe risk - which is amplified by the fact that such playbooks are often published to code repositories where any authorized users can view the code. In the worst cases, plain-text credentials can end up being published to public code repositories such as GitHub, with catastrophic consequences. Understanding where these credentials exist, and ensuring they are properly managed, is key to avoiding this risk.</p>
+            </div>
+            <div class="col-md-4">
+                <div class="card bg-primary ml-3" style="width: 18rem;">
+					<div class="card-header text-white card-title">
+						<b><insert>Ansible Hardcoded creds</insert> passwords within Ansible playbooks were discovered</b>
+					</div>
+                    <div class="card-body">
+                        <p class="card-text text-white">If any of the Ansible servers or playbook repositories in the environment are compromised, these credentials could be used to authenticate to downstream systems</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row mr-5 ml-5 mt-3">
+            <h4 class="mb-0 mt-3">Hard-coded Credentials in Ansible (Top 10 by Password Length)</h4>
+            <insert>Ansible Hardcoded creds table</insert>
+        </div>
+    </div>
+</div>

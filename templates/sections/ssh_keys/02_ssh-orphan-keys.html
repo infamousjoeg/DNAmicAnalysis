@@ -1,0 +1,30 @@
+<p style="page-break-before: always"></p>
+<p>&nbsp;</p>
+
+<div class="resume-item d-flex flex-column flex-md-row mb-5">
+        <div class="resume-content mr-auto">
+            <h3 class="mb-0">Orphan SSH Keys</h3>
+            <!-- <div class="subheading text-primary mb-3">SSH Private Keys</div> -->
+
+            <div class="row">
+                <div class="col-md-8">
+                    <p>As SSH keys proliferate within an environment, management of these keys becomes increasingly difficult. Administrators are likely to create new keys so that they are able to do their job effectively, without the distraction of having to re-authenticate for every new connection, and this often means creating keys that allow both workstation-to-server connections as well as server-to-server connections. With no centralised oversight of these key pairs, effective control of these keys is impossible, particularly if a user leaves the organisation - security teams simply do not know which machines this user may or may not have left keys.</p>
+                    <p>This leaves a security hole which can be exploited by attackers. It is possible that a breach may allow access to a Unix server, and if the attacker finds SSH private keys on that server these can be stolen and used to move laterally to other servers. Understanding where these keys currently reside is therefore key to being able to control the risks of lateral movement.</p>
+                </div>
+                <div class="col-md-4">
+                    <div class="card bg-primary ml-3" style="width: 18rem;">
+                        <div class="card-header text-white card-title"><b><insert>Oldest Orphan SSH Private Key</insert> days: the oldest orphan SSH Private key found</b></div>
+                        <div class="card-body">
+                            <p class="card-text text-white">Long-lived keys are indicative of a lack of central control over the creation and maintenance of SSH Keys</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <p>Because the age of an SSH Key is derived from the ‘last modified’ date of the key file, it is possible that the Key Ages listed here are in fact inaccurate and the keys are older than specified. The Key Age value therefore represents the <i>minimum</i> age of the key.</p>
+
+            <div class="row mr-5 ml-5 mt-3">
+                <h4 class="mb-0 mt-3">Oldest Orphan SSH Private Keys (Top 10 by Key Age)</h4>
+                <insert>Orphan SSH Private Key List</insert>
+            </div>
+        </div>
+</div>

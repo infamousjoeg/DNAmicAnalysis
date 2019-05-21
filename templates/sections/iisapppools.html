@@ -1,0 +1,23 @@
+<p style="page-break-before: always"></p>
+<p>&nbsp;</p>
+
+<h4 class="subheading text-primary mb-3">IIS Application Pool Accounts</h4>
+<div class="row">
+      <div class="col-md-8">
+            <p>Application Pool accounts are worker service accounts that carry out functions on behalf of an IIS web application. As with other service accounts these should be managed carefully, as they typically have access permissions for application files and local data sources which might be targets for attackers. For some applications, these accounts are also required to have access to more sensitive stores of data, such as database instances or even other applications. Often these are domain accounts rather than local accounts for ease of management purposes, but regardless of the account type these identifies must be managed effectively in order to properly secure the environment. These means that access to these credentials should be limited, and where possible the passwords of these accounts should abide by organization policies governing age and rotation frequency.</p>
+      </div>
+      <div class="col-md-4">
+          <div class="card bg-primary ml-3" style="width: 18rem;">
+			  <div class="card-header text-white card-title">
+				<b><insert>AppPoolNumber</insert> Application Pool accounts for IIS web applications found</b>
+			  </div>
+              <div class="card-body">
+                  <p class="card-text text-white">If the machines hosting these tasks are compromised by someone with admin privileges, the credentials could be stolen and used to compromise further systems</p>
+              </div>
+          </div>
+      </div>
+  </div>
+  <div class="row mr-5 ml-5 mt-3">
+    <h4 class="mb-0 mt-3">Application Pool Accounts (Top 10 by Password Age)</h4>
+    <insert>App Pool Accounts</insert>
+  </div>

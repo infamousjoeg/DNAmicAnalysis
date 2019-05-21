@@ -1,0 +1,42 @@
+<p style="page-break-before: always"></p>
+<p>&nbsp;</p>
+
+<section class="resume-section p-3 p-lg-5 d-flex flex-column" id="sshkeys">
+    <div class="my-auto">
+        <h2 class="mb-5">SSH Keys</h2>
+        <p>SSH Keys are commonly used within large Unix environments to provide access to the estate for administrators. Unfortunately there is no way to centralize visibility and control of these keys, and as a result many organizations simply overlook them when building secure methods of privileged access. Much like passwords, SSH Keys are sued to protect access to privileged user accounts and to verify trust between machine to machine communication protocols, and as such are quite literally the keys to enormous amounts of important data. As such, organizations should proactively secure, manage and monitor the use of privileged SSH keys, just as they should privileged passwords.</p>
+
+        <p style="page-break-before: always"></p>
+        <p>&nbsp;</p>
+
+        <div class="resume-item d-flex flex-column flex-md-row mb-5">
+                <div class="resume-content mr-auto">
+                    <h3 class="mb-0">SSH Key Pairs</h3>
+                    <h4 class="subheading text-primary mb-3">SSH Private Keys</h4>
+
+                    <div class="row">
+                        <div class="col-md-8">
+                            <p>By default SSH keys do not expire, and are valid indefinitely. It is not uncommon to see keys that are decades old but are still in use. The longer lived a key is, the more likely it is to have access to a large proportion of the Unix environment as the administrator who owns the key pair gains access to more and more devices. As the public keys are largely anonymous it is difficult to know who has access to which servers and accounts a particular user has access to, which provides a large attack surface for an intruder to potentially misuse.</p>
+                            <p>As with passwords, regular rotation of SSH key pairs is an effective way to reduce the impact of the theft of any key file, particular the private part of the pair. Rotating these credentials reduces the window of opportunity that an attacker has to exploit stolen key before the rotation process invalidates the old credential and replaces it with a new key pair.</p>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card bg-primary ml-3" style="width: 18rem;">
+								<div class="card-header text-white card-title">
+									<b><insert>Oldest SSH Key</insert> days: the oldest SSH Private key found</b>
+								</div>
+                                <div class="card-body">
+                                    <p class="card-text text-white">Long-lived keys are indicative of a lack of control over the creation and maintenance of SSH Keys</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <p>Because the age of an SSH Key is derived from the 'last modified' date of the key file, it is possible that the Key Ages listed here are in fact inaccurate and the keys are older than specified. The Key Age value therefore represents the <i>minimum</i> age of the key.</p>
+
+                    <div class="row mr-5 ml-5 mt-3">
+                        <h4 class="mb-0 mt-3">Oldest SSH Private Keys (Top 10 by Key Age)</h4>
+                        <insert>Oldest SSH Key List</insert>
+                    </div>
+                </div>
+        </div>
+    </div>
+</section>

@@ -1,0 +1,24 @@
+<script>
+    new Chartist.Bar('.windows-desktop-os-version', {
+      labels: [<insert>WindowsDesktopDevicesList</insert>],
+      series: [
+        [<insert>WindowsDesktopDevicesListCount</insert>]
+          ]
+    }, {
+      horizontalBars: true,
+      seriesBarDistance: 10,
+      axisY: {
+          offset:75,
+        labelInterpolationFnc: function(value) {
+          return (value);
+        }
+      },
+      axisX: {offset:100}
+    }).on('draw', function(data) {
+      if(data.type === 'bar') {
+        data.element.attr({
+          style: 'stroke-width: 100px'
+        });
+      }
+    });
+  </script>

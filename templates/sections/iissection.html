@@ -1,0 +1,28 @@
+<p style="page-break-before: always"></p>
+    <p>&nbsp;</p>
+
+      <div class="resume-item d-flex flex-column flex-md-row mb-5">
+        <div class="resume-content mr-auto">
+          <h3 class="mb-0">Hard-coded Web Server Credentials</h3>
+          <h4 class="subheading text-primary mb-3">Windows IIS Applications</h4>
+
+          <div class="row">
+              <div class="col-md-8">
+                    <p>It is very common for application servers to require credentials for downstream systems in order to store or retrieve data, typically from a database server. IIS-hosted applications are very likely to have connection strings that contain credentials for SQL database servers. By default, these connection strings are located in the web application’s web.config file as a plain-text XML attribute.</p>
+                    <p>Leaving hard-coded credentials for powerful accounts in config files gives attackers easy access to sensitive information. Any compromise of the server is likely to lead to the attacker finding these hard-coded credentials and exploiting them to gain access to the downstream system. Additionally it is likely this credential will not be changed frequently due to the potential downtime ramifications as well as the difficulty of updating the configuration of a distributed, multi-node web applications.</p>
+              </div>
+              <div class="col-md-4">
+                    <div class="card bg-primary ml-3" style="width: 18rem;">
+							<div class="card-header text-white card-title">
+								<b><insert>IIS Passwords</insert> passwords within IIS configuration files were discovered</b>
+							</div>
+                            <div class="card-body">
+                                <p class="card-text text-white">If any of the IIS web servers in the environment are compromised, these credentials could be used to authenticate to downstream systems</p>
+                            </div>
+                        </div>
+              </div>
+          </div>
+          <div class="row mr-5 ml-5 mt-3">
+                <h4 class="mb-0 mt-3">Hard-coded Credentials in IIS (Top 10 by Password Length)</h4>
+                <insert>IIS Hardcoded creds</insert>
+            </div>

@@ -1,0 +1,141 @@
+<section class="resume-section p-3 p-lg-5 d-flex flex-column" id="windowsdomainadmins" style="page-break-before: always">
+        <div class="my-auto">
+          <h2 class="mb-5">Windows Domain Admins</h2>
+          <div class="resume-item d-flex flex-column flex-md-row mb-5">
+            <div class="resume-content mr-auto">
+              <p>In almost all modern IT organizations, Active Directory plays a key role in managing overall the security of the Windows network.
+			  It is therefore a likely place for an attacker to focus, in the knowledge that AD typically contains many privileged accounts that can then be leveraged to attack infrastructure and gain access to information.</p>
+              <p>Securing Active Directory should be high on any security team’s priority list, and is the ideal starting point for any privileged access security project.</p>
+            </div>
+          </div>
+
+          <p style="page-break-before: always"></p>
+          <p>&nbsp;</p>
+
+          <div class="resume-item d-flex flex-column flex-md-row mb-5">
+            <div class="resume-content">
+              <h3 class="mb-0">Domain Administrator Risk</h3>
+              <p>Domain Administrators are highly sought after accounts because they can be leveraged by attackers to access Domain Controllers
+			  which control user authentication and privilege throughout the corporate network. If an attacker has access to a domain controller,
+			  they can cause significant harm including the execution of a domain takeover attack – what is known as a “Golden Ticket” attack.</p>
+
+              <h4 class="subheading text-primary mb-3">Domain Administrator Hash Exposure</h4>
+
+              <div class="row mb-3">
+                  <div class="col-md-8">
+					<p>The simplest way to obtain Domain Administrator credentials is to steal the cached credential hashes of these
+					users from machines where such a user has previously authenticated. To do so requires at least local administrator
+					privileges on the machine, which is why applying least privilege and isolating Domain Admin accounts from vulnerable
+					desktops is so important. Having stolen these credentials, an attacker can authenticate to any domain-joined machine,
+					including Domain Controllers, using the Pass-the-Hash technique and begin the process of initiating a takeover of the domain.</p></div>
+                  <div class="col-md-4">
+                      <div class="card bg-primary ml-3" style="width: 18rem;">
+						  <div class="card-header text-white card-title">
+							<b><insert>DomainAdminsCount</insert> Domain Admin Hashes Found</b>
+						  </div>
+                          <div class="card-body">
+                              <p class="card-text text-white">Any one of these hashes could potentially be stolen and used to authenticate to a Domain Controller</p>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+              <div class="row mr-5 ml-5 mt-3">
+                <h4 class="mb-0">Domain Administrator Hashes Found (Top 10 by Password Age)</h4>
+                <insert>DomainAdminsTable1</insert>
+              </div>
+
+              <p>The best defense against theft of password hashes is to regularly rotate credentials by resetting the passwords.
+			  When an Active Directory user password is changed, any existing password hashes are immediately invalidated and cannot
+			  therefore be used to execute a Pass-the-Hash authentication on a target device. Rotating passwords regularly, or better still implementing
+			  'one-time’ passwords which are only valid for the duration of a user’s session, greatly reduces the window of opportunity for an attacker to find, steal and use such credentials.</p>
+
+        <p style="page-break-before: always"></p>
+        <p>&nbsp;</p>
+
+              <h4 class="subheading text-primary mb-3">Machine Exposure</h4>
+              <div class="row mb-3">
+                  <div class="col-md-8">
+                      <p>Due consideration should also be given to the number of machines where domain administrator hashes are exposed.
+					  The more desktops, workstations and servers where these hashes are located, the greater the chance that an attacker
+					  will be able to find and exploit them. Common locations to find administrator hashes are on jump servers and administrative desktop machines,
+					  which are common targets for attackers seeking access to environments. Particular care should be taken to prevent domain administrator hashes appearing on desktops,
+					  because these are typically the first machines to be accessed by an attacker during a breach.</p>
+                    </div>
+
+                 <div class="col-md-4">
+                    <div class="card bg-primary ml-3" style="width: 18rem;">
+						<div class="card-header text-white card-title">
+							<b><insert>DomainAdminsMachineCount</insert> Machines with Domain Admin Hashes</b>
+						</div>
+                        <div class="card-body">
+                            <p class="card-text text-white">Compromise of any of these machines could lead to the theft of Domain Administrator password hashes</p>
+                        </div>
+                    </div>
+
+                </div>
+              </div>
+
+              <div class="row mr-5 ml-5 mt-3">
+                  <h4 class="mb-0">Domain Administrator Machine Exposure</h4>
+                  <insert>DomainAdminsTable2</insert>
+                </div>
+
+              <p>Another technique to reduce the potential of hashes being obtained is to reduce the number of machines where these hashes are created.
+			  It is highly recommended within Windows environments to implement a 'jump server' or 'bastion host' architecture which prevents direct access
+			  from a desktop environment into the server layer. When all administrative users authenticate on such a jump server, that single point of entry becomes much easier to secure and monitor.</p>
+
+              <h4 class="subheading text-primary mb-3">Reducing Credential Theft Risk</h4>
+              <p>A technique that can be used to defend against password hash theft is to harden the operating system itself. There are two main ways to achieve this:</p>
+              <ul>
+                <li>Remove local administrator rights from users. Only administrators can retrieve password hashes, therefore reducing the number of users who have local administrator
+				rights on desktops is a simple method for reducing the chance of password hash theft.</li>
+                <li>Implement software to protect the key Windows subsystems that control user authentication: the Security Accounts Manager (SAM) database and the Local Security Authority Subsystem Service (LSASS)</li>
+                <li>Implement software whitelisting to prevent the execution of malware which could be used to steal credentials</li>
+              </ul>
+              <p>A way to achieve these goals is to use an endpoint least-privilege tool such as CyberArk Endpoint Privileges Manager.</p>
+
+            </div>
+          </div>
+
+          <p style="page-break-before: always"></p>
+          <p>&nbsp;</p>
+
+          <div class="resume-item d-flex flex-column flex-md-row mb-5">
+            <div class="resume-content mr-auto">
+              <h3 class="mb-0">Domain Administrator Exposure</h3>
+              <div class="row mb-3">
+                  <div class="col-md-8">
+                      <p>A simple metric to gauge the potential risk that an organization faces is the number of the most highly-privileged accounts that exist in the environment – Domain Administrators.
+					  Ideally, the only members of Domain Admins should be accounts that are required to manage the domain itself – any other role, such as server administration, should be conducted using a lesser-privileged account.</p>
+                  </div>
+                  <div class="col-md-4">
+                      <div class="card bg-primary ml-3" style="width: 18rem;">
+						  <div class="card-header text-white card-title">
+							<b><insert>DomainAdminsTotalCount</insert> unique Domain Admin accounts found</b>
+						  </div>
+                          <div class="card-body">
+                              <p class="card-text text-white">Compromise of any of these accounts could lead to irreversible takeover of the domain by an attacker</p>
+                          </div>
+                      </div>
+                  </div>
+
+              <div class="row mr-5 ml-5 mt-3">
+                  <h4 class="mb-0">Domain Administrator Accounts (Top 10 by Password Age)</h4>
+                  <insert>DomainAdminsTable3</insert>
+                </div>
+
+              <h4 class="subheading text-primary mb-3">Personal vs. Generic Accounts</h4>
+              <p>CyberArk in particular recommends moving away from the personal Domain Admin account model, where each administrator has their own “ADM” account or similar,
+			  to a shared generic account model with only enough domain admin accounts available for the anticipated number of simultaneous connections to DCs. Access to these accounts
+			  should be controlled by a Privileged Access Management (PAM) solution, which secures access to such credentials and fully audits who has access to them. </p>
+              <p>This has several advantages:</p>
+              <ul>
+                <li>Identity management process become simpler. No longer do organizations have to have processes in place to disable personal Domain Admin accounts when the user leaves.</li>
+                <li>The attack surface is reduced. The fewer Domain Admin accounts exist, the less chance there is that their credentials will be stolen or misused.</li>
+                <li>Domain Admin passwords are more easily be hidden from administrative users and rotated automatically, reducing the potential Pass-the-Hash risk across the organization.</li>
+              </ul>
+              <p>Audit trails can be maintained by the PAM solution so that activities can always be traced back to the actual user conducting them.</p>
+            </div>
+          </div>
+
+      </section>

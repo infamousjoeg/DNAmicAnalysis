@@ -1,0 +1,24 @@
+<p style="page-break-before: always"></p>
+<p>&nbsp;</p>
+
+<h4 class="subheading text-primary mb-3">Scheduled Tasks</h4>
+<div class="row">
+      <div class="col-md-8">
+            <p>As with Windows Services, credentials used by Windows Scheduled Tasks are also stored locally to enable ongoing authentication. Credentials for Scheduled Tasks are stored in the Windows Credential Manager service which, like LSA Secrets, can be accessed by anyone with administrative privileges. Many tools exist that allow for the recovery of passwords used by Scheduled Tasks, and these can readily be exploited by an attacker to discover credentials that could be leveraged as part of the attack chain.</p>
+            <p>Applying the least-privilege model to Scheduled Tasks is again important. In particular, the he 'allow server operators to schedule tasks' right should be tightly controlled to prevent unnecessary proliferation of credentials for Scheduled Tasks. Where Scheduled Tasks must be implemented, least-privilege should be applied to both the administrators of the system upon which the Task resides as well as to the account used to run the Task itself. Finally, credential rotation again has a role to play in minimizing the impact that stolen Scheduled Task credentials pose.</p>
+      </div>
+      <div class="col-md-4">
+          <div class="card bg-primary ml-3" style="width: 18rem;">
+			  <div class="card-header text-white card-title">
+				<b><insert>ScheduledTasksNumber</insert> Scheduled Tasks with stored credentials found</b>
+			  </div>
+              <div class="card-body">
+                  <p class="card-text text-white">If the machines hosting these tasks are compromised by someone with admin privileges, the credentials could be stolen and used to compromise further systems</p>
+              </div>
+          </div>
+      </div>
+  </div>
+  <div class="row mr-5 ml-5 mt-3">
+          <h4 class="mb-0 mt-3">Accounts running Scheduled Tasks on servers (Top 10 by Password Age)</h4>
+          <insert>Scheduled Tasks</insert>
+    </div>
