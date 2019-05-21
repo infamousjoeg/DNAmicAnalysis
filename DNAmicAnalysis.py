@@ -143,5 +143,10 @@ if __name__ == "__main__":
         version="%(prog)s (version {version})".format(version=__version__),
         help="Shows current version information and exit")
 
-    args = parser.parse_args()
+    try:
+        args = parser.parse_args()
+    except:
+        logger.error("Invalid argument(s) passed at initialization")
+        raise
+
     main(args)
