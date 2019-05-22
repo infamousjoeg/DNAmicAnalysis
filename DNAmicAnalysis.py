@@ -5,11 +5,10 @@ Automation for CyberArk's Discovery & Audit (DNA) reports.
 
 import argparse
 import logging
-import sqlite3
-from sqlite3 import Error
 
 import logzero
 import tests.tests as tests
+from dnamic_analysis import Database
 from logzero import logger
 
 __author__ = "Joe Garcia, CISSP"
@@ -31,65 +30,18 @@ def config_logger(logfile):
     logzero.formatter(formatter)
 
 
-def create_connection(dbfile):
-    """ Create a database connection to the SQLite database """
-    try:
-        conn = sqlite3.connect(dbfile)
-        logger.info("Successfully connected to SQLite3 database at {}".format(dbfile))
-        return conn
-    except Error as e:
-        logger.exception(e)
-
-    return None
-
-
-def exec_fromfile(dbfile, sqlfile):
-    """ Executes the query from a SQL file and returns all rows """
-    # Open and read the SQL file as a single buffer
-    fileToRead = open(sqlfile, 'r')
-    logger.info("Opened {}".format(sqlfile))
-    sqlQuery = fileToRead.read()
-    logger.info("Read {}".format(sqlfile))
-    fileToRead.close()
-    logger.info("Closed {}".format(sqlfile))
-
-    # Create database connection
-    conn = create_connection(dbfile)
-
-    # Create a cursor for the database connection
-    c = conn.cursor()
-    logger.info("Created database connection cursor")
-
-    # Execute the SQL query
-    try:
-        c.execute(sqlQuery)
-        logger.info("Executed {} on SQLite3 database successfully".format(sqlQuery))
-    except Error as e:
-        logger.exception(e)
-
-    # Fetch all rows returned from SQL query
-    try:
-        fetched_rows = c.fetchall()
-        row_count = len(fetched_rows)
-        logger.info("Fetched {} rows".format(row_count))
-    except Error as e:
-        logger.exception(e)
-    finally:
-        conn.close()
-
-
-    # Return all rows returned from SQL query
-    return fetched_rows
-
-
 def main(args):
     """ Main entry point of the app """
     logger.info("Arguments received: {}".format(args))
 
-    # Execute SQL queries
-    expired_domain = exec_fromfile(args.database_file, "data/sql/ExpiredDomainPrivID.sql")
-    expired_local = exec_fromfile(args.database_file, "data/sql/UniqueExpiredLocalPrivID.sql")
+    db = Database(args.database_file)
 
+    # Execute SQL queries
+    expired_domain = db.exec_fromfile("data/sql/ExpiredDomainPrivID.sql")
+    expired_local = db.exec_fromfile("data/sql/UniqueExpiredLocalPrivID.sql")
+
+    ### TODO
+    # Percentage based on total accounts in report
     max_domain_sorted = sorted(expired_domain,
                             key=lambda expired_domain: expired_domain[2],
                             reverse=True)
@@ -98,7 +50,7 @@ def main(args):
                             reverse=True)
     max_local_sorted = sorted(expired_local,
                             key=lambda expired_local: expired_local[2],
-                            reverse=True)
+                            reverse=False)
     avg_local_sorted = sorted(expired_local,
                             key=lambda expired_local: expired_local[3],
                             reverse=True)
@@ -115,6 +67,7 @@ def main(args):
 
 if __name__ == "__main__":
     """ This is executed when run from the command line """
+
     # Configure logging
     config_logger(LOGFILE)
     logger.info("Application initialized successfully")
