@@ -26,12 +26,9 @@ class Database(object):
     def exec_fromfile(self, sqlfile):
         """ Executes the query from a SQL file and returns all rows """
         # Open and read the SQL file as a single buffer
-        fileToRead = open(sqlfile, 'r')
-        logger.info("Opened {}".format(sqlfile))
-        sqlQuery = fileToRead.read()
-        logger.info("Read {}".format(sqlfile))
-        fileToRead.close()
-        logger.info("Closed {}".format(sqlfile))
+        with open(sqlfile, 'r') as file:
+            sqlQuery = file.read()
+            logger.info("Opened & read {}".format(sqlfile))
         
         # Create database connection
         conn = self.create_connection()
