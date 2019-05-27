@@ -5,6 +5,7 @@ Automation for CyberArk's Discovery & Audit (DNA) reports.
 
 import argparse
 import logging
+from collections import defaultdict
 
 import logzero
 import tests.tests as tests
@@ -38,31 +39,52 @@ def main(args):
 
     # Execute SQL queries
     expired_domain = db.exec_fromfile("data/sql/ExpiredDomainPrivID.sql")
+    all_domain_count = db.exec_fromfile("data/sql/ExpiredDomainPrivIDCnt.sql")
     expired_local = db.exec_fromfile("data/sql/UniqueExpiredLocalPrivID.sql")
+    all_local_count = db.exec_fromfile("data/sql/UniqueExpiredLocalPrivIDCnt.sql")
 
-    ### TODO
-    # Percentage based on total accounts in report
+    # Sorting Expired (non-compliant) Domain Accounts by Max Password Age
     max_domain_sorted = sorted(expired_domain,
                             key=lambda expired_domain: expired_domain[2],
                             reverse=True)
-    avg_domain_sorted = sorted(expired_domain,
-                            key=lambda expired_domain: expired_domain[3],
-                            reverse=True)
+    
+    # Create list of Average Password Age values non-compliant
+    avg_domain_values = [x[3] for x in expired_domain]
+
+    # Calculate Average Password Age of all Domain accounts expired (non-compliant)
+    avg_domain_overall = sum(avg_domain_values) / len(avg_domain_values)
+    logger.info("Calculated Overall Average Password Age for Expired Domain Accounts using: {} / {}".format(sum(avg_domain_values),len(avg_domain_values)))
+    
+    # Calculate percentage overall of Expired (non-compliant) Domain accounts
+    percent_domain_overall = len(max_domain_sorted) / len(all_domain_count)
+    logger.info("Calulated Percentage Overall Non-Compliant Expired Domain Accounts using: {} / {}".format(len(max_domain_sorted),len(all_domain_count)))
+
+    # Sorting Unique Expired (non-compliant) Local Accounts by Max Password Age
     max_local_sorted = sorted(expired_local,
                             key=lambda expired_local: expired_local[2],
                             reverse=False)
-    avg_local_sorted = sorted(expired_local,
-                            key=lambda expired_local: expired_local[3],
-                            reverse=True)
-    count_local_accounts = len(expired_local)
 
+    # Create list of Average Password Age values non-compliant
+    avg_local_values = [x[4] for x in expired_local]
+
+    # Calculate Average Password Age of all Local accounts expired (non-compliant)
+    avg_local_overall = sum(avg_local_values) / len(avg_local_values)
+    logger.info("Calculated Overall Average Password Age for Expired Local Accounts using: {} / {}".format(sum(avg_local_values),len(avg_local_values)))
+
+    # Calculate percentage overall of Expired (non-compliant) Local accounts
+    percent_local_overall = len(max_local_sorted) / len(all_local_count)
+    logger.info("Calulated Percentage Overall Non-Compliant Expired Local Accounts using: {} / {}".format(len(max_local_sorted),len(all_local_count)))
+
+    # If --test is detected, values will be pretty-output to console
     if args.test is True:
         tests.print_sorted(
             max_domain_sorted,
-            avg_domain_sorted,
+            avg_domain_overall,
+            percent_domain_overall,
             max_local_sorted,
-            avg_local_sorted,
-            count_local_accounts)
+            avg_local_overall,
+            percent_local_overall,
+            len(expired_local))
 
 
 if __name__ == "__main__":
@@ -86,7 +108,7 @@ if __name__ == "__main__":
         action="store_true",
         dest="test",
         help="For testing purposes only",
-        default=False
+        default=True
     )
 
     # Optional argument flag to output current version
