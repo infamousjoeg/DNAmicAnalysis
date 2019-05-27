@@ -39,6 +39,7 @@ DNAmicAnalysis.py (version 0.1.0)
 
 ## Example Output
 
+![](img/output.png)
 
 ## License
 
