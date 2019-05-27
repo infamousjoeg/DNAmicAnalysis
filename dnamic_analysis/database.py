@@ -26,21 +26,32 @@ class Database(object):
     def exec_fromfile(self, sqlfile):
         """ Executes the query from a SQL file and returns all rows """
         # Open and read the SQL file as a single buffer
-        with open(sqlfile, 'r') as file:
-            sqlQuery = file.read()
+        try:
+            with open(sqlfile, 'r') as file:
+                sqlQuery = file.read()
             logger.info("Opened & read {}".format(sqlfile))
+        except Exception as e:
+            logger.exception(e)
         
         # Create database connection
-        conn = self.create_connection()
+        try:
+            conn = self.create_connection()
 
-        # Create a cursor for the database connection
-        c = conn.cursor()
-        logger.info("Created database connection cursor")
+            # Create a cursor for the database connection
+            c = conn.cursor()
+            logger.info("Created database connection cursor")
+        except Error as e:
+            logger.exception(e)
 
         # Parse scan date from database file provided
-        dbFileNameSplit = self._dbfile.split("_")
-        scanDate = dbFileNameSplit[1]
-        logger.info("Parsed scan date from database filename: {}".format(scanDate))
+        try:
+            dbFileNameSplit = self._dbfile.split("_")
+            scanDate = dbFileNameSplit[1]
+            if scanDate is None:
+                raise Exception('DNA Database filename should remain unchanged. Modifications detected.')
+            logger.info("Parsed scan date from database filename: {}".format(scanDate))
+        except Exception as e:
+            logger.exception(e)
 
         # Execute the SQL query
         try:
