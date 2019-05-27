@@ -8,6 +8,7 @@ verify_ssl = true
 [packages]
 logzero = "*"
 python-pptx = "*"
+colorama = "*"
 
 [requires]
 python_version = "3.7"
