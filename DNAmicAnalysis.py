@@ -39,9 +39,9 @@ def main(args):
 
     # Execute SQL queries
     expired_domain = db.exec_fromfile("data/sql/ExpiredDomainPrivID.sql")
-    all_domain_count = db.exec_fromfile("data/sql/ExpiredDomainPrivIDCnt.sql")
+    all_domain_count = db.exec_fromfile("data/sql/DomainAdminsPUCount.sql")
     expired_local = db.exec_fromfile("data/sql/UniqueExpiredLocalPrivID.sql")
-    all_local_count = db.exec_fromfile("data/sql/UniqueExpiredLocalPrivIDCnt.sql")
+    all_local_count = db.exec_fromfile("data/sql/LocalAdministratorsCount.sql")
 
     # Sorting Expired (non-compliant) Domain Accounts by Max Password Age
     max_domain_sorted = sorted(expired_domain,
