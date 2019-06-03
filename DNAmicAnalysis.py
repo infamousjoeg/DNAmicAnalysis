@@ -77,12 +77,21 @@ def main(args):
 
     # If --test is detected, values will be pretty-output to console
     if args.test is True:
-        tests.print_sorted(
+        tests.domain_print_sorted(
             max_domain_sorted,
+            sum(avg_domain_values),
+            len(avg_domain_values),
             avg_domain_overall,
-            percent_domain_overall,
+            len(max_domain_sorted),
+            len(all_domain_count),
+            percent_domain_overall)
+        tests.local_print_sorted(
             max_local_sorted,
+            sum(avg_local_values),
+            len(avg_local_values),
             avg_local_overall,
+            len(max_local_sorted),
+            len(all_local_count),
             percent_local_overall,
             len(expired_local))
 

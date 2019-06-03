@@ -1,8 +1,10 @@
 import sqlite3
+from datetime import datetime
 from sqlite3 import Error
 
 import logzero
 from logzero import logger
+
 
 class Database(object):
 
@@ -45,18 +47,26 @@ class Database(object):
 
         # Parse scan date from database file provided
         try:
+            # Split to arrays
             dbFileNameSplit = self._dbfile.split("_")
-            scanDate = dbFileNameSplit[1]
-            if scanDate is None:
-                raise Exception('DNA Database filename should remain unchanged. Modifications detected.')
-            logger.info("Parsed scan date from database filename: {}".format(scanDate))
+            dbFileTimeSplit = dbFileNameSplit[2].split(".")
+            # Format as proper datetime value
+            inScanTime = datetime.strptime(dbFileTimeSplit[0].replace("-", " "), "%I %M %S %p")
+            # Strip 1900-01-01 placemarker date and format to 24-hour
+            scanTime = datetime.strftime(inScanTime, "%H:%M:%S")
+            # Combine datetime for SQL query
+            scanDateTime = dbFileNameSplit[1] + " " + scanTime
+            # Make sure SQL filename was valid
+            if scanDateTime is None:
+                raise Exception("DNA Database filename should remain unchanged. Modifications detected.")
+            logger.info("Parsed scan datetime from database filename: {}".format(scanDateTime))
         except Exception as e:
             logger.exception(e)
 
         # Execute the SQL query
         try:
-            c.execute(sqlQuery.replace('{scanDate}', scanDate))
-            logger.info("Executed {} on SQLite3 database successfully".format(sqlQuery.replace('{scanDate}', scanDate)))
+            c.execute(sqlQuery.replace("{scanDateTime}", scanDateTime))
+            logger.info("Executed {} on SQLite3 database successfully".format(sqlQuery.replace('{scanDateTime}', scanDateTime)))
         except Error as e:
             logger.exception(e)
 
