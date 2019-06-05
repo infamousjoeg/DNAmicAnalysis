@@ -79,8 +79,7 @@ def main(args):
             localAverage[2],
             localPercent[0],
             localPercent[1],
-            localPercent[2],
-            len(localMaxSorted))
+            localPercent[2])
         input("Press ENTER to continue...")
         print()
 
@@ -99,7 +98,7 @@ def main(args):
     
     # If --test detected, make results verbose to console
     if args.test is True:
-        Tests.local_expired_machines(localMaxGrouped, len(localMaxSorted))
+        Tests.local_expired_machines(localMaxGrouped, len(all_local_count))
         input("Press ENTER to continue...")
         print()
 

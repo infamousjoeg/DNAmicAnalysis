@@ -25,7 +25,7 @@ class Tests(object):
         deinit()
 
 
-    def local_expired(max_sorted,avg_sum,avg_len,avg_overall,percent_len,all_len,percent_overall,count_accounts):
+    def local_expired(max_sorted,avg_sum,avg_len,avg_overall,percent_len,all_len,percent_overall):
         """ Simply printing to output values for convenience """
 
         print(Fore.CYAN + "====================================================")
@@ -37,8 +37,6 @@ class Tests(object):
         print(Fore.YELLOW + "Total Avg Password Age: {} / {} = {:.2f} days".format(avg_sum,avg_len,avg_overall))
         print(Fore.CYAN + "----------------------------------------------------")
         print(Fore.YELLOW + "Total Percent Non-Compliant: {} / {} = {:.1%}".format(percent_len,all_len,percent_overall))
-        print(Fore.CYAN + "----------------------------------------------------")
-        print(Fore.YELLOW + "Total Local Accounts Non-Compliant: {}".format(count_accounts))
         print(Fore.CYAN + "====================================================")
 
         print(Style.RESET_ALL)
@@ -62,7 +60,7 @@ class Tests(object):
                     print('Machine Name: {}'.format(key))
 
         print(Fore.CYAN + "----------------------------------------------------")
-        print(Fore.YELLOW + "Total Local Accounts Non-Compliant: {}".format(count_accounts))
+        print(Fore.YELLOW + "Total Local Accounts Non-Compliant: {} / {}".format(len(max_grouped),count_accounts))
         print(Fore.CYAN + "====================================================")
 
         print(Style.RESET_ALL)
