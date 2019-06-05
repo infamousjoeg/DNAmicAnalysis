@@ -8,9 +8,10 @@ import logging
 from collections import defaultdict
 
 import logzero
-import tests.tests as tests
 from dnamic_analysis import Database
+import dnamic_analysis.metrics as Metrics
 from logzero import logger
+from tests import Tests
 
 __author__ = "Joe Garcia, CISSP"
 __version__ = "0.1.0"
@@ -33,67 +34,74 @@ def config_logger(logfile):
 
 def main(args):
     """ Main entry point of the app """
+
     logger.info("Arguments received: {}".format(args))
 
     db = Database(args.database_file)
 
-    # Execute SQL queries
+    """ Expired Domain Privileged IDs """
+
     expired_domain = db.exec_fromfile("data/sql/ExpiredDomainPrivID.sql")
     all_domain_count = db.exec_fromfile("data/sql/DomainAdminsPUCount.sql")
+
+    domainMaxSorted = Metrics.domain_max(expired_domain)
+    domainAverage = Metrics.domain_avg(expired_domain)
+    domainPercent = Metrics.domain_percent(expired_domain, all_domain_count, domainMaxSorted)
+
+    # If --test detected, make results verbose to console
+    if args.test is True:
+        Tests.domain_expired(
+            domainMaxSorted,
+            domainAverage[0],
+            domainAverage[1],
+            domainAverage[2],
+            domainPercent[0],
+            domainPercent[1],
+            domainPercent[2])
+        input("Press ENTER to continue...")
+        print()
+
+    """ Unique Expired Local Privileged IDs """
+
     expired_local = db.exec_fromfile("data/sql/UniqueExpiredLocalPrivID.sql")
     all_local_count = db.exec_fromfile("data/sql/LocalAdministratorsCount.sql")
 
-    # Sorting Expired (non-compliant) Domain Accounts by Max Password Age
-    max_domain_sorted = sorted(expired_domain,
-                            key=lambda expired_domain: expired_domain[2],
-                            reverse=True)
-    
-    # Create list of Average Password Age values non-compliant
-    avg_domain_values = [x[3] for x in expired_domain]
+    localMaxSorted = Metrics.local_max(expired_local)
+    localAverage = Metrics.local_avg(expired_local)
+    localPercent = Metrics.local_percent(expired_local, all_local_count, localMaxSorted)
 
-    # Calculate Average Password Age of all Domain accounts expired (non-compliant)
-    avg_domain_overall = sum(avg_domain_values) / len(avg_domain_values)
-    logger.info("Calculated Overall Average Password Age for Expired Domain Accounts using: {} / {}".format(sum(avg_domain_values),len(avg_domain_values)))
-    
-    # Calculate percentage overall of Expired (non-compliant) Domain accounts
-    percent_domain_overall = len(max_domain_sorted) / len(all_domain_count)
-    logger.info("Calulated Percentage Overall Non-Compliant Expired Domain Accounts using: {} / {}".format(len(max_domain_sorted),len(all_domain_count)))
-
-    # Sorting Unique Expired (non-compliant) Local Accounts by Max Password Age
-    max_local_sorted = sorted(expired_local,
-                            key=lambda expired_local: expired_local[2],
-                            reverse=False)
-
-    # Create list of Average Password Age values non-compliant
-    avg_local_values = [x[4] for x in expired_local]
-
-    # Calculate Average Password Age of all Local accounts expired (non-compliant)
-    avg_local_overall = sum(avg_local_values) / len(avg_local_values)
-    logger.info("Calculated Overall Average Password Age for Expired Local Accounts using: {} / {}".format(sum(avg_local_values),len(avg_local_values)))
-
-    # Calculate percentage overall of Expired (non-compliant) Local accounts
-    percent_local_overall = len(max_local_sorted) / len(all_local_count)
-    logger.info("Calulated Percentage Overall Non-Compliant Expired Local Accounts using: {} / {}".format(len(max_local_sorted),len(all_local_count)))
-
-    # If --test is detected, values will be pretty-output to console
+    # If --test detected, make results verbose to console
     if args.test is True:
-        tests.domain_print_sorted(
-            max_domain_sorted,
-            sum(avg_domain_values),
-            len(avg_domain_values),
-            avg_domain_overall,
-            len(max_domain_sorted),
-            len(all_domain_count),
-            percent_domain_overall)
-        tests.local_print_sorted(
-            max_local_sorted,
-            sum(avg_local_values),
-            len(avg_local_values),
-            avg_local_overall,
-            len(max_local_sorted),
-            len(all_local_count),
-            percent_local_overall,
-            len(expired_local))
+        Tests.local_expired(
+            localMaxSorted,
+            localAverage[0],
+            localAverage[1],
+            localAverage[2],
+            localPercent[0],
+            localPercent[1],
+            localPercent[2],
+            len(localMaxSorted))
+        input("Press ENTER to continue...")
+        print()
+
+    """ Expired Local Admins Total w/ Machine Names """
+
+    # Take localMaxSorted first 2 values in each row and add to var
+    localMaxPruned = [metric[0:2] for metric in localMaxSorted]
+    # Create blank set
+    localMaxGrouped = {}
+    # Group by machine and add to set previously created
+    for account, machine in localMaxPruned:
+        if machine in localMaxGrouped:
+            localMaxGrouped[machine].append((account))
+        else:
+            localMaxGrouped[machine] = [(account)]
+    
+    # If --test detected, make results verbose to console
+    if args.test is True:
+        Tests.local_expired_machines(localMaxGrouped, len(localMaxSorted))
+        input("Press ENTER to continue...")
+        print()
 
 
 if __name__ == "__main__":
