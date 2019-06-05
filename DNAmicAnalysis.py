@@ -102,6 +102,16 @@ def main(args):
         input("Press ENTER to continue...")
         print()
 
+    """ Local Abandoned Accounts """
+
+    abandoned_local = db.exec_fromfile("data/sql/LocalAbandonedAccounts.sql")
+
+    # If --test detected, make results verbose to console
+    if args.test is True:
+        Tests.local_abandoned(abandoned_local, len(all_local_count))
+        input("Press ENTER to continue...")
+        print()
+
 
 if __name__ == "__main__":
     """ This is executed when run from the command line """

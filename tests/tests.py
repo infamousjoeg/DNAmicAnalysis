@@ -65,3 +65,16 @@ class Tests(object):
 
         print(Style.RESET_ALL)
         deinit()
+
+
+    def local_abandoned(abandoned_accounts, count_accounts):
+        """ Simply printing to output values for convenience """
+
+        print(Fore.CYAN + "====================================================")
+        print(Fore.RED + "Local Abandoned / Leftover Accounts")
+        print(Fore.CYAN + "----------------------------------------------------")
+        print(Fore.YELLOW + "Total Detected: {} / {}".format(len(abandoned_accounts), count_accounts))
+        print(Fore.CYAN + "====================================================")
+
+        print(Style.RESET_ALL)
+        deinit()
