@@ -104,3 +104,4 @@ ENV/
 # DNA Analysis SQLite3 Database Files
 data/DNA_*.db
 data/report/*
+img/*.mov

@@ -9,7 +9,6 @@ FROM Accounts
 		ON Accounts.Machine_id = Machines.Id
 WHERE OSAccounts.LastPasswordSet <= datetime('{{scanDateTime}}', '-90 days')
 	AND OSAccounts.LastLogon <= datetime('{{scanDateTime}}', '-1 year')
-	AND Accounts.AccountType = 'Local'
-	AND (OSGroupModel.Name LIKE '%Administrators%'
-		OR OSGroupModel.Name LIKE '%Power Users%')
+	AND Accounts.AccountType != 'Local'
+	AND OSGroupModel.Name LIKE '%Domain Admins%'
 GROUP BY Accounts.Id

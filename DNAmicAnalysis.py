@@ -108,7 +108,17 @@ def main(args):
 
     # If --test detected, make results verbose to console
     if args.test is True:
-        Tests.local_abandoned(abandoned_local, len(all_local_count))
+        Tests.local_abandoned(len(abandoned_local), len(all_local_count))
+        input("Press ENTER to continue...")
+        print()
+
+    """ Local Abandoned Accounts """
+
+    abandoned_domain = db.exec_fromfile("data/sql/DomainAbandonedAccounts.sql")
+
+    # If --test detected, make results verbose to console
+    if args.test is True:
+        Tests.domain_abandoned(len(abandoned_domain), len(all_domain_count))
         input("Press ENTER to continue...")
         print()
 
