@@ -91,3 +91,106 @@ class Tests(object):
 
         print(Style.RESET_ALL)
         deinit()
+
+
+    def multi_machine_accts(multi_machine_accts):
+        """ Simply printing to output values for convenience """
+
+        print(Fore.CYAN + "====================================================")
+        print(Fore.RED + "Accounts with Multiple Machine Access")
+        print(Fore.CYAN + "----------------------------------------------------")
+        if len(multi_machine_accts[0]) != 0:
+            print(Fore.YELLOW + "> 95% Access")
+            print(Fore.CYAN + "----------------------------------------------------" + Fore.YELLOW)
+            for username in multi_machine_accts[0]:
+                print("Username: {}".format(username))
+            print("TOTAL ACCOUNTS: {}".format(len(username)))
+            print(Fore.CYAN + "====================================================")
+        if len(multi_machine_accts[1]) != 0:
+            print(Fore.YELLOW + "90-95% Access")
+            print(Fore.CYAN + "----------------------------------------------------" + Fore.YELLOW)
+            for username in multi_machine_accts[1]:
+                print("Username: {}".format(username))
+            print("TOTAL ACCOUNTS: {}".format(len(username)))
+            print(Fore.CYAN + "====================================================")
+        if len(multi_machine_accts[2]) != 0:
+            print(Fore.YELLOW + "80-90% Access")
+            print(Fore.CYAN + "----------------------------------------------------" + Fore.YELLOW)
+            for username in multi_machine_accts[2]:
+                print("Username: {}".format(username))
+            print("TOTAL ACCOUNTS: {}".format(len(username)))
+            print(Fore.CYAN + "====================================================")
+        if len(multi_machine_accts[3]) != 0:
+            print(Fore.YELLOW + "70-80% Access")
+            print(Fore.CYAN + "----------------------------------------------------" + Fore.YELLOW)
+            for username in multi_machine_accts[3]:
+                print("Username: {}".format(username))
+            print("TOTAL ACCOUNTS: {}".format(len(username)))
+            print(Fore.CYAN + "====================================================")
+        if len(multi_machine_accts[4]) != 0:
+            print(Fore.YELLOW + "60-70% Access")
+            print(Fore.CYAN + "----------------------------------------------------" + Fore.YELLOW)
+            for username in multi_machine_accts[4]:
+                print("Username: {}".format(username))
+            print("TOTAL ACCOUNTS: {}".format(len(username)))
+            print(Fore.CYAN + "====================================================")
+        if len(multi_machine_accts[5]) != 0:
+            print(Fore.YELLOW + "50-60% Access")
+            print(Fore.CYAN + "----------------------------------------------------" + Fore.YELLOW)
+            for username in multi_machine_accts[5]:
+                print("Username: {}".format(username))
+            print("TOTAL ACCOUNTS: {}".format(len(username)))
+            print(Fore.CYAN + "====================================================")
+        if len(multi_machine_accts[6]) != 0:
+            print(Fore.YELLOW + "40-50% Access")
+            print(Fore.CYAN + "----------------------------------------------------" + Fore.YELLOW)
+            for username in multi_machine_accts[6]:
+                print("Username: {}".format(username))
+            print("TOTAL ACCOUNTS: {}".format(len(username)))
+            print(Fore.CYAN + "====================================================")
+        if len(multi_machine_accts[7]) != 0:
+            print(Fore.YELLOW + "30-40% Access")
+            print(Fore.CYAN + "----------------------------------------------------" + Fore.YELLOW)
+            for username in multi_machine_accts[7]:
+                print("Username: {}".format(username))
+            print("TOTAL ACCOUNTS: {}".format(len(username)))
+            print(Fore.CYAN + "====================================================")
+        if len(multi_machine_accts[8]) != 0:
+            print(Fore.YELLOW + "20-30% Access")
+            print(Fore.CYAN + "----------------------------------------------------" + Fore.YELLOW)
+            for username in multi_machine_accts[8]:
+                print("Username: {}".format(username))
+            print("TOTAL ACCOUNTS: {}".format(len(username)))
+            print(Fore.CYAN + "====================================================")
+        if len(multi_machine_accts[9]) != 0:
+            print(Fore.YELLOW + "10-20% Access")
+            print(Fore.CYAN + "----------------------------------------------------" + Fore.YELLOW)
+            for username in multi_machine_accts[9]:
+                print("Username: {}".format(username))
+            print("TOTAL ACCOUNTS: {}".format(len(username)))
+            print(Fore.CYAN + "====================================================")
+        if len(multi_machine_accts[10]) != 0:
+            print(Fore.YELLOW + "< 10% Access")
+            print(Fore.CYAN + "----------------------------------------------------" + Fore.YELLOW)
+            for username in multi_machine_accts[10]:
+                print("Username: {}".format(username))
+            print("TOTAL ACCOUNTS: {}".format(len(username)))
+            print(Fore.CYAN + "====================================================")
+
+        print(Style.RESET_ALL)
+        deinit()
+
+
+    def unique_domain_admins(sqlresults, svc_sqlresults):
+        """ Simply printing to output values for convenience """
+
+        print(Fore.CYAN + "====================================================")
+        print(Fore.RED + "Unique Domain Admins")
+        print(Fore.CYAN + "----------------------------------------------------")
+        print(Fore.YELLOW + "Total Detected: {}".format(len(sqlresults)))
+        print(Fore.CYAN + "----------------------------------------------------")
+        print(Fore.YELLOW + "Total Potential Service Accounts: {}".format(len(svc_sqlresults)))
+        print(Fore.CYAN + "====================================================")
+
+        print(Style.RESET_ALL)
+        deinit()

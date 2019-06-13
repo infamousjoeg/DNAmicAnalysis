@@ -48,3 +48,49 @@ def local_percent(sqlresults, sqlcount, local_max_sorted):
         len(local_max_sorted),
         len(sqlcount)))
     return len(local_max_sorted), len(sqlcount), local_percent_overall
+
+
+def local_expired_machines(local_max_sorted):
+    # Take localMaxSorted first 2 values in each row and add to var
+    local_max_pruned = [metric[0:2] for metric in local_max_sorted]
+    # Create blank set
+    local_max_grouped = {}
+    # Group by machine and add to set previously created
+    for account, machine in local_max_pruned:
+        if machine in local_max_grouped:
+            local_max_grouped[machine].append((account))
+        else:
+            local_max_grouped[machine] = [(account)]
+    return local_max_grouped
+
+
+def multi_machine_accts(sqlresults, sqlcount):
+    percent95 = []; percent90 = []; percent80 = []; percent70 = []; percent60 = []
+    percent50 = []; percent40 = []; percent30 = []; percent20 = []; percent10 = []
+    percent0 = []
+    for username in sqlresults:
+        if (username[1] / sqlcount) >= 0.95:
+            percent95.append(username[0])
+        if (username[1] / sqlcount) >= 0.90 and (username[1] / sqlcount) < 0.95:
+            percent90.append(username[0])
+        if (username[1] / sqlcount) >= 0.80 and (username[1] / sqlcount) < 0.90:
+            percent80.append(username[0])
+        if (username[1] / sqlcount) >= 0.70 and (username[1] / sqlcount) < 0.80:
+            percent70.append(username[0])
+        if (username[1] / sqlcount) >= 0.60 and (username[1] / sqlcount) < 0.70:
+            percent60.append(username[0])
+        if (username[1] / sqlcount) >= 0.50 and (username[1] / sqlcount) < 0.60:
+            percent50.append(username[0])
+        if (username[1] / sqlcount) >= 0.40 and (username[1] / sqlcount) < 0.50:
+            percent40.append(username[0])
+        if (username[1] / sqlcount) >= 0.30 and (username[1] / sqlcount) < 0.40:
+            percent30.append(username[0])
+        if (username[1] / sqlcount) >= 0.20 and (username[1] / sqlcount) < 0.30:
+            percent20.append(username[0])
+        if (username[1] / sqlcount) >= 0.10 and (username[1] / sqlcount) < 0.20:
+            percent10.append(username[0])
+        if (username[1] / sqlcount) < 0.10:
+            percent0.append(username[0])
+    return percent95, percent90, percent80, percent70, \
+        percent60, percent50, percent40, percent30, \
+        percent20, percent10, percent0

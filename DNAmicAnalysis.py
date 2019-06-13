@@ -85,16 +85,7 @@ def main(args):
 
     """ Expired Local Admins Total w/ Machine Names """
 
-    # Take localMaxSorted first 2 values in each row and add to var
-    localMaxPruned = [metric[0:2] for metric in localMaxSorted]
-    # Create blank set
-    localMaxGrouped = {}
-    # Group by machine and add to set previously created
-    for account, machine in localMaxPruned:
-        if machine in localMaxGrouped:
-            localMaxGrouped[machine].append((account))
-        else:
-            localMaxGrouped[machine] = [(account)]
+    localMaxGrouped = Metrics.local_expired_machines(localMaxSorted)
     
     # If --test detected, make results verbose to console
     if args.test is True:
@@ -112,13 +103,37 @@ def main(args):
         input("Press ENTER to continue...")
         print()
 
-    """ Local Abandoned Accounts """
+    """ Domain Abandoned Accounts """
 
     abandoned_domain = db.exec_fromfile("data/sql/DomainAbandonedAccounts.sql")
 
     # If --test detected, make results verbose to console
     if args.test is True:
         Tests.domain_abandoned(len(abandoned_domain), len(all_domain_count))
+        input("Press ENTER to continue...")
+        print()
+
+    """ Accounts w/ Multiple Machine Access - By %age Tiers """
+
+    multi_machine_accts = db.exec_fromfile("data/sql/MultipleMachineAccounts.sql")
+    all_machines_count = db.exec_fromfile("data/sql/TotalMachinesCount.sql")
+
+    multiMachineAccounts = Metrics.multi_machine_accts(multi_machine_accts, all_machines_count[0][0])
+
+    # If --test detected, make results verbose to console
+    if args.test is True:
+        Tests.multi_machine_accts(multiMachineAccounts)
+        input("Press ENTER to continue...")
+        print()
+
+    """ Unique Domain Admins """
+
+    unique_domain_admins = db.exec_fromfile("data/sql/UniqueDomainAdmins.sql")
+    unique_svcacct_domain_admins = db.exec_fromfile("data/sql/UniqueSvcDomainAdmins.sql")
+
+    # If --test detected, make results verbose to console
+    if args.test is True:
+        Tests.unique_domain_admins(unique_domain_admins, unique_svcacct_domain_admins)
         input("Press ENTER to continue...")
         print()
 
