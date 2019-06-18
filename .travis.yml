@@ -11,6 +11,7 @@ matrix:
       os: osx
       osx_image: xcode10.2  # Python 3.7.2 running on macOS 10.14.3
       language: shell       # 'language: python' is an error on Travis CI macOS
+install: pip install -r requirements.txt
 script: coverage run DNAmicAnalysis.py data/test/DNA_2019-05-21_08-57-43-PM.db --test
 after_success:
   - coverage xml
