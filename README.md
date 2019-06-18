@@ -1,5 +1,7 @@
 # DNAmic Analysis :bar_chart:
 
+[![Build Status](https://travis-ci.com/infamousjoeg/DNAmicAnalysis.svg?branch=master)](https://travis-ci.com/infamousjoeg/DNAmicAnalysis) [![Codacy Badge](https://api.codacy.com/project/badge/Grade/c3c0f19291884a5fb58199644618b420)](https://www.codacy.com/app/infamousjoeg/DNAmicAnalysis?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=infamousjoeg/DNAmicAnalysis&amp;utm_campaign=Badge_Grade) [![Codacy Badge](https://api.codacy.com/project/badge/Coverage/c3c0f19291884a5fb58199644618b420)](https://www.codacy.com/app/infamousjoeg/DNAmicAnalysis?utm_source=github.com&utm_medium=referral&utm_content=infamousjoeg/DNAmicAnalysis&utm_campaign=Badge_Coverage)
+
 Automation for CyberArk's Discovery & Audit (DNA) reports.
 
 ## Installation
