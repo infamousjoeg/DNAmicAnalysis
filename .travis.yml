@@ -1,0 +1,24 @@
+env:
+  global:
+    secure: Qco3fwnmKIR9NjWP1UOAitUn2oFZHKDg5RF1r740zuS4Kay8PvyzHo6+0fT5U6HGrdPgSBgMGqZeQtdVsFpDaINy9Kqbj/Dcf5Qj8W/RmTb3uMd5O+jVmR0l3KwpNscoLfn+UGpYI1N9VI08edMkHKVRQ11O90foFMw9YeScXACtPg4KdC7qjXJIBQmw3Jwf1bSOH5caVXh6iDj/EI6B9gJlJ+gD1cpKUaAbQisBkfsQ+J31x2pdnbW0Vrvq7RyqxNEqLTpvVZ3ykVvVGprM75XUNq1FgXCdrAn+jD9dGKmW5SGO2XMlCLjZHStRqwd1Wht+lAHB9B+N/HBdB/MXmbZq1/GbPfEjvRAjrhTGJXeiXoZaTeGa6diItIx1Jtcmm2bU6oowIJE9K5B5GByKLes3YEwu8QvBZgA8gLR3ZXiS8RNRL1inB0uyknlilaOk1VJbyHTS8eGe8xh0YvTSXHrPwzjzTq5HFZT+VIZFrJjxIMzWY0rm+ib11UeCR8EiBadZDKEVEv1ocDSgNFg90BUyPZ8vfmzQh1wVKvj1++8vxyd2sZ3DYgenzj64//Av0XbFo2Qy1ni4Dp6ppffrSMj1R5f2cX+TQ0b9H+149J9GuTLRos7C4qs8AkbcqfRpJv1MONOiXoHbc3wA7LBi76xRHEpt9cXa8zIVxtnSAWM=
+language: python
+matrix:
+  include:
+  - name: Python 3.7.1 on Xenial Linux
+    python: 3.7
+    dist: xenial
+  - name: Python 3.7.2 on macOS
+    os: osx
+    osx_image: xcode10.2
+    language: shell
+  - name: Python 3.7.3 on Windows
+    os: windows
+    language: shell
+    before_install: choco install python
+    env: PATH=/c/Python37:/c/Python37/Scripts:$PATH
+install: pip3 install --user -r requirements.txt
+script:
+- python3 DNAmicAnalysis.py data/sql/test/DNA_2019-05-21_08-57-43-PM.db --test ||
+  python DNAmicAnalysis.py data/sql/test/DNA_2019-05-21_08-57-43-PM.db --test
+- if [ "$TRAVIS_OS_NAME" == "linux" ]; then coverage xml; fi
+after_success: python-codacy-coverage -r coverage.xml
