@@ -48,8 +48,8 @@ def main(args):
     domainAverage = Metrics.domain_avg(expired_domain)
     domainPercent = Metrics.domain_percent(expired_domain, all_domain_count, domainMaxSorted)
 
-    # If --test detected, make results verbose to console
-    if args.test is True:
+    # If --output detected, make results verbose to console
+    if args.output is True:
         Tests.domain_expired(
             domainMaxSorted,
             domainAverage[0],
@@ -58,7 +58,8 @@ def main(args):
             domainPercent[0],
             domainPercent[1],
             domainPercent[2])
-        input("Press ENTER to continue...")
+        if args.test is False:
+            input("Press ENTER to continue...")
         print()
 
     """ Unique Expired Local Privileged IDs """
@@ -70,8 +71,8 @@ def main(args):
     localAverage = Metrics.local_avg(expired_local)
     localPercent = Metrics.local_percent(expired_local, all_local_count, localMaxSorted)
 
-    # If --test detected, make results verbose to console
-    if args.test is True:
+    # If --output detected, make results verbose to console
+    if args.output is True:
         Tests.local_expired(
             localMaxSorted,
             localAverage[0],
@@ -80,37 +81,41 @@ def main(args):
             localPercent[0],
             localPercent[1],
             localPercent[2])
-        input("Press ENTER to continue...")
+        if args.test is False:
+            input("Press ENTER to continue...")
         print()
 
     """ Expired Local Admins Total w/ Machine Names """
 
     localMaxGrouped = Metrics.local_expired_machines(localMaxSorted)
     
-    # If --test detected, make results verbose to console
-    if args.test is True:
+    # If --output detected, make results verbose to console
+    if args.output is True:
         Tests.local_expired_machines(localMaxGrouped, len(all_local_count))
-        input("Press ENTER to continue...")
+        if args.test is False:
+            input("Press ENTER to continue...")
         print()
 
     """ Local Abandoned Accounts """
 
     abandoned_local = db.exec_fromfile("data/sql/LocalAbandonedAccounts.sql")
 
-    # If --test detected, make results verbose to console
-    if args.test is True:
+    # If --output detected, make results verbose to console
+    if args.output is True:
         Tests.local_abandoned(len(abandoned_local), len(all_local_count))
-        input("Press ENTER to continue...")
+        if args.test is False:
+            input("Press ENTER to continue...")
         print()
 
     """ Domain Abandoned Accounts """
 
     abandoned_domain = db.exec_fromfile("data/sql/DomainAbandonedAccounts.sql")
 
-    # If --test detected, make results verbose to console
-    if args.test is True:
+    # If --output detected, make results verbose to console
+    if args.output is True:
         Tests.domain_abandoned(len(abandoned_domain), len(all_domain_count))
-        input("Press ENTER to continue...")
+        if args.test is False:
+            input("Press ENTER to continue...")
         print()
 
     """ Accounts w/ Multiple Machine Access - By %age Tiers """
@@ -120,10 +125,11 @@ def main(args):
 
     multiMachineAccounts = Metrics.multi_machine_accts(multi_machine_accts, all_machines_count[0][0])
 
-    # If --test detected, make results verbose to console
-    if args.test is True:
+    # If --output detected, make results verbose to console
+    if args.output is True:
         Tests.multi_machine_accts(multiMachineAccounts)
-        input("Press ENTER to continue...")
+        if args.test is False:
+            input("Press ENTER to continue...")
         print()
 
     """ Unique Domain Admins """
@@ -131,10 +137,34 @@ def main(args):
     unique_domain_admins = db.exec_fromfile("data/sql/UniqueDomainAdmins.sql")
     unique_svcacct_domain_admins = db.exec_fromfile("data/sql/UniqueSvcDomainAdmins.sql")
 
-    # If --test detected, make results verbose to console
-    if args.test is True:
+    # If --output detected, make results verbose to console
+    if args.output is True:
         Tests.unique_domain_admins(unique_domain_admins, unique_svcacct_domain_admins)
-        input("Press ENTER to continue...")
+        if args.test is False:
+            input("Press ENTER to continue...")
+        print()
+
+    """ Unique Expired Domain Privileged IDs """
+
+    unique_expired_domain = db.exec_fromfile("data/sql/UniqueExpiredDomainPrivID.sql")
+    all_unique_domain_count = db.exec_fromfile("data/sql/UniqueExpiredDomainCount.sql")
+
+    uniqueDomainMaxSorted = Metrics.unique_domain_max(unique_expired_domain)
+    uniqueDomainAverage = Metrics.unique_domain_avg(unique_expired_domain)
+    uniqueDomainPercent = Metrics.unique_domain_percent(unique_expired_domain, all_unique_domain_count, uniqueDomainMaxSorted)
+
+    # If --output detected, make results verbose to console
+    if args.output is True:
+        Tests.unique_domain_expired(
+            uniqueDomainMaxSorted,
+            uniqueDomainAverage[0],
+            uniqueDomainAverage[1],
+            uniqueDomainAverage[2],
+            uniqueDomainPercent[0],
+            uniqueDomainPercent[1],
+            uniqueDomainPercent[2])
+        if args.test is False:
+            input("Press ENTER to continue...")
         print()
 
 
@@ -153,13 +183,22 @@ if __name__ == "__main__":
         "database_file",
         help="Path to the CyberArk DNA SQLite3 database file")
 
+    # Optional argument flag for output results
+    parser.add_argument(
+        "--output",
+        action="store_true",
+        dest="output",
+        help="Output the results to the console",
+        default=True
+    )
+    
     # Optional argument flag for testing
     parser.add_argument(
         "--test",
         action="store_true",
         dest="test",
         help="For testing purposes only",
-        default=True
+        default=False
     )
 
     # Optional argument flag to output current version

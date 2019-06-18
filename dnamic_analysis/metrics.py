@@ -94,3 +94,26 @@ def multi_machine_accts(sqlresults, sqlcount):
     return percent95, percent90, percent80, percent70, \
         percent60, percent50, percent40, percent30, \
         percent20, percent10, percent0
+
+def unique_domain_max(sqlresults):
+    unique_domain_max_sorted = sorted(sqlresults,
+                                key=lambda unique_expired_domain: sqlresults[2],
+                                reverse=False)
+    return unique_domain_max_sorted
+
+
+def unique_domain_avg(sqlresults):
+    unique_domain_avg_values = [x[4] for x in sqlresults]
+    unique_domain_avg_overall = sum(unique_domain_avg_values) / len(unique_domain_avg_values)
+    logger.info("Calculated Overall Average Password Age for Unique Expired Domain Admins using: {} / {}".format(
+        sum(unique_domain_avg_values),
+        len(unique_domain_avg_values)))
+    return sum(unique_domain_avg_values), len(unique_domain_avg_values), unique_domain_avg_overall
+
+
+def unique_domain_percent(sqlresults, sqlcount, unique_domain_max_sorted):
+    unique_domain_percent_overall = len(unique_domain_max_sorted) / sqlcount[0][0]
+    logger.info("Calulated Percentage Overall Non-Compliant Expired Domain Admins using: {} / {}".format(
+        len(unique_domain_max_sorted),
+        sqlcount[0][0]))
+    return len(unique_domain_max_sorted), sqlcount[0][0], unique_domain_percent_overall
