@@ -10,7 +10,7 @@ python:
 install: 
   - pip install --upgrade pip
   - pip install -r requirements.txt
-script: coverage run python DNAmicAnalysis.py data/sql/test/DNA_2019-05-21_08-57-43-PM.db --test
+script: coverage run DNAmicAnalysis.py data/sql/test/DNA_2019-05-21_08-57-43-PM.db --test
 after_success:
   - coverage xml
   - python-codacy-coverage -r coverage.xml
