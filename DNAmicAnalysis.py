@@ -134,12 +134,14 @@ def main(args):
 
     """ Unique Domain Admins """
 
+    svc_array = args.svc_regex.replace(' ', '').split(',')
     unique_domain_admins = db.exec_fromfile("data/sql/UniqueDomainAdmins.sql")
-    unique_svcacct_domain_admins = db.exec_fromfile("data/sql/UniqueSvcDomainAdmins.sql")
+    unique_svcacct_domain_admins = db.exec_fromfile("data/sql/UniqueSvcDomainAdmins.sql", "svc", svc_array)
+    unique_svcacct_domain_admins2 = db.exec_fromfile("data/sql/UniqueSvcDomainAdmins2.sql", "svc", svc_array)
 
     # If --output detected, make results verbose to console
     if args.output is True:
-        Tests.unique_domain_admins(unique_domain_admins, unique_svcacct_domain_admins)
+        Tests.unique_domain_admins(unique_domain_admins, (unique_svcacct_domain_admins+unique_svcacct_domain_admins2))
         if args.test is False:
             input("Press ENTER to continue...")
         print()
@@ -178,17 +180,29 @@ if __name__ == "__main__":
     # Create argument parsing object
     parser = argparse.ArgumentParser(description="CyberArk DNA report generation utility")
 
+    # Create "required optional" argument group
+    req_grp = parser.add_argument_group(title='required optional')
+
     # Required positional argument for database file to query against
     parser.add_argument(
         "database_file",
-        help="Path to the CyberArk DNA SQLite3 database file")
+        help="path to the CyberArk DNA SQLite3 database file")
+
+    # Required argument flag for service account regex
+    req_grp.add_argument(
+        "--svc-regex",
+        dest="svc_regex",
+        help="comma-delimited list of service account naming convention regex",
+        default=True,
+        required=True
+    )
 
     # Optional argument flag for output results
     parser.add_argument(
         "--output",
         action="store_true",
         dest="output",
-        help="Output the results to the console",
+        help="output the results to the console",
         default=True
     )
     
@@ -197,7 +211,7 @@ if __name__ == "__main__":
         "--test",
         action="store_true",
         dest="test",
-        help="For testing purposes only",
+        help="for testing purposes only",
         default=False
     )
 
@@ -206,7 +220,7 @@ if __name__ == "__main__":
         "--version",
         action="version",
         version="%(prog)s (version {version})".format(version=__version__),
-        help="Shows current version information and exit")
+        help="shows current version information and exit")
 
     try:
         args = parser.parse_args()
