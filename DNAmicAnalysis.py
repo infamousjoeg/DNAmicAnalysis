@@ -214,7 +214,7 @@ if __name__ == "__main__":
         help="output the results to the console",
         default=True
     )
-    
+
     # Optional argument flag for testing
     parser.add_argument(
         "--test",

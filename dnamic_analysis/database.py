@@ -2,7 +2,6 @@ import sqlite3
 from datetime import datetime
 from sqlite3 import Error
 
-import logzero
 from logzero import logger
 
 
@@ -34,7 +33,7 @@ class Database(object):
             logger.info("Opened & read {}".format(sqlfile))
         except Exception as e:
             logger.exception(e)
-        
+
         # Create database connection
         try:
             conn = self.create_connection()

@@ -1,4 +1,3 @@
-import logzero
 from logzero import logger
 
 
