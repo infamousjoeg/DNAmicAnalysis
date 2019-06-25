@@ -1,7 +1,5 @@
 #!/usr/bin/env python3
-##
-Automation for CyberArk's Discovery & Audit (DNA) reports.
-##
+## Automation for CyberArk's Discovery & Audit (DNA) reports. ##
 
 import argparse
 import logging
