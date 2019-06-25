@@ -1,11 +1,10 @@
 #!/usr/bin/env python3
-"""
+##
 Automation for CyberArk's Discovery & Audit (DNA) reports.
-"""
+##
 
 import argparse
 import logging
-from collections import defaultdict
 
 import logzero
 from dnamic_analysis import Database
@@ -20,7 +19,7 @@ __license__ = "MIT"
 LOGFILE = 'DNAmicAnalysis.log'
 
 def config_logger(logfile):
-    """ Configures logging of this application """
+    ## Configures logging of this application ##
     # Set a minimum log level
     logzero.loglevel(logging.INFO)
 
@@ -33,7 +32,7 @@ def config_logger(logfile):
 
 
 def main(args):
-    """ Main entry point of the app """
+    ## Main entry point of the app ##
 
     logger.info("Arguments received: {}".format(args))
 
@@ -41,7 +40,7 @@ def main(args):
 
     svc_array = args.svc_regex.replace(' ', '').split(',')
 
-    """ Expired Domain Privileged IDs """
+    ## Expired Domain Privileged IDs ##
 
     expired_domain = db.exec_fromfile("data/sql/ExpiredDomainPrivID.sql")
     all_domain_count = db.exec_fromfile("data/sql/DomainAdminsPUCount.sql")
@@ -64,7 +63,7 @@ def main(args):
             input("Press ENTER to continue...")
         print()
 
-    """ Unique Expired Local Privileged IDs """
+    ## Unique Expired Local Privileged IDs ##
 
     expired_local = db.exec_fromfile("data/sql/UniqueExpiredLocalPrivID.sql")
     all_local_count = db.exec_fromfile("data/sql/LocalAdministratorsCount.sql")
@@ -87,7 +86,7 @@ def main(args):
             input("Press ENTER to continue...")
         print()
 
-    """ Expired Local Admins Total w/ Machine Names """
+    ## Expired Local Admins Total w/ Machine Names ##
 
     localMaxGrouped = Metrics.local_expired_machines(localMaxSorted)
     
@@ -98,7 +97,7 @@ def main(args):
             input("Press ENTER to continue...")
         print()
 
-    """ Local Abandoned Accounts """
+    ## Local Abandoned Accounts ##
 
     abandoned_local = db.exec_fromfile("data/sql/LocalAbandonedAccounts.sql")
 
@@ -109,7 +108,7 @@ def main(args):
             input("Press ENTER to continue...")
         print()
 
-    """ Domain Abandoned Accounts """
+    ## Domain Abandoned Accounts ##
 
     abandoned_domain = db.exec_fromfile("data/sql/DomainAbandonedAccounts.sql")
 
@@ -120,7 +119,7 @@ def main(args):
             input("Press ENTER to continue...")
         print()
 
-    """ Accounts w/ Multiple Machine Access - By %age Tiers """
+    ## Accounts w/ Multiple Machine Access - By %age Tiers ##
 
     multi_machine_accts = db.exec_fromfile("data/sql/MultipleMachineAccounts.sql")
     all_machines_count = db.exec_fromfile("data/sql/TotalMachinesCount.sql")
@@ -134,7 +133,7 @@ def main(args):
             input("Press ENTER to continue...")
         print()
 
-    """ Unique Domain Admins """
+    ## Unique Domain Admins ##
 
     unique_domain_admins = db.exec_fromfile("data/sql/UniqueDomainAdmins.sql")
     unique_svcacct_domain_admins = db.exec_fromfile("data/sql/UniqueSvcDomainAdmins.sql", "svc", svc_array)
@@ -147,7 +146,7 @@ def main(args):
             input("Press ENTER to continue...")
         print()
 
-    """ Unique Expired Domain Privileged IDs """
+    ## Unique Expired Domain Privileged IDs ##
 
     unique_expired_domain = db.exec_fromfile("data/sql/UniqueExpiredDomainPrivID.sql")
 
@@ -169,7 +168,7 @@ def main(args):
             input("Press ENTER to continue...")
         print()
 
-    """ Personal Accounts Running Services """
+    ## Personal Accounts Running Services ##
 
     personalAccountsRunningSvcs = db.exec_fromfile('data/sql/PersonalAccountsRunningSvcs.sql', "svc", svc_array)
 
@@ -183,7 +182,7 @@ def main(args):
 
 
 if __name__ == "__main__":
-    """ This is executed when run from the command line """
+    ## This is executed when run from the command line ##
 
     # Configure logging
     config_logger(LOGFILE)

@@ -48,7 +48,7 @@ class Tests(object):
 
         print(Fore.CYAN + "====================================================")
         print(Fore.RED + "Expired Local Admins Total w/ Machine Names" + Fore.YELLOW)
-        
+
         for value in max_grouped.items():
             for key in value:
                 if not isinstance(key, str):
