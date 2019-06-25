@@ -149,11 +149,10 @@ def main(args):
     """ Unique Expired Domain Privileged IDs """
 
     unique_expired_domain = db.exec_fromfile("data/sql/UniqueExpiredDomainPrivID.sql")
-    all_unique_domain_count = db.exec_fromfile("data/sql/UniqueExpiredDomainCount.sql")
 
     uniqueDomainMaxSorted = Metrics.unique_domain_max(unique_expired_domain)
     uniqueDomainAverage = Metrics.unique_domain_avg(unique_expired_domain)
-    uniqueDomainPercent = Metrics.unique_domain_percent(unique_expired_domain, all_unique_domain_count, uniqueDomainMaxSorted)
+    uniqueDomainPercent = Metrics.unique_domain_percent(unique_expired_domain, len(unique_domain_admins), uniqueDomainMaxSorted)
 
     # If --output detected, make results verbose to console
     if args.output is True:

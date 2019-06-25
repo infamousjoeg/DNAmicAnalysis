@@ -112,8 +112,8 @@ def unique_domain_avg(sqlresults):
 
 
 def unique_domain_percent(sqlresults, sqlcount, unique_domain_max_sorted):
-    unique_domain_percent_overall = len(unique_domain_max_sorted) / sqlcount[0][0]
+    unique_domain_percent_overall = len(unique_domain_max_sorted) / sqlcount
     logger.info("Calulated Percentage Overall Non-Compliant Expired Domain Admins using: {} / {}".format(
         len(unique_domain_max_sorted),
-        sqlcount[0][0]))
-    return len(unique_domain_max_sorted), sqlcount[0][0], unique_domain_percent_overall
+        sqlcount))
+    return len(unique_domain_max_sorted), sqlcount, unique_domain_percent_overall
