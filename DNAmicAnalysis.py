@@ -39,6 +39,8 @@ def main(args):
 
     db = Database(args.database_file)
 
+    svc_array = args.svc_regex.replace(' ', '').split(',')
+
     """ Expired Domain Privileged IDs """
 
     expired_domain = db.exec_fromfile("data/sql/ExpiredDomainPrivID.sql")
@@ -134,7 +136,6 @@ def main(args):
 
     """ Unique Domain Admins """
 
-    svc_array = args.svc_regex.replace(' ', '').split(',')
     unique_domain_admins = db.exec_fromfile("data/sql/UniqueDomainAdmins.sql")
     unique_svcacct_domain_admins = db.exec_fromfile("data/sql/UniqueSvcDomainAdmins.sql", "svc", svc_array)
     unique_svcacct_domain_admins2 = db.exec_fromfile("data/sql/UniqueSvcDomainAdmins2.sql", "svc", svc_array)
@@ -164,6 +165,18 @@ def main(args):
             uniqueDomainPercent[0],
             uniqueDomainPercent[1],
             uniqueDomainPercent[2])
+        if args.test is False:
+            input("Press ENTER to continue...")
+        print()
+
+    """ Personal Accounts Running Services """
+
+    personalAccountsRunningSvcs = db.exec_fromfile('data/sql/PersonalAccountsRunningSvcs.sql', "svc", svc_array)
+
+    # If --output detected, make results verbose to console
+    if args.output is True:
+        Tests.personal_accts_running_svcs(
+            len(personalAccountsRunningSvcs))
         if args.test is False:
             input("Press ENTER to continue...")
         print()

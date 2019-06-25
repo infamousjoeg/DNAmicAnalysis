@@ -8,7 +8,7 @@ class Tests(object):
 
 
     def domain_expired(max_sorted,avg_sum,avg_len,avg_overall,percent_len,all_len,percent_overall):
-        """ Simply printing to output values for convenience """
+        """ Expired Domain Privileged IDs """
 
         print(Fore.CYAN + "====================================================")
         print(Fore.RED + "Expired Domain Privileged IDs")
@@ -26,7 +26,7 @@ class Tests(object):
 
 
     def local_expired(max_sorted,avg_sum,avg_len,avg_overall,percent_len,all_len,percent_overall):
-        """ Simply printing to output values for convenience """
+        """ Unique Expired Local Privileged IDs """
 
         print(Fore.CYAN + "====================================================")
         print(Fore.RED + "Unique Expired Local Privileged IDs")
@@ -44,7 +44,7 @@ class Tests(object):
 
 
     def local_expired_machines(max_grouped,count_accounts):
-        """ Simply printing to output values for convenience """
+        """ Expired Local Privileged IDs """
 
         print(Fore.CYAN + "====================================================")
         print(Fore.RED + "Expired Local Admins Total w/ Machine Names" + Fore.YELLOW)
@@ -68,7 +68,7 @@ class Tests(object):
 
 
     def local_abandoned(abandoned_accounts, count_accounts):
-        """ Simply printing to output values for convenience """
+        """ Local Abandoned / Leftover Accounts """
 
         print(Fore.CYAN + "====================================================")
         print(Fore.RED + "Local Abandoned / Leftover Accounts")
@@ -81,7 +81,7 @@ class Tests(object):
 
 
     def domain_abandoned(abandoned_accounts, count_accounts):
-        """ Simply printing to output values for convenience """
+        """ Domain Abandoned / Leftover Accounts """
 
         print(Fore.CYAN + "====================================================")
         print(Fore.RED + "Domain Abandoned / Leftover Accounts")
@@ -94,7 +94,7 @@ class Tests(object):
 
 
     def multi_machine_accts(multi_machine_accts):
-        """ Simply printing to output values for convenience """
+        """ Accounts with Multiple Machine Access """
 
         print(Fore.CYAN + "====================================================")
         print(Fore.RED + "Accounts with Multiple Machine Access")
@@ -182,7 +182,7 @@ class Tests(object):
 
 
     def unique_domain_admins(sqlresults, svc_sqlresults):
-        """ Simply printing to output values for convenience """
+        """ Unique Domain Admins """
 
         print(Fore.CYAN + "====================================================")
         print(Fore.RED + "Unique Domain Admins")
@@ -197,7 +197,7 @@ class Tests(object):
 
 
     def unique_domain_expired(max_sorted,avg_sum,avg_len,avg_overall,percent_len,all_len,percent_overall):
-        """ Simply printing to output values for convenience """
+        """ Unique Expired Domain Admins """
 
         print(Fore.CYAN + "====================================================")
         print(Fore.RED + "Unique Expired Domain Admins")
@@ -208,6 +208,19 @@ class Tests(object):
         print(Fore.YELLOW + "Total Avg Password Age: {} / {} = {:.2f} days".format(avg_sum,avg_len,avg_overall))
         print(Fore.CYAN + "----------------------------------------------------")
         print(Fore.YELLOW + "Total Percent Non-Compliant: {} / {} = {:.2%}".format(percent_len,all_len,percent_overall))
+        print(Fore.CYAN + "====================================================")
+
+        print(Style.RESET_ALL)
+        deinit()
+
+
+    def personal_accts_running_svcs(total):
+        """ Personal Accounts Running Services """
+
+        print(Fore.CYAN + "====================================================")
+        print(Fore.RED + "Personal Accounts Running Services")
+        print(Fore.CYAN + "----------------------------------------------------")
+        print(Fore.YELLOW + "Total Personal Accounts: {}".format(total))
         print(Fore.CYAN + "====================================================")
 
         print(Style.RESET_ALL)
