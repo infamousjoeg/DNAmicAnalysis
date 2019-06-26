@@ -4,5 +4,5 @@ FROM Accounts
 		ON Accounts.Id = OSGroupModel.OSAccount_id
 WHERE NOT Accounts.Name LIKE '%*%'
 	AND OSGroupModel.DomainGroup LIKE '%Domain Admins%'
-    AND ({svcWhereStmt})
+    AND ({whereStmt})
 ORDER BY Accounts.Name ASC

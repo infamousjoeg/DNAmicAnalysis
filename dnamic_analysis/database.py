@@ -24,7 +24,7 @@ class Database(object):
         return None
 
 
-    def exec_fromfile(self, sqlfile, regex_flag=None, regex_array=None):
+    def exec_fromfile(self, sqlfile, regex_flag=False, regex_array=None):
         """ Executes the query from a SQL file and returns all rows """
         # Open and read the SQL file as a single buffer
         try:
@@ -62,7 +62,7 @@ class Database(object):
         except Exception as e:
             logger.exception(e)
 
-        if regex_flag == 'svc':
+        if regex_flag:
             # Execute the SQL query
             try:
                 sqlQueryDT = sqlQuery.replace("{scanDateTime}", scanDateTime)
@@ -74,26 +74,26 @@ class Database(object):
                     else:
                         whereStmt += "OR Accounts.Name LIKE '%{}%' ".format(regex)
                     counter += 1
-                c.execute(sqlQueryDT.replace("{svcWhereStmt}", whereStmt))
-                logger.info("Executed {} on SQLite3 database successfully".format(sqlQueryDT.replace("{svcWhereStmt}", whereStmt)))
+                c.execute(sqlQueryDT.replace("{whereStmt}", whereStmt))
+                logger.info("Executed {} on SQLite3 database successfully".format(sqlQueryDT.replace("{whereStmt}", whereStmt)))
             except Error as e:
                 logger.exception(e)
-        elif regex_flag == 'adm':
-            # Execute the SQL query
-            try:
-                sqlQueryDT = sqlQuery.replace("{scanDateTime}", scanDateTime)
-                whereStmt = ""
-                counter = 0
-                for regex in regex_array:
-                    if counter == 0:
-                        whereStmt += "Accounts.Name LIKE '%{}%' ".format(regex)
-                    else:
-                        whereStmt += "OR Accounts.Name LIKE '%{}%' ".format(regex)
-                    counter +=  1
-                c.execute(sqlQueryDT.replace("{admWhereStmt}", whereStmt))
-                logger.info("Executed {} on SQLite3 database successfully".format(sqlQueryDT.replace("{admWhereStmt}", whereStmt)))
-            except Error as e:
-                logger.exception(e)
+        # elif regex_flag == 'adm':
+        #     # Execute the SQL query
+        #     try:
+        #         sqlQueryDT = sqlQuery.replace("{scanDateTime}", scanDateTime)
+        #         whereStmt = ""
+        #         counter = 0
+        #         for regex in regex_array:
+        #             if counter == 0:
+        #                 whereStmt += "Accounts.Name LIKE '%{}%' ".format(regex)
+        #             else:
+        #                 whereStmt += "OR Accounts.Name LIKE '%{}%' ".format(regex)
+        #             counter +=  1
+        #         c.execute(sqlQueryDT.replace("{admWhereStmt}", whereStmt))
+        #         logger.info("Executed {} on SQLite3 database successfully".format(sqlQueryDT.replace("{admWhereStmt}", whereStmt)))
+        #     except Error as e:
+        #         logger.exception(e)
         else:
             # Execute the SQL query
             try:

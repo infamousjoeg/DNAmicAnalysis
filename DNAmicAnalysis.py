@@ -37,6 +37,8 @@ def main(args):
     db = Database(args.database_file)
 
     svc_array = args.svc_regex.replace(' ', '').split(',')
+    #adm_array = args.adm_regex.replace(' ', '').split(',')
+    #regex_array = svc_array + adm_array
 
     ## Expired Domain Privileged IDs ##
 
@@ -134,8 +136,8 @@ def main(args):
     ## Unique Domain Admins ##
 
     unique_domain_admins = db.exec_fromfile("data/sql/UniqueDomainAdmins.sql")
-    unique_svcacct_domain_admins = db.exec_fromfile("data/sql/UniqueSvcDomainAdmins.sql", "svc", svc_array)
-    unique_svcacct_domain_admins2 = db.exec_fromfile("data/sql/UniqueSvcDomainAdmins2.sql", "svc", svc_array)
+    unique_svcacct_domain_admins = db.exec_fromfile("data/sql/UniqueSvcDomainAdmins.sql", True, svc_array)
+    unique_svcacct_domain_admins2 = db.exec_fromfile("data/sql/UniqueSvcDomainAdmins2.sql", True, svc_array)
 
     # If --output detected, make results verbose to console
     if args.output is True:
@@ -168,7 +170,7 @@ def main(args):
 
     ## Personal Accounts Running Services ##
 
-    personalAccountsRunningSvcs = db.exec_fromfile('data/sql/PersonalAccountsRunningSvcs.sql', "svc", svc_array)
+    personalAccountsRunningSvcs = db.exec_fromfile('data/sql/PersonalAccountsRunningSvcs.sql', True, svc_array)
 
     # If --output detected, make results verbose to console
     if args.output is True:

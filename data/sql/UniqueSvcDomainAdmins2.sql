@@ -5,5 +5,5 @@ FROM Services
 	LEFT OUTER JOIN OSGroupModel
 		ON Accounts.Id = OSGroupModel.OSAccount_id
 WHERE OSGroupModel.DomainGroup LIKE '%Domain Admins%'
-	AND NOT ({svcWhereStmt})
+	AND NOT ({whereStmt})
 ORDER BY Services.AccountName ASC
