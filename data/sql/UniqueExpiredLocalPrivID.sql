@@ -11,4 +11,6 @@ FROM Accounts
 WHERE OSAccounts.LastPasswordSet <= datetime('{scanDateTime}', '-90 days')
 	AND Accounts.AccountType = 'Local'
 	AND OSGroupModel.Name = 'Administrators'
+	AND NOT (Accounts.Name LIKE '%*%'
+		OR Accounts.Name LIKE '')
 GROUP BY Accounts.Id

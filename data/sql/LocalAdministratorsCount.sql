@@ -6,5 +6,7 @@ FROM Accounts
 		ON Accounts.Id = OSGroupModel.OSAccount_id
 WHERE Accounts.AccountType = 'Local'
 	AND OSGroupModel.Name = 'Administrators'
+	AND NOT (Accounts.Name LIKE '%*%'
+		OR Accounts.Name LIKE '')
 GROUP BY Accounts.Id
 ORDER BY Count DESC

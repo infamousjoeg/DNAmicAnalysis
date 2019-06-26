@@ -89,7 +89,7 @@ def main(args):
     ## Expired Local Admins Total w/ Machine Names ##
 
     localMaxGrouped = Metrics.local_expired_machines(localMaxSorted)
-    
+
     # If --output detected, make results verbose to console
     if args.output is True:
         Tests.local_expired_machines(localMaxGrouped, len(all_local_count))

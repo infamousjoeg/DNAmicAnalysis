@@ -10,5 +10,7 @@ FROM Accounts
 		ON Accounts.Machine_id = Machines.Id
 WHERE OSAccounts.LastPasswordSet <= datetime('{scanDateTime}', '-90 days')
 	AND Accounts.AccountType = 'Domain'
+	AND NOT (Accounts.Name LIKE '%*%'
+		OR Accounts.Name LIKE '')
 	AND OSGroupModel.DomainGroup LIKE '%Domain Admins%'
 GROUP BY Accounts.Name

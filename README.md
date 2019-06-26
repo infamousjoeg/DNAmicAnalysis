@@ -15,21 +15,29 @@ pip install -r requirements.txt
 
 ## Usage
 
-_NOTE: Until a release is available, this is considered a BETA. In a BETA state, the `--test` argument will be default. It will not be required to be provided during this phase. Not displaying output will not help you in anyway._
+_NOTE: Until a release is available, this is considered a BETA. In a BETA state, the `--output` argument will be default. It will not be required to be provided during this phase. Not displaying output will not help you in anyway._
 
 ```shell
 $ ./DNAmicAnalysis.py -h
-usage: DNAmicAnalysis.py [-h] [--test] [--version] database_file
+usage: DNAmicAnalysis.py [-h] --svc-regex SVC_REGEX [--output] [--test]
+                         [--version]
+                         database_file
 
 CyberArk DNA report generation utility
 
 positional arguments:
-  database_file  Path to the CyberArk DNA SQLite3 database file
+  database_file         path to the CyberArk DNA SQLite3 database file
 
 optional arguments:
-  -h, --help     show this help message and exit
-  --test         For testing purposes only
-  --version      Displays current version information
+  -h, --help            show this help message and exit
+  --output              output the results to the console
+  --test                for testing purposes only
+  --version             shows current version information and exit
+
+required optional:
+  --svc-regex SVC_REGEX
+                        comma-delimited list of service account naming
+                        convention regex
 ```
 
 ## Version

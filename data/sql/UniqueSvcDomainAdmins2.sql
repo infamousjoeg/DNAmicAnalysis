@@ -6,4 +6,6 @@ FROM Services
 		ON Accounts.Id = OSGroupModel.OSAccount_id
 WHERE OSGroupModel.DomainGroup LIKE '%Domain Admins%'
 	AND NOT ({whereStmt})
+	AND NOT (Accounts.Name LIKE '%*%'
+		OR Accounts.Name LIKE '')
 ORDER BY Services.AccountName ASC

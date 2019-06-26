@@ -7,5 +7,7 @@ FROM Accounts
 WHERE Accounts.AccountType != 'Local'
 	AND (OSGroupModel.Name = 'Administrators'
 		OR OSGroupModel.Name = 'Power Users')
+	AND NOT (Accounts.Name LIKE '%*%'
+		OR Accounts.Name LIKE '')
 GROUP BY Accounts.Id, Accounts.Name
 ORDER BY Count DESC
