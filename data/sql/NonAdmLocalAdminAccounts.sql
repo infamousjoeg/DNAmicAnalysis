@@ -4,10 +4,13 @@ FROM Accounts
 		ON Accounts.Id = OSGroupModel.OSAccount_id
 	LEFT OUTER JOIN Machines
 		ON Accounts.Machine_id = Machines.Id
+	LEFT OUTER JOIN OSAccounts
+		ON Accounts.Id = OSAccounts.AccountBase_id
 WHERE NOT (Accounts.Name = ''
 	OR Accounts.Name LIKE '%*%')
 	AND NOT ({whereStmt})
 	AND (OSGroupModel.Name = 'Administrators'
 		OR OSGroupModel.Name = 'Power Users')
-GROUP BY Accounts.Name
+	{disabled}
+GROUP BY LOWER(Accounts.Name)
 ORDER BY TotalMachines DESC

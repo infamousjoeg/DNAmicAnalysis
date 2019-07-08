@@ -13,4 +13,5 @@ WHERE OSAccounts.LastPasswordSet <= datetime('{scanDateTime}', '-90 days')
 	AND NOT (Accounts.Name LIKE '%*%'
 		OR Accounts.Name LIKE '')
 	AND OSGroupModel.DomainGroup LIKE '%Domain Admins%'
-GROUP BY Accounts.Name
+	{disabled}
+GROUP BY LOWER(Accounts.Name)

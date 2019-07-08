@@ -7,9 +7,12 @@ from logzero import logger
 
 class Database(object):
 
-    def __init__(self, dbfile):
+    def __init__(self, dbfile, disabled):
 
         self._dbfile = dbfile
+        self._disabledSqlQuery = ""
+        if disabled is False:
+            self._disabledSqlQuery = "AND OSAccounts.Enabled = True"
 
 
     def create_connection(self):
@@ -59,13 +62,16 @@ class Database(object):
             if scanDateTime is None:
                 raise Exception("DNA Database filename should remain unchanged. Modifications detected.")
             logger.info("Parsed scan datetime from database filename: {}".format(scanDateTime))
+            # Make replacement in SQL query
+            sqlQueryDT = sqlQuery.replace("{scanDateTime}", scanDateTime)
+            # Replace disabled section of SQL query
+            sqlQueryFinal = sqlQueryDT.replace("{disabled}", self._disabledSqlQuery)
         except Exception as e:
             logger.exception(e)
 
+        # Execute the SQL query
         if regex_flag:
-            # Execute the SQL query
             try:
-                sqlQueryDT = sqlQuery.replace("{scanDateTime}", scanDateTime)
                 whereStmt = ""
                 counter = 0
                 for regex in regex_array:
@@ -74,31 +80,15 @@ class Database(object):
                     else:
                         whereStmt += "OR Accounts.Name LIKE '%{}%' ".format(regex)
                     counter += 1
-                c.execute(sqlQueryDT.replace("{whereStmt}", whereStmt))
-                logger.info("Executed {} on SQLite3 database successfully".format(sqlQueryDT.replace("{whereStmt}", whereStmt)))
+                c.execute(sqlQueryFinal.replace("{whereStmt}", whereStmt))
+                logger.info("Executed {} on SQLite3 database successfully".format(sqlQueryFinal.replace("{whereStmt}", whereStmt)))
             except Error as e:
                 logger.exception(e)
-        # elif regex_flag == 'adm':
-        #     # Execute the SQL query
-        #     try:
-        #         sqlQueryDT = sqlQuery.replace("{scanDateTime}", scanDateTime)
-        #         whereStmt = ""
-        #         counter = 0
-        #         for regex in regex_array:
-        #             if counter == 0:
-        #                 whereStmt += "Accounts.Name LIKE '%{}%' ".format(regex)
-        #             else:
-        #                 whereStmt += "OR Accounts.Name LIKE '%{}%' ".format(regex)
-        #             counter +=  1
-        #         c.execute(sqlQueryDT.replace("{admWhereStmt}", whereStmt))
-        #         logger.info("Executed {} on SQLite3 database successfully".format(sqlQueryDT.replace("{admWhereStmt}", whereStmt)))
-        #     except Error as e:
-        #         logger.exception(e)
         else:
             # Execute the SQL query
             try:
-                c.execute(sqlQuery.replace("{scanDateTime}", scanDateTime))
-                logger.info("Executed {} on SQLite3 database successfully".format(sqlQuery.replace('{scanDateTime}', scanDateTime)))
+                c.execute(sqlQueryFinal)
+                logger.info("Executed {} on SQLite3 database successfully".format(sqlQueryFinal))
             except Error as e:
                 logger.exception(e)
 

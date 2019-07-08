@@ -21,11 +21,13 @@ def config_logger(logfile):
     # Set a minimum log level
     logzero.loglevel(logging.INFO)
 
-    # Set a logfile (all future log messages are also saved there), but disable the default stderr logging
+    # Set a logfile (all future log messages are also saved there), but disable
+    # the default stderr logging
     logzero.logfile(logfile, disableStderrLogger=True)
 
     # Set a custom formatter
-    formatter = logging.Formatter('DNAmicAnalysis - %(asctime)-15s - %(levelname)s: %(message)s');
+    formatter = logging.Formatter(
+        'DNAmicAnalysis - %(asctime)-15s - %(levelname)s: %(message)s');
     logzero.formatter(formatter)
 
 
@@ -34,20 +36,23 @@ def main(args):
 
     logger.info("Arguments received: {}".format(args))
 
-    db = Database(args.database_file)
+    db = Database(args.database_file, args.disabled)
 
     svc_array = args.svc_regex.replace(' ', '').split(',')
     #adm_array = args.adm_regex.replace(' ', '').split(',')
     #regex_array = svc_array + adm_array
 
+    ###################################
     ## Expired Domain Privileged IDs ##
+    ###################################
 
     expired_domain = db.exec_fromfile("data/sql/ExpiredDomainPrivID.sql")
     all_domain_count = db.exec_fromfile("data/sql/DomainAdminsPUCount.sql")
 
     domainMaxSorted = Metrics.domain_max(expired_domain)
     domainAverage = Metrics.domain_avg(expired_domain)
-    domainPercent = Metrics.domain_percent(expired_domain, all_domain_count, domainMaxSorted)
+    domainPercent = Metrics.domain_percent(
+        expired_domain, all_domain_count, domainMaxSorted)
 
     # If --output detected, make results verbose to console
     if args.output is True:
@@ -63,14 +68,17 @@ def main(args):
             input("Press ENTER to continue...")
         print()
 
+    #########################################
     ## Unique Expired Local Privileged IDs ##
+    #########################################
 
     expired_local = db.exec_fromfile("data/sql/UniqueExpiredLocalPrivID.sql")
     all_local_count = db.exec_fromfile("data/sql/LocalAdministratorsCount.sql")
 
     localMaxSorted = Metrics.local_max(expired_local)
     localAverage = Metrics.local_avg(expired_local)
-    localPercent = Metrics.local_percent(expired_local, all_local_count, localMaxSorted)
+    localPercent = Metrics.local_percent(
+        expired_local, all_local_count, localMaxSorted)
 
     # If --output detected, make results verbose to console
     if args.output is True:
@@ -86,7 +94,9 @@ def main(args):
             input("Press ENTER to continue...")
         print()
 
+    #################################################
     ## Expired Local Admins Total w/ Machine Names ##
+    #################################################
 
     localMaxGrouped = Metrics.local_expired_machines(localMaxSorted)
 
@@ -97,7 +107,9 @@ def main(args):
             input("Press ENTER to continue...")
         print()
 
+    ##############################
     ## Local Abandoned Accounts ##
+    ##############################
 
     abandoned_local = db.exec_fromfile("data/sql/LocalAbandonedAccounts.sql")
 
@@ -108,7 +120,9 @@ def main(args):
             input("Press ENTER to continue...")
         print()
 
+    ###############################
     ## Domain Abandoned Accounts ##
+    ###############################
 
     abandoned_domain = db.exec_fromfile("data/sql/DomainAbandonedAccounts.sql")
 
@@ -119,12 +133,15 @@ def main(args):
             input("Press ENTER to continue...")
         print()
 
+    #########################################################
     ## Accounts w/ Multiple Machine Access - By %age Tiers ##
+    #########################################################
 
     multi_machine_accts = db.exec_fromfile("data/sql/MultipleMachineAccounts.sql")
     all_machines_count = db.exec_fromfile("data/sql/TotalMachinesCount.sql")
 
-    multiMachineAccounts = Metrics.multi_machine_accts(multi_machine_accts, all_machines_count[0][0])
+    multiMachineAccounts = Metrics.multi_machine_accts(
+        multi_machine_accts, all_machines_count[0][0])
 
     # If --output detected, make results verbose to console
     if args.output is True:
@@ -133,26 +150,35 @@ def main(args):
             input("Press ENTER to continue...")
         print()
 
+    ##########################
     ## Unique Domain Admins ##
+    ##########################
 
     unique_domain_admins = db.exec_fromfile("data/sql/UniqueDomainAdmins.sql")
-    unique_svcacct_domain_admins = db.exec_fromfile("data/sql/UniqueSvcDomainAdmins.sql", True, svc_array)
-    unique_svcacct_domain_admins2 = db.exec_fromfile("data/sql/UniqueSvcDomainAdmins2.sql", True, svc_array)
+    unique_svcacct_domain_admins = db.exec_fromfile(
+        "data/sql/UniqueSvcDomainAdmins.sql", True, svc_array)
+    unique_svcacct_domain_admins2 = db.exec_fromfile(
+        "data/sql/UniqueSvcDomainAdmins2.sql", True, svc_array)
 
     # If --output detected, make results verbose to console
     if args.output is True:
-        Tests.unique_domain_admins(unique_domain_admins, (unique_svcacct_domain_admins+unique_svcacct_domain_admins2))
+        Tests.unique_domain_admins(
+            unique_domain_admins, (
+                unique_svcacct_domain_admins+unique_svcacct_domain_admins2))
         if args.test is False:
             input("Press ENTER to continue...")
         print()
 
+    ##########################################
     ## Unique Expired Domain Privileged IDs ##
+    ##########################################
 
     unique_expired_domain = db.exec_fromfile("data/sql/UniqueExpiredDomainPrivID.sql")
 
     uniqueDomainMaxSorted = Metrics.unique_domain_max(unique_expired_domain)
     uniqueDomainAverage = Metrics.unique_domain_avg(unique_expired_domain)
-    uniqueDomainPercent = Metrics.unique_domain_percent(unique_expired_domain, len(unique_domain_admins), uniqueDomainMaxSorted)
+    uniqueDomainPercent = Metrics.unique_domain_percent(
+        unique_expired_domain, len(unique_domain_admins), uniqueDomainMaxSorted)
 
     # If --output detected, make results verbose to console
     if args.output is True:
@@ -168,9 +194,12 @@ def main(args):
             input("Press ENTER to continue...")
         print()
 
+    ########################################
     ## Personal Accounts Running Services ##
+    ########################################
 
-    personalAccountsRunningSvcs = db.exec_fromfile('data/sql/PersonalAccountsRunningSvcs.sql', True, svc_array)
+    personalAccountsRunningSvcs = db.exec_fromfile(
+        'data/sql/PersonalAccountsRunningSvcs.sql', True, svc_array)
 
     # If --output detected, make results verbose to console
     if args.output is True:
@@ -188,8 +217,11 @@ if __name__ == "__main__":
     config_logger(LOGFILE)
     logger.info("Application initialized successfully")
 
+    ###TODO Add --disabled as arg with default of false
+
     # Create argument parsing object
-    parser = argparse.ArgumentParser(description="CyberArk DNA report generation utility")
+    parser = argparse.ArgumentParser(
+        description="CyberArk DNA report generation utility")
 
     # Create "required optional" argument group
     req_grp = parser.add_argument_group(title='required optional')
@@ -215,6 +247,15 @@ if __name__ == "__main__":
         dest="output",
         help="output the results to the console",
         default=True
+    )
+
+    # Optional argument flag for including disabled accounts in results
+    parser.add_argument(
+        "--disabled",
+        action="store_true",
+        dest="disabled",
+        help="include disabled accounts in results returned",
+        default=False
     )
 
     # Optional argument flag for testing
