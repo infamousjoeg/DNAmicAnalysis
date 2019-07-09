@@ -12,7 +12,7 @@ class Database(object):
         self._dbfile = dbfile
         self._disabledSqlQuery = ""
         if disabled is False:
-            self._disabledSqlQuery = "AND OSAccounts.Enabled = True"
+            self._disabledSqlQuery = "AND OSAccounts.Enabled = 1"
 
 
     def create_connection(self):

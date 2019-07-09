@@ -106,3 +106,4 @@ data/DNA_*.db
 data/report/*
 img/*.mov
 templates/
+.vagrant/
