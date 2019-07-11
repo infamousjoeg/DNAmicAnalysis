@@ -6,8 +6,9 @@ FROM Accounts
 		ON Accounts.Machine_id = Machines.Id
 	LEFT OUTER JOIN OSAccounts
 		ON Accounts.Id = OSAccounts.AccountBase_id
-WHERE NOT (Accounts.Name = ''
-	OR Accounts.Name LIKE '%*%')
+WHERE Machines.ProductType = 'Server'
+	AND NOT (Accounts.Name = ''
+		OR Accounts.Name LIKE '%*%')
 	AND NOT ({whereStmt})
 	AND (OSGroupModel.Name = 'Administrators'
 		OR OSGroupModel.Name = 'Power Users')

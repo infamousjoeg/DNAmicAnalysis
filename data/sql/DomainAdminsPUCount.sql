@@ -1,4 +1,4 @@
-SELECT DISTINCT Accounts.Name
+SELECT DISTINCT LOWER(Accounts.Name)
 FROM Accounts
 	LEFT JOIN OSAccounts
 		ON Accounts.Id = OSAccounts.AccountBase_id

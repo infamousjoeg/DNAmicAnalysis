@@ -9,7 +9,7 @@ def domain_max(sqlresults):
 
 
 def domain_avg(sqlresults):
-    domain_avg_values = [x[3] for x in sqlresults]
+    domain_avg_values = [x[2] for x in sqlresults]
     domain_avg_overall = sum(domain_avg_values) / len(domain_avg_values)
     logger.info("Calculated Overall Average Password Age for Expired Domain \
         Accounts using: {} / {}".format(
@@ -35,7 +35,7 @@ def local_max(sqlresults):
 
 
 def local_avg(sqlresults):
-    local_avg_values = [x[4] for x in sqlresults]
+    local_avg_values = [x[3] for x in sqlresults]
     local_avg_overall = sum(local_avg_values) / len(local_avg_values)
     logger.info("Calculated Overall Average Password Age for Expired Local \
         Accounts using: {} / {}".format(

@@ -39,8 +39,8 @@ def main(args):
     db = Database(args.database_file, args.disabled)
 
     svc_array = args.svc_regex.replace(' ', '').split(',')
-    #adm_array = args.adm_regex.replace(' ', '').split(',')
-    #regex_array = svc_array + adm_array
+    adm_array = args.adm_regex.replace(' ', '').split(',')
+    regex_array = svc_array + adm_array
 
     ###################################
     ## Expired Domain Privileged IDs ##
@@ -209,6 +209,9 @@ def main(args):
             input("Press ENTER to continue...")
         print()
 
+##########
+## Main ##
+##########
 
 if __name__ == "__main__":
     ## This is executed when run from the command line ##
@@ -216,8 +219,6 @@ if __name__ == "__main__":
     # Configure logging
     config_logger(LOGFILE)
     logger.info("Application initialized successfully")
-
-    ###TODO Add --disabled as arg with default of false
 
     # Create argument parsing object
     parser = argparse.ArgumentParser(
@@ -236,7 +237,14 @@ if __name__ == "__main__":
         "--svc-regex",
         dest="svc_regex",
         help="comma-delimited list of service account naming convention regex",
-        default=True,
+        required=True
+    )
+
+    # Required argument flag for admin account regex
+    req_grp.add_argument(
+        "--adm-regex",
+        dest="adm_regex",
+        help="comma-delimited list of admin account naming convention regex",
         required=True
     )
 

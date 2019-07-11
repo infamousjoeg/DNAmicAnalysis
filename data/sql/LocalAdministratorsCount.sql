@@ -1,4 +1,4 @@
-SELECT DISTINCT Accounts.Name
+SELECT Accounts.Name
 FROM Accounts
 	LEFT JOIN OSAccounts
 		ON Accounts.Id = OSAccounts.AccountBase_id
@@ -9,5 +9,5 @@ WHERE Accounts.AccountType = 'Local'
 	AND NOT (Accounts.Name LIKE '%*%'
 		OR Accounts.Name LIKE '')
 	{disabled}
-GROUP BY LOWER(Accounts.Name)
+GROUP BY Accounts.Id
 ORDER BY Accounts.Name ASC
