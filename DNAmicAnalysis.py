@@ -26,8 +26,7 @@ def config_logger(logfile):
     logzero.logfile(logfile, disableStderrLogger=True)
 
     # Set a custom formatter
-    formatter = logging.Formatter(
-        'DNAmicAnalysis - %(asctime)-15s - %(levelname)s: %(message)s');
+    formatter = logging.Formatter('DNAmicAnalysis - %(asctime)-15s - %(levelname)s: %(message)s');
     logzero.formatter(formatter)
 
 
@@ -51,8 +50,7 @@ def main(args):
 
     domainMaxSorted = Metrics.domain_max(expired_domain)
     domainAverage = Metrics.domain_avg(expired_domain)
-    domainPercent = Metrics.domain_percent(
-        expired_domain, all_domain_count, domainMaxSorted)
+    domainPercent = Metrics.domain_percent(expired_domain, all_domain_count, domainMaxSorted)
 
     # If --output detected, make results verbose to console
     if args.output is True:
@@ -77,8 +75,7 @@ def main(args):
 
     localMaxSorted = Metrics.local_max(expired_local)
     localAverage = Metrics.local_avg(expired_local)
-    localPercent = Metrics.local_percent(
-        expired_local, all_local_count, localMaxSorted)
+    localPercent = Metrics.local_percent(expired_local, all_local_count, localMaxSorted)
 
     # If --output detected, make results verbose to console
     if args.output is True:
@@ -140,8 +137,7 @@ def main(args):
     multi_machine_accts = db.exec_fromfile("data/sql/MultipleMachineAccounts.sql")
     all_machines_count = db.exec_fromfile("data/sql/TotalMachinesCount.sql")
 
-    multiMachineAccounts = Metrics.multi_machine_accts(
-        multi_machine_accts, all_machines_count[0][0])
+    multiMachineAccounts = Metrics.multi_machine_accts(multi_machine_accts, all_machines_count[0][0])
 
     # If --output detected, make results verbose to console
     if args.output is True:
@@ -155,16 +151,13 @@ def main(args):
     ##########################
 
     unique_domain_admins = db.exec_fromfile("data/sql/UniqueDomainAdmins.sql")
-    unique_svcacct_domain_admins = db.exec_fromfile(
-        "data/sql/UniqueSvcDomainAdmins.sql", True, svc_array)
-    unique_svcacct_domain_admins2 = db.exec_fromfile(
-        "data/sql/UniqueSvcDomainAdmins2.sql", True, svc_array)
+    unique_svcacct_domain_admins = db.exec_fromfile("data/sql/UniqueSvcDomainAdmins.sql", True, svc_array)
+    unique_svcacct_domain_admins2 = db.exec_fromfile("data/sql/UniqueSvcDomainAdmins2.sql", True, svc_array)
 
     # If --output detected, make results verbose to console
     if args.output is True:
         Tests.unique_domain_admins(
-            unique_domain_admins, (
-                unique_svcacct_domain_admins+unique_svcacct_domain_admins2))
+            unique_domain_admins, (unique_svcacct_domain_admins+unique_svcacct_domain_admins2))
         if args.test is False:
             input("Press ENTER to continue...")
         print()
@@ -177,8 +170,7 @@ def main(args):
 
     uniqueDomainMaxSorted = Metrics.unique_domain_max(unique_expired_domain)
     uniqueDomainAverage = Metrics.unique_domain_avg(unique_expired_domain)
-    uniqueDomainPercent = Metrics.unique_domain_percent(
-        unique_expired_domain, len(unique_domain_admins), uniqueDomainMaxSorted)
+    uniqueDomainPercent = Metrics.unique_domain_percent(unique_expired_domain, len(unique_domain_admins), uniqueDomainMaxSorted)
 
     # If --output detected, make results verbose to console
     if args.output is True:
@@ -198,13 +190,26 @@ def main(args):
     ## Personal Accounts Running Services ##
     ########################################
 
-    personalAccountsRunningSvcs = db.exec_fromfile(
-        'data/sql/PersonalAccountsRunningSvcs.sql', True, svc_array)
+    personalAccountsRunningSvcs = db.exec_fromfile("data/sql/PersonalAccountsRunningSvcs.sql", True, svc_array)
 
     # If --output detected, make results verbose to console
     if args.output is True:
         Tests.personal_accts_running_svcs(
             len(personalAccountsRunningSvcs))
+        if args.test is False:
+            input("Press ENTER to continue...")
+        print()
+
+    #######################################################
+    ## Non-adm Accounts w/ Local Admin Rights on Systems ##
+    #######################################################
+
+    nonAdmLocalAdmins = db.exec_fromfile("data/sql/NonAdmLocalAdminAccounts.sql", True, adm_array)
+
+    # If --output detected, make results verbose to console
+    if args.output is True:
+        Tests.non_admin_with_local_admin(
+            len(nonAdmLocalAdmins))
         if args.test is False:
             input("Press ENTER to continue...")
         print()

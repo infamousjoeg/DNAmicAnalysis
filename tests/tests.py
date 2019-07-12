@@ -225,3 +225,16 @@ class Tests(object):
 
         print(Style.RESET_ALL)
         deinit()
+
+
+    def non_admin_with_local_admin(total):
+        """ Personal Accounts Running Services """
+
+        print(Fore.CYAN + "====================================================")
+        print(Fore.RED + "Non-Admin Accounts w/ Local Admin to Systems")
+        print(Fore.CYAN + "----------------------------------------------------")
+        print(Fore.YELLOW + "Total Non-Admin Accounts: {}".format(total))
+        print(Fore.CYAN + "====================================================")
+
+        print(Style.RESET_ALL)
+        deinit()
