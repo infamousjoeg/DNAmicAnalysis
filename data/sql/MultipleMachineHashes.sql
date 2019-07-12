@@ -15,7 +15,6 @@ WHERE NOT (Accounts.Name LIKE '%*%'
 		OR Accounts.Name LIKE '')
 	AND WindowsAccounts.CausesVulnerabilityOnXOfMachines > 0
 	AND PrivilegedCount > 0
-	AND MachineCount >= 100
 	{disabled}
 GROUP BY LOWER(Accounts.Name)
 ORDER BY MachineCount DESC
