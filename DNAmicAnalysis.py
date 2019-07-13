@@ -239,6 +239,26 @@ def main(args):
             input("Press ENTER to continue...")
         print()
 
+    ####################
+    ## Clear Text IDs ##
+    ####################
+
+    clear_text_ids = db.exec_fromfile("data/sql/ClearTextIDs.sql")
+
+    clear_text_ids_count = 0
+    if clear_text_ids:
+        for x in range(len(clear_text_ids)):
+            clear_text_ids_count += clear_text_ids[x][1]
+
+    # If --output detected, make results verbose to console
+    if args.output is True:
+        Tests.clear_text_ids(
+            clear_text_ids_count,
+            clear_text_ids)
+        if args.test is False:
+            input("Press ENTER to continue...")
+        print()
+
 ##########
 ## Main ##
 ##########

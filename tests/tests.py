@@ -256,3 +256,24 @@ class Tests(object):
 
         print(Style.RESET_ALL)
         deinit()
+
+
+    def clear_text_ids(sqlcount, sqlresults):
+        """ Unique Expired Domain Admins """
+
+        print(Fore.CYAN + "====================================================")
+        print(Fore.RED + "Clear Text IDs")
+        print(Fore.CYAN + "----------------------------------------------------")
+        if sqlcount > 0:
+            for x in range(len(sqlresults)):
+                print(Fore.YELLOW + "Username: {}".format(sqlresults[x][0]))
+                print(Fore.YELLOW + "Total Found: {}".format(sqlresults[x][1]))
+                print(Fore.YELLOW + "Password Length: {}".format(sqlresults[x][2]))
+                print(Fore.CYAN + "----------------------------------------------------")
+            print(Fore.YELLOW + "Total Found Overall: {}".format(sqlcount))
+        else:
+            print(Fore.YELLOW + "No Clear Text IDs found.")
+        print(Fore.CYAN + "====================================================")
+
+        print(Style.RESET_ALL)
+        deinit()
