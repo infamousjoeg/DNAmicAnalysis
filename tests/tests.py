@@ -8,8 +8,6 @@ class Tests(object):
 
 
     def domain_expired(max_sorted,avg_sum,avg_len,avg_overall,percent_len,all_len,percent_overall):
-        """ Expired Domain Privileged IDs """
-
         print(Fore.CYAN + "====================================================")
         print(Fore.RED + "Expired Domain Privileged IDs")
         print(Fore.CYAN + "----------------------------------------------------")
@@ -26,8 +24,6 @@ class Tests(object):
 
 
     def local_expired(max_sorted,avg_sum,avg_len,avg_overall,percent_len,all_len,percent_overall):
-        """ Unique Expired Local Privileged IDs """
-
         print(Fore.CYAN + "====================================================")
         print(Fore.RED + "Unique Expired Local Privileged IDs")
         print(Fore.CYAN + "----------------------------------------------------")
@@ -44,10 +40,8 @@ class Tests(object):
 
 
     def local_expired_machines(max_grouped,count_accounts):
-        """ Expired Local Privileged IDs """
-
         print(Fore.CYAN + "====================================================")
-        print(Fore.RED + "Expired Local Admins Total w/ Machine Names" + Fore.YELLOW)
+        print(Fore.RED + "Expired Local Admins Total w/ Machine Addresses" + Fore.YELLOW)
 
         for value in max_grouped.items():
             for key in value:
@@ -57,7 +51,7 @@ class Tests(object):
                             print('Username: {}'.format(username))
                 else:
                     print(Fore.CYAN + "----------------------------------------------------" + Fore.YELLOW)
-                    print('Machine Name: {}'.format(key))
+                    print('Machine Address: {}'.format(key))
 
         print(Fore.CYAN + "----------------------------------------------------")
         print(Fore.YELLOW + "Total Local Accounts Non-Compliant: {} / {}".format(len(max_grouped),count_accounts))
@@ -68,8 +62,6 @@ class Tests(object):
 
 
     def local_abandoned(abandoned_accounts, count_accounts):
-        """ Local Abandoned / Leftover Accounts """
-
         print(Fore.CYAN + "====================================================")
         print(Fore.RED + "Local Abandoned / Leftover Accounts")
         print(Fore.CYAN + "----------------------------------------------------")
@@ -81,8 +73,6 @@ class Tests(object):
 
 
     def domain_abandoned(abandoned_accounts, count_accounts):
-        """ Domain Abandoned / Leftover Accounts """
-
         print(Fore.CYAN + "====================================================")
         print(Fore.RED + "Domain Abandoned / Leftover Accounts")
         print(Fore.CYAN + "----------------------------------------------------")
@@ -94,8 +84,6 @@ class Tests(object):
 
 
     def multi_machine_accts(multi_machine_accts):
-        """ Accounts with Multiple Machine Access """
-
         print(Fore.CYAN + "====================================================")
         print(Fore.RED + "Accounts with Multiple Machine Access")
         print(Fore.CYAN + "----------------------------------------------------")
@@ -182,8 +170,6 @@ class Tests(object):
 
 
     def unique_domain_admins(sqlresults, svc_sqlresults):
-        """ Unique Domain Admins """
-
         print(Fore.CYAN + "====================================================")
         print(Fore.RED + "Unique Domain Admins")
         print(Fore.CYAN + "----------------------------------------------------")
@@ -197,8 +183,6 @@ class Tests(object):
 
 
     def unique_domain_expired(max_sorted,avg_sum,avg_len,avg_overall,percent_len,all_len,percent_overall):
-        """ Unique Expired Domain Admins """
-
         print(Fore.CYAN + "====================================================")
         print(Fore.RED + "Unique Expired Domain Admins")
         print(Fore.CYAN + "----------------------------------------------------")
@@ -215,8 +199,6 @@ class Tests(object):
 
 
     def personal_accts_running_svcs(total):
-        """ Personal Accounts Running Services """
-
         print(Fore.CYAN + "====================================================")
         print(Fore.RED + "Personal Accounts Running Services")
         print(Fore.CYAN + "----------------------------------------------------")
@@ -228,8 +210,6 @@ class Tests(object):
 
 
     def non_admin_with_local_admin(total):
-        """ Personal Accounts Running Services """
-
         print(Fore.CYAN + "====================================================")
         print(Fore.RED + "Non-Admin Accounts w/ Local Admin to Systems")
         print(Fore.CYAN + "----------------------------------------------------")
@@ -241,8 +221,6 @@ class Tests(object):
 
 
     def unique_expired_svcs(max_sorted,avg_sum,avg_len,avg_overall,percent_len,all_len,percent_overall):
-        """ Unique Expired Domain Admins """
-
         print(Fore.CYAN + "====================================================")
         print(Fore.RED + "Unique Expired Services")
         print(Fore.CYAN + "----------------------------------------------------")
@@ -259,8 +237,6 @@ class Tests(object):
 
 
     def clear_text_ids(sqlcount, sqlresults):
-        """ Unique Expired Domain Admins """
-
         print(Fore.CYAN + "====================================================")
         print(Fore.RED + "Clear Text IDs")
         print(Fore.CYAN + "----------------------------------------------------")
@@ -273,6 +249,26 @@ class Tests(object):
             print(Fore.YELLOW + "Total Found Overall: {}".format(sqlcount))
         else:
             print(Fore.YELLOW + "No Clear Text IDs found.")
+        print(Fore.CYAN + "====================================================")
+
+        print(Style.RESET_ALL)
+        deinit()
+
+
+    def apps_clear_text_passwords(sqlresults):
+        print(Fore.CYAN + "====================================================")
+        print(Fore.RED + "Applications with Clear Text Passwords")
+        print(Fore.CYAN + "----------------------------------------------------")
+        if len(sqlresults) > 0:
+            app_names = []
+            for x in range(len(sqlresults)):
+                print(Fore.YELLOW + "Application Name: {}".format(sqlresults[x][0]))
+                print(Fore.YELLOW + "Machine Address: {}".format(sqlresults[x][1]))
+                print(Fore.CYAN + "----------------------------------------------------")
+                app_names.append(sqlresults[x][0])
+            print(Fore.YELLOW + "Total Unique Found Overall: {}".format(len(set(app_names))))
+        else:
+            print(Fore.YELLOW + "No Applications with Clear Text Passwords found.")
         print(Fore.CYAN + "====================================================")
 
         print(Style.RESET_ALL)

@@ -259,6 +259,20 @@ def main(args):
             input("Press ENTER to continue...")
         print()
 
+    ##########################################
+    ## Applications w/ Clear Text Passwords ##
+    ##########################################
+
+    unique_clear_text_apps = db.exec_fromfile("data/sql/UniqueClearTextApps.sql")
+
+    # If --output detected, make results verbose to console
+    if args.output is True:
+        Tests.apps_clear_text_passwords(
+            unique_clear_text_apps)
+        if args.test is False:
+            input("Press ENTER to continue...")
+        print()
+
 ##########
 ## Main ##
 ##########
