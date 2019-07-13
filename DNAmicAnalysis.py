@@ -190,12 +190,12 @@ def main(args):
     ## Personal Accounts Running Services ##
     ########################################
 
-    personalAccountsRunningSvcs = db.exec_fromfile("data/sql/PersonalAccountsRunningSvcs.sql", True, svc_array)
+    personal_accts_running_svcs = db.exec_fromfile("data/sql/PersonalAccountsRunningSvcs.sql", True, svc_array)
 
     # If --output detected, make results verbose to console
     if args.output is True:
         Tests.personal_accts_running_svcs(
-            len(personalAccountsRunningSvcs))
+            len(personal_accts_running_svcs))
         if args.test is False:
             input("Press ENTER to continue...")
         print()
@@ -204,12 +204,37 @@ def main(args):
     ## Non-adm Accounts w/ Local Admin Rights on Systems ##
     #######################################################
 
-    nonAdmLocalAdmins = db.exec_fromfile("data/sql/NonAdmLocalAdminAccounts.sql", True, adm_array)
+    non_admin_with_local_admin = db.exec_fromfile("data/sql/NonAdmLocalAdminAccounts.sql", True, adm_array)
 
     # If --output detected, make results verbose to console
     if args.output is True:
         Tests.non_admin_with_local_admin(
-            len(nonAdmLocalAdmins))
+            len(non_admin_with_local_admin))
+        if args.test is False:
+            input("Press ENTER to continue...")
+        print()
+
+    #############################
+    ## Unique Expired Services ##
+    #############################
+
+    unique_expired_svcs = db.exec_fromfile("data/sql/UniqueExpiredServiceAccounts.sql")
+    svc_accts_count = db.exec_fromfile("data/sql/ServiceAccountsCount.sql")
+
+    uniqueSvcMaxSorted = Metrics.unique_svc_max(unique_expired_svcs)
+    uniqueSvcAverage = Metrics.unique_svc_avg(unique_expired_svcs)
+    uniqueSvcPercent = Metrics.unique_svc_percent(unique_expired_svcs, len(svc_accts_count), len(uniqueSvcMaxSorted))
+
+    # If --output detected, make results verbose to console
+    if args.output is True:
+        Tests.unique_expired_svcs(
+            uniqueSvcMaxSorted,
+            uniqueSvcAverage[0],
+            uniqueSvcAverage[1],
+            uniqueSvcAverage[2],
+            uniqueSvcPercent[0],
+            uniqueSvcPercent[1],
+            uniqueSvcPercent[2])
         if args.test is False:
             input("Press ENTER to continue...")
         print()

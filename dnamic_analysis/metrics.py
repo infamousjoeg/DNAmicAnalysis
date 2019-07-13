@@ -123,3 +123,27 @@ def unique_domain_percent(sqlresults, sqlcount, unique_domain_max_sorted):
             len(unique_domain_max_sorted),
             sqlcount))
     return len(unique_domain_max_sorted), sqlcount, unique_domain_percent_overall
+
+def unique_svc_max(sqlresults):
+    unique_svc_max_sorted = sorted(sqlresults,
+                                key=lambda sqlresults: sqlresults[2],
+                                reverse=True)
+    return unique_svc_max_sorted
+
+
+def unique_svc_avg(sqlresults):
+    unique_svc_avg_values = [x[2] for x in sqlresults]
+    unique_svc_avg_overall = sum(unique_svc_avg_values) / len(unique_svc_avg_values)
+    logger.info("Calculated Overall Average Password Age for Unique Expired Services \
+        using: {} / {}".format(
+            sum(unique_svc_avg_values),
+            len(unique_svc_avg_values)))
+    return sum(unique_svc_avg_values), len(unique_svc_avg_values), unique_svc_avg_overall
+
+
+def unique_svc_percent(sqlresults, sqlcount, unique_svc_count):
+    unique_svc_percent_overall = unique_svc_count / sqlcount
+    logger.info("Calulated Percentage Overall Expired Service using: {} / {}".format(
+            unique_svc_count,
+            sqlcount))
+    return unique_svc_count, sqlcount, unique_svc_percent_overall
