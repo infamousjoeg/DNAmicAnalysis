@@ -273,3 +273,14 @@ class Tests(object):
 
         print(Style.RESET_ALL)
         deinit()
+
+
+    def risky_spns(riskycount, sqlcount):
+        print(Fore.CYAN + "====================================================")
+        print(Fore.RED + "Risky Expired Service Principal Names (SPN)")
+        print(Fore.CYAN + "----------------------------------------------------")
+        print(Fore.YELLOW + "Total Unique Expired over Total Overall: {} / {}".format(riskycount, sqlcount))
+        print(Fore.CYAN + "====================================================")
+
+        print(Style.RESET_ALL)
+        deinit()

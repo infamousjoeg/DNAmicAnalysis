@@ -273,6 +273,22 @@ def main(args):
             input("Press ENTER to continue...")
         print()
 
+    #################################################
+    ## Risky Expired Service Principal Names (SPN) ##
+    #################################################
+
+    risky_spns = db.exec_fromfile("data/sql/UniqueExpiredSPNAccounts.sql")
+    spns_count = db.exec_fromfile("data/sql/TotalSPNs.sql")
+
+    # If --output detected, make results verbose to console
+    if args.output is True:
+        Tests.risky_spns(
+            len(risky_spns),
+            spns_count[0][0])
+        if args.test is False:
+            input("Press ENTER to continue...")
+        print()
+
 ##########
 ## Main ##
 ##########
