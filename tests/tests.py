@@ -284,3 +284,103 @@ class Tests(object):
 
         print(Style.RESET_ALL)
         deinit()
+
+
+    def hashes_found_on_multiple(uniquecount, totalcount, totalsrv, totalwks):
+        print(Fore.CYAN + "====================================================")
+        print(Fore.RED + "Hashes Found on Multiple Machines")
+        print(Fore.CYAN + "----------------------------------------------------")
+        print(Fore.YELLOW + "Total Unique Accounts over Total Found Overall: {} / {}".format(uniquecount, totalcount))
+        print(Fore.CYAN + "----------------------------------------------------")
+        print(Fore.YELLOW + "Total Workstations Found: {}".format(totalwks))
+        print(Fore.YELLOW + "Total Servers Found: {}".format(totalsrv))
+        print(Fore.CYAN + "====================================================")
+
+        print(Style.RESET_ALL)
+        deinit()
+
+
+    def multi_machine_hashes(multi_machine_hashes):
+        print(Fore.CYAN + "====================================================")
+        print(Fore.RED + "Accounts with Multiple Machine Access")
+        print(Fore.CYAN + "----------------------------------------------------")
+        if len(multi_machine_hashes[0]) != 0:
+            print(Fore.YELLOW + "> 95% Access")
+            print(Fore.CYAN + "----------------------------------------------------" + Fore.YELLOW)
+            for username in multi_machine_hashes[0]:
+                print("Username: {}".format(username))
+            print("TOTAL ACCOUNTS: {}".format(len(multi_machine_hashes[0])))
+            print(Fore.CYAN + "====================================================")
+        if len(multi_machine_hashes[1]) != 0:
+            print(Fore.YELLOW + "90-95% Access")
+            print(Fore.CYAN + "----------------------------------------------------" + Fore.YELLOW)
+            for username in multi_machine_hashes[1]:
+                print("Username: {}".format(username))
+            print("TOTAL ACCOUNTS: {}".format(len(multi_machine_hashes[1])))
+            print(Fore.CYAN + "====================================================")
+        if len(multi_machine_hashes[2]) != 0:
+            print(Fore.YELLOW + "80-90% Access")
+            print(Fore.CYAN + "----------------------------------------------------" + Fore.YELLOW)
+            for username in multi_machine_hashes[2]:
+                print("Username: {}".format(username))
+            print("TOTAL ACCOUNTS: {}".format(len(multi_machine_hashes[2])))
+            print(Fore.CYAN + "====================================================")
+        if len(multi_machine_hashes[3]) != 0:
+            print(Fore.YELLOW + "70-80% Access")
+            print(Fore.CYAN + "----------------------------------------------------" + Fore.YELLOW)
+            for username in multi_machine_hashes[3]:
+                print("Username: {}".format(username))
+            print("TOTAL ACCOUNTS: {}".format(len(multi_machine_hashes[3])))
+            print(Fore.CYAN + "====================================================")
+        if len(multi_machine_hashes[4]) != 0:
+            print(Fore.YELLOW + "60-70% Access")
+            print(Fore.CYAN + "----------------------------------------------------" + Fore.YELLOW)
+            for username in multi_machine_hashes[4]:
+                print("Username: {}".format(username))
+            print("TOTAL ACCOUNTS: {}".format(len(multi_machine_hashes[4])))
+            print(Fore.CYAN + "====================================================")
+        if len(multi_machine_hashes[5]) != 0:
+            print(Fore.YELLOW + "50-60% Access")
+            print(Fore.CYAN + "----------------------------------------------------" + Fore.YELLOW)
+            for username in multi_machine_hashes[5]:
+                print("Username: {}".format(username))
+            print("TOTAL ACCOUNTS: {}".format(len(multi_machine_hashes[5])))
+            print(Fore.CYAN + "====================================================")
+        if len(multi_machine_hashes[6]) != 0:
+            print(Fore.YELLOW + "40-50% Access")
+            print(Fore.CYAN + "----------------------------------------------------" + Fore.YELLOW)
+            for username in multi_machine_hashes[6]:
+                print("Username: {}".format(username))
+            print("TOTAL ACCOUNTS: {}".format(len(multi_machine_hashes[6])))
+            print(Fore.CYAN + "====================================================")
+        if len(multi_machine_hashes[7]) != 0:
+            print(Fore.YELLOW + "30-40% Access")
+            print(Fore.CYAN + "----------------------------------------------------" + Fore.YELLOW)
+            for username in multi_machine_hashes[7]:
+                print("Username: {}".format(username))
+            print("TOTAL ACCOUNTS: {}".format(len(multi_machine_hashes[7])))
+            print(Fore.CYAN + "====================================================")
+        if len(multi_machine_hashes[8]) != 0:
+            print(Fore.YELLOW + "20-30% Access")
+            print(Fore.CYAN + "----------------------------------------------------" + Fore.YELLOW)
+            for username in multi_machine_hashes[8]:
+                print("Username: {}".format(username))
+            print("TOTAL ACCOUNTS: {}".format(len(multi_machine_hashes[8])))
+            print(Fore.CYAN + "====================================================")
+        if len(multi_machine_hashes[9]) != 0:
+            print(Fore.YELLOW + "10-20% Access")
+            print(Fore.CYAN + "----------------------------------------------------" + Fore.YELLOW)
+            for username in multi_machine_hashes[9]:
+                print("Username: {}".format(username))
+            print("TOTAL ACCOUNTS: {}".format(len(multi_machine_hashehs[9])))
+            print(Fore.CYAN + "====================================================")
+        if len(multi_machine_hashes[10]) != 0:
+            print(Fore.YELLOW + "< 10% Access")
+            print(Fore.CYAN + "----------------------------------------------------" + Fore.YELLOW)
+            for username in multi_machine_hashes[10]:
+                print("Username: {}".format(username))
+            print("TOTAL ACCOUNTS: {}".format(len(multi_machine_hashes[10])))
+            print(Fore.CYAN + "====================================================")
+
+        print(Style.RESET_ALL)
+        deinit()

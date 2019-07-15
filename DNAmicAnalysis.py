@@ -289,6 +289,49 @@ def main(args):
             input("Press ENTER to continue...")
         print()
 
+    #######################################
+    ## Hashes Found on Multiple Machines ##
+    #######################################
+
+    hashes_found_on_multiple = db.exec_fromfile("data/sql/HashesFoundOnMultiple.sql")
+    total_hash_srv = 0
+    total_hash_wks = 0
+    total_hash_name = []
+
+    if hashes_found_on_multiple:
+        for x in range(len(hashes_found_on_multiple)):
+            total_hash_srv += hashes_found_on_multiple[x][4]
+            total_hash_wks += hashes_found_on_multiple[x][3]
+            total_hash_name.append(hashes_found_on_multiple[x][0])
+        
+        unique_hash_name = set(total_hash_name)
+
+    # If --output detected, make results verbose to console
+    if args.output is True:
+        Tests.hashes_found_on_multiple(
+            len(unique_hash_name),
+            len(total_hash_name),
+            total_hash_srv,
+            total_hash_wks)
+        if args.test is False:
+            input("Press ENTER to continue...")
+        print()
+
+    #######################################################
+    ## Hashes w/ Multiple Machine Access - By %age Tiers ##
+    #######################################################
+
+    multi_machine_hashes = db.exec_fromfile("data/sql/MultipleMachineHashes.sql")
+
+    multiMachineHashes = Metrics.multi_machine_hashes(multi_machine_hashes, all_machines_count[0][0])
+
+    # If --output detected, make results verbose to console
+    if args.output is True:
+        Tests.multi_machine_accts(multiMachineAccounts)
+        if args.test is False:
+            input("Press ENTER to continue...")
+        print()
+
 ##########
 ## Main ##
 ##########

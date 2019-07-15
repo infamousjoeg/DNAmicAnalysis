@@ -147,3 +147,35 @@ def unique_svc_percent(sqlresults, sqlcount, unique_svc_count):
             unique_svc_count,
             sqlcount))
     return unique_svc_count, sqlcount, unique_svc_percent_overall
+
+
+def multi_machine_hashes(sqlresults, sqlcount):
+    percent95 = []; percent90 = []; percent80 = []; percent70 = []; percent60 = []
+    percent50 = []; percent40 = []; percent30 = []; percent20 = []; percent10 = []
+    percent0 = []
+    for username in sqlresults:
+        if (username[1] / sqlcount) >= 0.95:
+            percent95.append(username[0])
+        if (username[1] / sqlcount) >= 0.90 and (username[1] / sqlcount) < 0.95:
+            percent90.append(username[0])
+        if (username[1] / sqlcount) >= 0.80 and (username[1] / sqlcount) < 0.90:
+            percent80.append(username[0])
+        if (username[1] / sqlcount) >= 0.70 and (username[1] / sqlcount) < 0.80:
+            percent70.append(username[0])
+        if (username[1] / sqlcount) >= 0.60 and (username[1] / sqlcount) < 0.70:
+            percent60.append(username[0])
+        if (username[1] / sqlcount) >= 0.50 and (username[1] / sqlcount) < 0.60:
+            percent50.append(username[0])
+        if (username[1] / sqlcount) >= 0.40 and (username[1] / sqlcount) < 0.50:
+            percent40.append(username[0])
+        if (username[1] / sqlcount) >= 0.30 and (username[1] / sqlcount) < 0.40:
+            percent30.append(username[0])
+        if (username[1] / sqlcount) >= 0.20 and (username[1] / sqlcount) < 0.30:
+            percent20.append(username[0])
+        if (username[1] / sqlcount) >= 0.10 and (username[1] / sqlcount) < 0.20:
+            percent10.append(username[0])
+        if (username[1] / sqlcount) < 0.10:
+            percent0.append(username[0])
+    return percent95, percent90, percent80, percent70, \
+        percent60, percent50, percent40, percent30, \
+        percent20, percent10, percent0
