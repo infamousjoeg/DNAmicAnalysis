@@ -204,7 +204,7 @@ def main(args):
     ## Non-adm Accounts w/ Local Admin Rights on Systems ##
     #######################################################
 
-    non_admin_with_local_admin = db.exec_fromfile("data/sql/NonAdmLocalAdminAccounts.sql", True, adm_array)
+    non_admin_with_local_admin = db.exec_fromfile("data/sql/NonAdmLocalAdminAccounts.sql", True, regex_array)
 
     # If --output detected, make results verbose to console
     if args.output is True:
