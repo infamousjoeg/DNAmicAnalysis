@@ -4,6 +4,18 @@
 
 Automation for CyberArk's Discovery & Audit (DNA) reports.
 
+## About
+
+This project is for the PAS Programs Office of @CyberArk.  It is open-sourced for anyone to utilize, however it is _strongly recommended_ for customers to reach out to your CyberArk Account Team or people without CyberArk to reach out via [CyberArk.com](https://cyberark.com) for a proper deep dive analysis and presentation.
+
+### Project Info
+
+DNAmic Analysis is a command-line application written in Python 3 for OS independence.
+
+The metrics presented from this application were chosen based on deep dive analysis presentations the PAS Programs Office conducts on a frequent basis.  If you have a metric you'd like added, please feel free to add it to this codebase by opening a Pull Request to have your contribution added.
+
+The metrics reported in this application are based on SQL queries ran on the DNA SQLite3 database produced during its scans.  An unmodified DNA SQLite3 database is required for this application to work.  If your DNA SQLite3 database filename is modified, you will receive an error and warning to correct it.
+
 ## Installation
 
 ```shell
