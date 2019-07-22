@@ -39,9 +39,21 @@ $ pipenv run ./DNAmicAnalysis --version
 
 _NOTE: Until a release is available, this is considered a BETA. In a BETA state, the `--output` argument will be default. It will not be required to be provided during this phase. Attempting to not display output will not help you in anyway.  Your attempts are futile._
 
+### Pre-Requisite
+
+* An unchanged DNA SQLite3 database file
+  * Please do not change the filename after it is created after a scan
+  * In order to save the SQLite3 database, do the following prior to scan: \
+  ```
+  DNA.exe.config
+  --------------
+  DeleteDB=no```
+
+```./DNAmicAnalytics.py path/to/DNA_date_time.sql --svc-regex "svc, service" --adm-regex "adm, a_, _a, admin"```
+
 ![](img/cli-help.png)
 
-### Required Paramters
+### Required Parameters
 
 * `database_file` - the SQLite3 database file should have an unaltered filename.  **This application relies on the date and time stamped in the filename for metrics.**
 * `--svc-regex` - this is a quote-encapsulated, comma-delimited list of regex terms denoting a service account.  See [Example Output](#Example-Output) for an example.
