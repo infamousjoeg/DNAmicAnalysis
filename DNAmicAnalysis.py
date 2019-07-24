@@ -99,7 +99,7 @@ def main(args):
 
     # If --output detected, make results verbose to console
     if args.output is True:
-        Tests.local_expired_machines(localMaxGrouped, len(all_local_count))
+        Tests.local_expired_machines(localMaxGrouped, len(all_local_count), len(localMaxGrouped)/len(all_local_count))
         if args.test is False:
             input("Press ENTER to continue...")
         print()

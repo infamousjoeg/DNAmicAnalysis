@@ -39,7 +39,7 @@ class Tests(object):
         deinit()
 
 
-    def local_expired_machines(max_grouped,count_accounts):
+    def local_expired_machines(max_grouped,count_accounts,percent_accounts):
         print(Fore.CYAN + "====================================================")
         print(Fore.RED + "Expired Local Admins Total w/ Machine Addresses" + Fore.YELLOW)
 
@@ -54,7 +54,7 @@ class Tests(object):
                     print('Machine Address: {}'.format(key))
 
         print(Fore.CYAN + "----------------------------------------------------")
-        print(Fore.YELLOW + "Total Local Accounts Non-Compliant: {} / {}".format(len(max_grouped),count_accounts))
+        print(Fore.YELLOW + "Total Local Accounts Non-Compliant: {} / {} = {:.2%}".format(len(max_grouped),count_accounts,percent_accounts))
         print(Fore.CYAN + "====================================================")
 
         print(Style.RESET_ALL)
