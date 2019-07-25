@@ -9,9 +9,13 @@ FROM Accounts
 		ON WindowsAccounts.OSAccount_id = OSAccounts.AccountBase_id
 	LEFT OUTER JOIN Machines
 		ON Accounts.Machine_id = Machines.Id
+	LEFT OUTER JOIN OSGroupModel
+		ON Accounts.Id = OSGroupModel.OSAccount_id
 WHERE NOT (Accounts.Name LIKE '%*%'
 		OR Accounts.Name LIKE '')
 	AND WindowsAccounts.CausesVulnerabilityOnXOfMachines > 0
+	AND (OSGroupModel.Name = 'Administrators'
+		OR OSGroupModel.Name = 'Power Users')
 	AND PrivilegedCount > 0
 	{disabled}
 ORDER BY LOWER(Accounts.Name) ASC
