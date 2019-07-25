@@ -47,11 +47,11 @@ class Tests(object):
             for key in value:
                 if not isinstance(key, str):
                     if isinstance(key, list):
-                        for username in key:
-                            print('Username: {}'.format(username))
+                        for machine in key:
+                            print('Machine Address: {}'.format(machine))
                 else:
                     print(Fore.CYAN + "----------------------------------------------------" + Fore.YELLOW)
-                    print('Machine Address: {}'.format(key))
+                    print(Style.BRIGHT + 'Username: {}'.format(key) + Style.NORMAL)
 
         print(Fore.CYAN + "----------------------------------------------------")
         print(Fore.YELLOW + "Total Local Accounts Non-Compliant: {} / {} = {:.2%}".format(len(max_grouped),count_accounts,percent_accounts))
