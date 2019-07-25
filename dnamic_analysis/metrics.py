@@ -58,12 +58,12 @@ def local_expired_machines(local_max_sorted):
     local_max_pruned = [metric[0:2] for metric in local_max_sorted]
     # Create blank set
     local_max_grouped = {}
-    # Group by machine and add to set previously created
+    # Group by account and add to set previously created
     for account, machine in local_max_pruned:
-        if machine in local_max_grouped:
-            local_max_grouped[machine].append((account))
+        if account in local_max_grouped:
+            local_max_grouped[account].append((machine))
         else:
-            local_max_grouped[machine] = [(account)]
+            local_max_grouped[account] = [(machine)]
     return local_max_grouped
 
 
