@@ -1,16 +1,10 @@
-SELECT SPN.Name,
-	MAX(Cast ((JulianDay(datetime('{scanDateTime}')) - JulianDay(SPN.LastPasswordSet)) As Integer)) as PasswordAge
+SELECT Name,
+	MAX(Cast ((JulianDay(datetime('{scanDateTime}')) - JulianDay(LastPasswordSet)) As Integer)) as PasswordAge
 FROM SPN
-	LEFT OUTER JOIN Accounts
-		ON Accounts.Name = SPN.Name
-	LEFT OUTER JOIN OSAccounts
-		ON Accounts.Id = OSAccounts.AccountBase_id
-	LEFT OUTER JOIN OSGroupModel
-		ON Accounts.Id = OSGroupModel.OSAccount_id
-WHERE OSAccounts.LastPasswordSet <= datetime('{scanDateTime}', '-90 days')
-	AND NOT (SPN.Name LIKE '%*%'
-		OR SPN.Name LIKE ''
-		OR SPN.Name LIKE 'S-%')
+WHERE Compliant = 1
+	AND NOT (Name LIKE '%*%'
+		OR Name LIKE ''
+		OR Name LIKE 'S-%')
 	{disabled}
-GROUP BY LOWER(SPN.Name)
+GROUP BY LOWER(Name)
 ORDER BY PasswordAge DESC
