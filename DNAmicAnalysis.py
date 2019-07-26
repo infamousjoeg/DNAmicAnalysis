@@ -46,7 +46,7 @@ def main(args):
 
     domain_names = db.exec_fromfile("data/sql/ADDomainCheck.sql")
 
-    action = DomainCheck().check(args.domain, domain_names)
+    action = DomainCheck(args.test).check(args.domain, domain_names)
 
     if action is False:
         exit()
