@@ -58,9 +58,9 @@ def main(args):
     expired_domain = db.exec_fromfile("data/sql/ExpiredDomainPrivID.sql")
     all_domain_count = db.exec_fromfile("data/sql/DomainAdminsPUCount.sql")
 
-    domainMaxSorted = Metrics.domain_max(expired_domain)
-    domainAverage = Metrics.domain_avg(expired_domain)
-    domainPercent = Metrics.domain_percent(expired_domain, all_domain_count, domainMaxSorted)
+    domainMaxSorted = Metrics().domain_max(expired_domain)
+    domainAverage = Metrics().domain_avg(expired_domain)
+    domainPercent = Metrics().domain_percent(expired_domain, all_domain_count, domainMaxSorted)
 
     # If --output detected, make results verbose to console
     if args.output is True:
@@ -83,9 +83,9 @@ def main(args):
     expired_local = db.exec_fromfile("data/sql/UniqueExpiredLocalPrivID.sql")
     all_local_count = db.exec_fromfile("data/sql/LocalAdministratorsCount.sql")
 
-    localMaxSorted = Metrics.local_max(expired_local)
-    localAverage = Metrics.local_avg(expired_local)
-    localPercent = Metrics.local_percent(expired_local, all_local_count, localMaxSorted)
+    localMaxSorted = Metrics().local_max(expired_local)
+    localAverage = Metrics().local_avg(expired_local)
+    localPercent = Metrics().local_percent(expired_local, all_local_count, localMaxSorted)
 
     # If --output detected, make results verbose to console
     if args.output is True:
@@ -105,7 +105,7 @@ def main(args):
     ## Expired Local Admins Total w/ Machine Names ##
     #################################################
 
-    localMaxGrouped = Metrics.local_expired_machines(localMaxSorted)
+    localMaxGrouped = Metrics().local_expired_machines(localMaxSorted)
 
     # If --output detected, make results verbose to console
     if args.output is True:
@@ -147,7 +147,7 @@ def main(args):
     multi_machine_accts = db.exec_fromfile("data/sql/MultipleMachineAccounts.sql")
     all_machines_count = db.exec_fromfile("data/sql/TotalMachinesCount.sql")
 
-    multiMachineAccounts = Metrics.multi_machine_accts(multi_machine_accts, all_machines_count[0][0])
+    multiMachineAccounts = Metrics().multi_machine_accts(multi_machine_accts, all_machines_count[0][0])
 
     # If --output detected, make results verbose to console
     if args.output is True:
@@ -178,9 +178,9 @@ def main(args):
 
     unique_expired_domain = db.exec_fromfile("data/sql/UniqueExpiredDomainPrivID.sql")
 
-    uniqueDomainMaxSorted = Metrics.unique_domain_max(unique_expired_domain)
-    uniqueDomainAverage = Metrics.unique_domain_avg(unique_expired_domain)
-    uniqueDomainPercent = Metrics.unique_domain_percent(unique_expired_domain, len(unique_domain_admins), uniqueDomainMaxSorted)
+    uniqueDomainMaxSorted = Metrics().unique_domain_max(unique_expired_domain)
+    uniqueDomainAverage = Metrics().unique_domain_avg(unique_expired_domain)
+    uniqueDomainPercent = Metrics().unique_domain_percent(unique_expired_domain, len(unique_domain_admins), uniqueDomainMaxSorted)
 
     # If --output detected, make results verbose to console
     if args.output is True:
@@ -231,9 +231,9 @@ def main(args):
     unique_expired_svcs = db.exec_fromfile("data/sql/UniqueExpiredServiceAccounts.sql")
     svc_accts_count = db.exec_fromfile("data/sql/ServiceAccountsCount.sql")
 
-    uniqueSvcMaxSorted = Metrics.unique_svc_max(unique_expired_svcs)
-    uniqueSvcAverage = Metrics.unique_svc_avg(unique_expired_svcs)
-    uniqueSvcPercent = Metrics.unique_svc_percent(unique_expired_svcs, len(svc_accts_count), len(uniqueSvcMaxSorted))
+    uniqueSvcMaxSorted = Metrics().unique_svc_max(unique_expired_svcs)
+    uniqueSvcAverage = Metrics().unique_svc_avg(unique_expired_svcs)
+    uniqueSvcPercent = Metrics().unique_svc_percent(unique_expired_svcs, len(svc_accts_count), len(uniqueSvcMaxSorted))
 
     # If --output detected, make results verbose to console
     if args.output is True:
@@ -333,7 +333,7 @@ def main(args):
 
     multi_machine_hashes = db.exec_fromfile("data/sql/MultipleMachineHashes.sql")
 
-    multiMachineHashes = Metrics.multi_machine_hashes(multi_machine_hashes, all_machines_count[0][0])
+    multiMachineHashes = Metrics().multi_machine_hashes(multi_machine_hashes, all_machines_count[0][0])
 
     # If --output detected, make results verbose to console
     if args.output is True:

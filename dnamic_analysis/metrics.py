@@ -3,9 +3,6 @@ from logzero import logger
 
 class Metrics(object):
 
-    def __init__(self):
-        pass
-
 
     def domain_max(self, sqlresults):
         domain_max_sorted = sorted(sqlresults,
@@ -50,7 +47,7 @@ class Metrics(object):
         return sum(local_avg_values), len(local_avg_values), local_avg_overall
 
 
-    def local_percent(sqlresults, sqlcount, local_max_sorted):
+    def local_percent(self, sqlresults, sqlcount, local_max_sorted):
         local_percent_overall = len(local_max_sorted) / len(sqlcount)
         logger.info("Calulated Percentage Overall Non-Compliant Expired Local \
             Accounts using: {} / {}".format(

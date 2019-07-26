@@ -54,8 +54,8 @@ class Tests(object):
                     print(Style.BRIGHT + 'Username: {}'.format(key) + Style.NORMAL)
 
         print(Fore.CYAN + "----------------------------------------------------")
-        print(Fore.YELLOW + "Total Local Accounts Non-Compliant: {} / {} = {:.2%}".format(len(max_grouped),count_accounts,percent_accounts))
-        print(Fore.CYAN + "====================================================")
+        print(Fore.YELLOW + Style.BRIGHT + "Total Local Accounts Non-Compliant: {} / {} = {:.2%}".format(len(max_grouped),count_accounts,percent_accounts))
+        print(Fore.CYAN + Style.NORMAL + "====================================================")
 
         print(Style.RESET_ALL)
         deinit()
@@ -246,10 +246,10 @@ class Tests(object):
                 print(Fore.YELLOW + "Total Found: {}".format(sqlresults[x][1]))
                 print(Fore.YELLOW + "Password Length: {}".format(sqlresults[x][2]))
                 print(Fore.CYAN + "----------------------------------------------------")
-            print(Fore.YELLOW + "Total Found Overall: {}".format(sqlcount))
+            print(Fore.YELLOW + Style.BRIGHT + "Total Found Overall: {}".format(sqlcount))
         else:
             print(Fore.YELLOW + "No Clear Text IDs found.")
-        print(Fore.CYAN + "====================================================")
+        print(Fore.CYAN + Style.NORMAL + "====================================================")
 
         print(Style.RESET_ALL)
         deinit()
@@ -266,10 +266,10 @@ class Tests(object):
                 print(Fore.YELLOW + "Machine Address: {}".format(sqlresults[x][1]))
                 print(Fore.CYAN + "----------------------------------------------------")
                 app_names.append(sqlresults[x][0])
-            print(Fore.YELLOW + "Total Unique Found Overall: {}".format(len(set(app_names))))
+            print(Fore.YELLOW + Style.BRIGHT + "Total Unique Found Overall: {}".format(len(set(app_names))))
         else:
             print(Fore.YELLOW + "No Applications with Clear Text Passwords found.")
-        print(Fore.CYAN + "====================================================")
+        print(Fore.CYAN + Style.NORMAL + "====================================================")
 
         print(Style.RESET_ALL)
         deinit()
