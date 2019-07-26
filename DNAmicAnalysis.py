@@ -5,8 +5,7 @@ import argparse
 import logging
 
 import logzero
-from dnamic_analysis import Database
-import dnamic_analysis.metrics as Metrics
+from dnamic_analysis import Database, Metrics, DomainCheck
 from logzero import logger
 from tests import Tests
 
@@ -40,6 +39,17 @@ def main(args):
     svc_array = args.svc_regex.replace(' ', '').split(',')
     adm_array = args.adm_regex.replace(' ', '').split(',')
     regex_array = svc_array + adm_array
+
+    #####################################
+    ## LEGAL - Domain Compliance Check ##
+    #####################################
+
+    domain_names = db.exec_fromfile("data/sql/ADDomainCheck.sql")
+
+    action = DomainCheck().check(args.domain, domain_names)
+
+    if action is False:
+        exit()
 
     ###################################
     ## Expired Domain Privileged IDs ##
@@ -355,9 +365,19 @@ if __name__ == "__main__":
         "database_file",
         help="path to the CyberArk DNA SQLite3 database file")
 
+    # Required argument flag for domain confirmation
+    req_grp.add_argument(
+        "--domain",
+        "-d",
+        dest="domain",
+        help="the AD domain name included in the scan for confirmation",
+        required=True
+    )
+
     # Required argument flag for service account regex
     req_grp.add_argument(
         "--svc-regex",
+        "-s",
         dest="svc_regex",
         help="comma-delimited list of service account naming convention regex",
         required=True
@@ -366,6 +386,7 @@ if __name__ == "__main__":
     # Required argument flag for admin account regex
     req_grp.add_argument(
         "--adm-regex",
+        "-a",
         dest="adm_regex",
         help="comma-delimited list of admin account naming convention regex",
         required=True
@@ -374,6 +395,7 @@ if __name__ == "__main__":
     # Optional argument flag for output results
     parser.add_argument(
         "--output",
+        "-o",
         action="store_true",
         dest="output",
         help="output the results to the console",
@@ -392,6 +414,7 @@ if __name__ == "__main__":
     # Optional argument flag for testing
     parser.add_argument(
         "--test",
+        "-t",
         action="store_true",
         dest="test",
         help="for testing purposes only",
@@ -401,6 +424,7 @@ if __name__ == "__main__":
     # Optional argument flag to output current version
     parser.add_argument(
         "--version",
+        "-v",
         action="version",
         version="%(prog)s (version {version})".format(version=__version__),
         help="shows current version information and exit")
