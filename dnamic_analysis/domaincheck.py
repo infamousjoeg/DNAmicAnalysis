@@ -42,8 +42,8 @@ class DomainCheck(object):
             print("Did not find " + Style.BRIGHT + "{}".format(domain) + Style.NORMAL + " in the scanned domains list.")
             print("----------------------------------------------------")
             print(Fore.YELLOW + Style.BRIGHT + 'Domains found:' + Style.NORMAL)
-            for index, value in enumerate(domain_names):
-                print(domain_names[index][0])
+            for index in enumerate(domain_names):
+                print(domain_names[index[0]][0])
             print(Fore.RED + "----------------------------------------------------")
 
             question = "Would you still like to proceed?"

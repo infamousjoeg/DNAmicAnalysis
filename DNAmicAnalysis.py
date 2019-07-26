@@ -337,7 +337,7 @@ def main(args):
 
     # If --output detected, make results verbose to console
     if args.output is True:
-        Tests.multi_machine_accts(multiMachineAccounts)
+        Tests.multi_machine_accts(multiMachineHashes)
         if args.test is False:
             input("Press ENTER to continue...")
         print()
