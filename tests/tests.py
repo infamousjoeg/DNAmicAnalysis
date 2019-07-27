@@ -54,8 +54,8 @@ class Tests(object):
                     print(Style.BRIGHT + 'Username: {}'.format(key) + Style.NORMAL)
 
         print(Fore.CYAN + "----------------------------------------------------")
-        print(Fore.YELLOW + "Total Local Accounts Non-Compliant: {} / {} = {:.2%}".format(len(max_grouped),count_accounts,percent_accounts))
-        print(Fore.CYAN + "====================================================")
+        print(Fore.YELLOW + Style.BRIGHT + "Total Local Accounts Non-Compliant: {} / {} = {:.2%}".format(len(max_grouped),count_accounts,percent_accounts))
+        print(Fore.CYAN + Style.NORMAL + "====================================================")
 
         print(Style.RESET_ALL)
         deinit()
@@ -92,77 +92,77 @@ class Tests(object):
             print(Fore.CYAN + "----------------------------------------------------" + Fore.YELLOW)
             for username in multi_machine_accts[0]:
                 print("Username: {}".format(username))
-            print("TOTAL ACCOUNTS: {}".format(len(multi_machine_accts[0])))
+            print(Style.BRIGHT + "TOTAL ACCOUNTS: {}".format(len(multi_machine_accts[0])) + Style.NORMAL)
             print(Fore.CYAN + "====================================================")
         if len(multi_machine_accts[1]) != 0:
             print(Fore.YELLOW + "90-95% Access")
             print(Fore.CYAN + "----------------------------------------------------" + Fore.YELLOW)
             for username in multi_machine_accts[1]:
                 print("Username: {}".format(username))
-            print("TOTAL ACCOUNTS: {}".format(len(multi_machine_accts[1])))
+            print(Style.BRIGHT + "TOTAL ACCOUNTS: {}".format(len(multi_machine_accts[1])) + Style.NORMAL)
             print(Fore.CYAN + "====================================================")
         if len(multi_machine_accts[2]) != 0:
             print(Fore.YELLOW + "80-90% Access")
             print(Fore.CYAN + "----------------------------------------------------" + Fore.YELLOW)
             for username in multi_machine_accts[2]:
                 print("Username: {}".format(username))
-            print("TOTAL ACCOUNTS: {}".format(len(multi_machine_accts[2])))
+            print(Style.BRIGHT + "TOTAL ACCOUNTS: {}".format(len(multi_machine_accts[2])) + Style.NORMAL)
             print(Fore.CYAN + "====================================================")
         if len(multi_machine_accts[3]) != 0:
             print(Fore.YELLOW + "70-80% Access")
             print(Fore.CYAN + "----------------------------------------------------" + Fore.YELLOW)
             for username in multi_machine_accts[3]:
                 print("Username: {}".format(username))
-            print("TOTAL ACCOUNTS: {}".format(len(multi_machine_accts[3])))
+            print(Style.BRIGHT + "TOTAL ACCOUNTS: {}".format(len(multi_machine_accts[3])) + Style.NORMAL)
             print(Fore.CYAN + "====================================================")
         if len(multi_machine_accts[4]) != 0:
             print(Fore.YELLOW + "60-70% Access")
             print(Fore.CYAN + "----------------------------------------------------" + Fore.YELLOW)
             for username in multi_machine_accts[4]:
                 print("Username: {}".format(username))
-            print("TOTAL ACCOUNTS: {}".format(len(multi_machine_accts[4])))
+            print(Style.BRIGHT + "TOTAL ACCOUNTS: {}".format(len(multi_machine_accts[4])) + Style.NORMAL)
             print(Fore.CYAN + "====================================================")
         if len(multi_machine_accts[5]) != 0:
             print(Fore.YELLOW + "50-60% Access")
             print(Fore.CYAN + "----------------------------------------------------" + Fore.YELLOW)
             for username in multi_machine_accts[5]:
                 print("Username: {}".format(username))
-            print("TOTAL ACCOUNTS: {}".format(len(multi_machine_accts[5])))
+            print(Style.BRIGHT + "TOTAL ACCOUNTS: {}".format(len(multi_machine_accts[5])) + Style.NORMAL)
             print(Fore.CYAN + "====================================================")
         if len(multi_machine_accts[6]) != 0:
             print(Fore.YELLOW + "40-50% Access")
             print(Fore.CYAN + "----------------------------------------------------" + Fore.YELLOW)
             for username in multi_machine_accts[6]:
                 print("Username: {}".format(username))
-            print("TOTAL ACCOUNTS: {}".format(len(multi_machine_accts[6])))
+            print(Style.BRIGHT + "TOTAL ACCOUNTS: {}".format(len(multi_machine_accts[6])) + Style.NORMAL)
             print(Fore.CYAN + "====================================================")
         if len(multi_machine_accts[7]) != 0:
             print(Fore.YELLOW + "30-40% Access")
             print(Fore.CYAN + "----------------------------------------------------" + Fore.YELLOW)
             for username in multi_machine_accts[7]:
                 print("Username: {}".format(username))
-            print("TOTAL ACCOUNTS: {}".format(len(multi_machine_accts[7])))
+            print(Style.BRIGHT + "TOTAL ACCOUNTS: {}".format(len(multi_machine_accts[7])) + Style.NORMAL)
             print(Fore.CYAN + "====================================================")
         if len(multi_machine_accts[8]) != 0:
             print(Fore.YELLOW + "20-30% Access")
             print(Fore.CYAN + "----------------------------------------------------" + Fore.YELLOW)
             for username in multi_machine_accts[8]:
                 print("Username: {}".format(username))
-            print("TOTAL ACCOUNTS: {}".format(len(multi_machine_accts[8])))
+            print(Style.BRIGHT + "TOTAL ACCOUNTS: {}".format(len(multi_machine_accts[8])) + Style.NORMAL)
             print(Fore.CYAN + "====================================================")
         if len(multi_machine_accts[9]) != 0:
             print(Fore.YELLOW + "10-20% Access")
             print(Fore.CYAN + "----------------------------------------------------" + Fore.YELLOW)
             for username in multi_machine_accts[9]:
                 print("Username: {}".format(username))
-            print("TOTAL ACCOUNTS: {}".format(len(multi_machine_accts[9])))
+            print(Style.BRIGHT + "TOTAL ACCOUNTS: {}".format(len(multi_machine_accts[9])) + Style.NORMAL)
             print(Fore.CYAN + "====================================================")
         if len(multi_machine_accts[10]) != 0:
             print(Fore.YELLOW + "< 10% Access")
             print(Fore.CYAN + "----------------------------------------------------" + Fore.YELLOW)
             for username in multi_machine_accts[10]:
                 print("Username: {}".format(username))
-            print("TOTAL ACCOUNTS: {}".format(len(multi_machine_accts[10])))
+            print(Style.BRIGHT + "TOTAL ACCOUNTS: {}".format(len(multi_machine_accts[10])) + Style.NORMAL)
             print(Fore.CYAN + "====================================================")
 
         print(Style.RESET_ALL)
@@ -246,10 +246,10 @@ class Tests(object):
                 print(Fore.YELLOW + "Total Found: {}".format(sqlresults[x][1]))
                 print(Fore.YELLOW + "Password Length: {}".format(sqlresults[x][2]))
                 print(Fore.CYAN + "----------------------------------------------------")
-            print(Fore.YELLOW + "Total Found Overall: {}".format(sqlcount))
+            print(Fore.YELLOW + Style.BRIGHT + "Total Found Overall: {}".format(sqlcount))
         else:
             print(Fore.YELLOW + "No Clear Text IDs found.")
-        print(Fore.CYAN + "====================================================")
+        print(Fore.CYAN + Style.NORMAL + "====================================================")
 
         print(Style.RESET_ALL)
         deinit()
@@ -266,10 +266,10 @@ class Tests(object):
                 print(Fore.YELLOW + "Machine Address: {}".format(sqlresults[x][1]))
                 print(Fore.CYAN + "----------------------------------------------------")
                 app_names.append(sqlresults[x][0])
-            print(Fore.YELLOW + "Total Unique Found Overall: {}".format(len(set(app_names))))
+            print(Fore.YELLOW + Style.BRIGHT + "Total Unique Found Overall: {}".format(len(set(app_names))))
         else:
             print(Fore.YELLOW + "No Applications with Clear Text Passwords found.")
-        print(Fore.CYAN + "====================================================")
+        print(Fore.CYAN + Style.NORMAL + "====================================================")
 
         print(Style.RESET_ALL)
         deinit()
@@ -310,77 +310,77 @@ class Tests(object):
             print(Fore.CYAN + "----------------------------------------------------" + Fore.YELLOW)
             for username in multi_machine_hashes[0]:
                 print("Username: {}".format(username))
-            print("TOTAL ACCOUNTS: {}".format(len(multi_machine_hashes[0])))
+            print(Style.BRIGHT + "TOTAL ACCOUNTS: {}".format(len(multi_machine_hashes[0])) + Style.NORMAL)
             print(Fore.CYAN + "====================================================")
         if len(multi_machine_hashes[1]) != 0:
             print(Fore.YELLOW + "90-95% Access")
             print(Fore.CYAN + "----------------------------------------------------" + Fore.YELLOW)
             for username in multi_machine_hashes[1]:
                 print("Username: {}".format(username))
-            print("TOTAL ACCOUNTS: {}".format(len(multi_machine_hashes[1])))
+            print(Style.BRIGHT + "TOTAL ACCOUNTS: {}".format(len(multi_machine_hashes[1])) + Style.NORMAL)
             print(Fore.CYAN + "====================================================")
         if len(multi_machine_hashes[2]) != 0:
             print(Fore.YELLOW + "80-90% Access")
             print(Fore.CYAN + "----------------------------------------------------" + Fore.YELLOW)
             for username in multi_machine_hashes[2]:
                 print("Username: {}".format(username))
-            print("TOTAL ACCOUNTS: {}".format(len(multi_machine_hashes[2])))
+            print(Style.BRIGHT + "TOTAL ACCOUNTS: {}".format(len(multi_machine_hashes[2])) + Style.NORMAL)
             print(Fore.CYAN + "====================================================")
         if len(multi_machine_hashes[3]) != 0:
             print(Fore.YELLOW + "70-80% Access")
             print(Fore.CYAN + "----------------------------------------------------" + Fore.YELLOW)
             for username in multi_machine_hashes[3]:
                 print("Username: {}".format(username))
-            print("TOTAL ACCOUNTS: {}".format(len(multi_machine_hashes[3])))
+            print(Style.BRIGHT + "TOTAL ACCOUNTS: {}".format(len(multi_machine_hashes[3])) + Style.NORMAL)
             print(Fore.CYAN + "====================================================")
         if len(multi_machine_hashes[4]) != 0:
             print(Fore.YELLOW + "60-70% Access")
             print(Fore.CYAN + "----------------------------------------------------" + Fore.YELLOW)
             for username in multi_machine_hashes[4]:
                 print("Username: {}".format(username))
-            print("TOTAL ACCOUNTS: {}".format(len(multi_machine_hashes[4])))
+            print(Style.BRIGHT + "TOTAL ACCOUNTS: {}".format(len(multi_machine_hashes[4])) + Style.NORMAL)
             print(Fore.CYAN + "====================================================")
         if len(multi_machine_hashes[5]) != 0:
             print(Fore.YELLOW + "50-60% Access")
             print(Fore.CYAN + "----------------------------------------------------" + Fore.YELLOW)
             for username in multi_machine_hashes[5]:
                 print("Username: {}".format(username))
-            print("TOTAL ACCOUNTS: {}".format(len(multi_machine_hashes[5])))
+            print(Style.BRIGHT + "TOTAL ACCOUNTS: {}".format(len(multi_machine_hashes[5])) + Style.NORMAL)
             print(Fore.CYAN + "====================================================")
         if len(multi_machine_hashes[6]) != 0:
             print(Fore.YELLOW + "40-50% Access")
             print(Fore.CYAN + "----------------------------------------------------" + Fore.YELLOW)
             for username in multi_machine_hashes[6]:
                 print("Username: {}".format(username))
-            print("TOTAL ACCOUNTS: {}".format(len(multi_machine_hashes[6])))
+            print(Style.BRIGHT + "TOTAL ACCOUNTS: {}".format(len(multi_machine_hashes[6])) + Style.NORMAL)
             print(Fore.CYAN + "====================================================")
         if len(multi_machine_hashes[7]) != 0:
             print(Fore.YELLOW + "30-40% Access")
             print(Fore.CYAN + "----------------------------------------------------" + Fore.YELLOW)
             for username in multi_machine_hashes[7]:
                 print("Username: {}".format(username))
-            print("TOTAL ACCOUNTS: {}".format(len(multi_machine_hashes[7])))
+            print(Style.BRIGHT + "TOTAL ACCOUNTS: {}".format(len(multi_machine_hashes[7])) + Style.NORMAL)
             print(Fore.CYAN + "====================================================")
         if len(multi_machine_hashes[8]) != 0:
             print(Fore.YELLOW + "20-30% Access")
             print(Fore.CYAN + "----------------------------------------------------" + Fore.YELLOW)
             for username in multi_machine_hashes[8]:
                 print("Username: {}".format(username))
-            print("TOTAL ACCOUNTS: {}".format(len(multi_machine_hashes[8])))
+            print(Style.BRIGHT + "TOTAL ACCOUNTS: {}".format(len(multi_machine_hashes[8])) + Style.NORMAL)
             print(Fore.CYAN + "====================================================")
         if len(multi_machine_hashes[9]) != 0:
             print(Fore.YELLOW + "10-20% Access")
             print(Fore.CYAN + "----------------------------------------------------" + Fore.YELLOW)
             for username in multi_machine_hashes[9]:
                 print("Username: {}".format(username))
-            print("TOTAL ACCOUNTS: {}".format(len(multi_machine_hashehs[9])))
+            print(Style.BRIGHT + "TOTAL ACCOUNTS: {}".format(len(multi_machine_hashehs[9])) + Style.NORMAL)
             print(Fore.CYAN + "====================================================")
         if len(multi_machine_hashes[10]) != 0:
             print(Fore.YELLOW + "< 10% Access")
             print(Fore.CYAN + "----------------------------------------------------" + Fore.YELLOW)
             for username in multi_machine_hashes[10]:
                 print("Username: {}".format(username))
-            print("TOTAL ACCOUNTS: {}".format(len(multi_machine_hashes[10])))
+            print(Style.BRIGHT + "TOTAL ACCOUNTS: {}".format(len(multi_machine_hashes[10])) + Style.NORMAL)
             print(Fore.CYAN + "====================================================")
 
         print(Style.RESET_ALL)
