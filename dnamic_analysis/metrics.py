@@ -19,7 +19,8 @@ class Metrics(object):
                 len(domain_avg_values)))
         return sum(domain_avg_values), len(domain_avg_values), domain_avg_overall
 
-
+    
+    @classmethod
     def domain_percent(sqlresults, sqlcount, domain_max_sorted):
         domain_percent_overall = len(domain_max_sorted) / len(sqlcount)
         logger.info("Calulated Percentage Overall Non-Compliant Expired Domain \
@@ -46,6 +47,7 @@ class Metrics(object):
         return sum(local_avg_values), len(local_avg_values), local_avg_overall
 
 
+    @classmethod
     def local_percent(sqlresults, sqlcount, local_max_sorted):
         local_percent_overall = len(local_max_sorted) / len(sqlcount)
         logger.info("Calulated Percentage Overall Non-Compliant Expired Local \
@@ -119,6 +121,7 @@ class Metrics(object):
             unique_domain_avg_overall
 
 
+    @classmethod
     def unique_domain_percent(sqlresults, sqlcount, unique_domain_max_sorted):
         unique_domain_percent_overall = len(unique_domain_max_sorted) / sqlcount
         logger.info("Calulated Percentage Overall Non-Compliant Expired Domain Admins \
@@ -145,6 +148,7 @@ class Metrics(object):
         return sum(unique_svc_avg_values), len(unique_svc_avg_values), unique_svc_avg_overall
 
 
+    @classmethod
     def unique_svc_percent(sqlresults, sqlcount, unique_svc_count):
         unique_svc_percent_overall = unique_svc_count / sqlcount
         logger.info("Calulated Percentage Overall Expired Service using: {} / {}".format(
