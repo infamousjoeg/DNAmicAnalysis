@@ -50,7 +50,7 @@ def main(args):
     action = DomainCheck(args.test).check(args.domain.lower(), domain_names)
 
     if action is False:
-        info.logger("{} does not want to proceed, exiting application".format(os.getenv(USER)))
+        logger.info("{} does not want to proceed, exiting application".format(os.getenv('USER')))
         exit()
 
     ###################################

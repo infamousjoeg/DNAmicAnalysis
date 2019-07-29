@@ -26,7 +26,7 @@ class DomainCheck(object):
                     print(Fore.CYAN + "====================================================")
                 print(Style.RESET_ALL)
                 deinit()
-                info.logger("{} provided AD domain {} and it was successfully found".format(os.getenv(USER),domain))
+                logger.info("{} provided AD domain {} and it was successfully found".format(os.getenv('USER'),domain))
                 return True
             else:
                 print(Fore.CYAN + "====================================================")
@@ -39,8 +39,8 @@ class DomainCheck(object):
                     print(Fore.CYAN + "====================================================")
                 print(Style.RESET_ALL)
                 deinit()
-                info.logger("{} provided AD domain {} and it was successfully found".format(os.getenv(USER),domain))
-                info.logger("Other domains found: {}".format(domain_names))
+                logger.info("{} provided AD domain {} and it was successfully found".format(os.getenv('USER'),domain))
+                logger.info("Other domains found: {}".format(domain_names))
                 return True
         else:
             print(Fore.RED + "====================================================")
@@ -50,7 +50,7 @@ class DomainCheck(object):
             for index in enumerate(domain_names):
                 print(domain_names[index[0]][0])
             print(Fore.RED + "----------------------------------------------------")
-            info.logger("{} provided AD domain {} and it was not found".format(os.getenv(USER),domain))
+            logger.info("{} provided AD domain {} and it was not found".format(os.getenv('USER'),domain))
 
             question = "Would you still like to proceed?"
 
