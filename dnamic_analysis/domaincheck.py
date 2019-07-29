@@ -1,6 +1,8 @@
+import os
+
 from colorama import Fore, Style, deinit, init
 
-# from logzero import logger
+from logzero import logger
 
 
 class DomainCheck(object):
@@ -24,6 +26,7 @@ class DomainCheck(object):
                     print(Fore.CYAN + "====================================================")
                 print(Style.RESET_ALL)
                 deinit()
+                logger.info("{} provided AD domain {} and it was successfully found".format(os.getenv('USER'),domain))
                 return True
             else:
                 print(Fore.CYAN + "====================================================")
@@ -36,6 +39,8 @@ class DomainCheck(object):
                     print(Fore.CYAN + "====================================================")
                 print(Style.RESET_ALL)
                 deinit()
+                logger.info("{} provided AD domain {} and it was successfully found".format(os.getenv('USER'),domain))
+                logger.info("Other domains found: {}".format(domain_names))
                 return True
         else:
             print(Fore.RED + "====================================================")
@@ -45,6 +50,7 @@ class DomainCheck(object):
             for index in enumerate(domain_names):
                 print(domain_names[index[0]][0])
             print(Fore.RED + "----------------------------------------------------")
+            logger.info("{} provided AD domain {} and it was not found".format(os.getenv('USER'),domain))
 
             question = "Would you still like to proceed?"
 
@@ -65,8 +71,10 @@ class DomainCheck(object):
             if answer[:1] == "y":
                 print(Style.RESET_ALL)
                 deinit()
+                logger.info("Would you still like to proceed? {}".format(answer[:1]))
                 return True
             else:
                 print(Style.RESET_ALL)
                 deinit()
+                logger.info("Would you still like to proceed? {}".format(answer[:1]))
                 return False

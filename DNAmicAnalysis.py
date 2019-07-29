@@ -3,9 +3,10 @@
 
 import argparse
 import logging
+import os
 
 import logzero
-from dnamic_analysis import Database, Metrics, DomainCheck
+from dnamic_analysis import Database, DomainCheck, Metrics
 from logzero import logger
 from tests import Tests
 
@@ -49,6 +50,7 @@ def main(args):
     action = DomainCheck(args.test).check(args.domain.lower(), domain_names)
 
     if action is False:
+        logger.info("{} does not want to proceed, exiting application".format(os.getenv('USER')))
         exit()
 
     ###################################
@@ -101,9 +103,9 @@ def main(args):
             input("Press ENTER to continue...")
         print()
 
-    #################################################
-    ## Expired Local Admins Total w/ Machine Names ##
-    #################################################
+    #####################################################
+    ## Expired Local Admins Total w/ Machine Addresses ##
+    #####################################################
 
     localMaxGrouped = Metrics.local_expired_machines(localMaxSorted)
 

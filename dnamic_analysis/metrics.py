@@ -7,6 +7,7 @@ class Metrics(object):
         domain_max_sorted = sorted(sqlresults,
                                     key=lambda sqlresults: sqlresults[2],
                                     reverse=True)
+        logger.info("Ordered Non-Compliant Expired Domain Accounts ascending by Username")
         return domain_max_sorted
 
 
@@ -34,6 +35,7 @@ class Metrics(object):
         local_max_sorted = sorted(sqlresults,
                                     key=lambda sqlresults: sqlresults[2],
                                     reverse=False)
+        logger.info("Ordered Non-Compliant Expired Local Accounts ascending by Username")
         return local_max_sorted
 
 
@@ -68,6 +70,7 @@ class Metrics(object):
                 local_max_grouped[account].append((machine))
             else:
                 local_max_grouped[account] = [(machine)]
+        logger.info("Grouped Expired Local Admins Total w/ Machine Names by Username")
         return local_max_grouped
 
 
@@ -98,6 +101,7 @@ class Metrics(object):
                 percent10.append(username[0])
             if (username[1] / sqlcount) < 0.10:
                 percent0.append(username[0])
+        logger.info("Grouped Accounts w/ Multiple Machine Access by Percentage Tiers")
         return percent95, percent90, percent80, percent70, \
             percent60, percent50, percent40, percent30, \
             percent20, percent10, percent0
@@ -107,6 +111,7 @@ class Metrics(object):
         unique_domain_max_sorted = sorted(sqlresults,
                                     key=lambda unique_expired_domain: sqlresults[2],
                                     reverse=False)
+        logger.info("Ordered Non-Compliant Domain Admins ascending by Username")
         return unique_domain_max_sorted
 
 
@@ -135,6 +140,7 @@ class Metrics(object):
         unique_svc_max_sorted = sorted(sqlresults,
                                     key=lambda sqlresults: sqlresults[2],
                                     reverse=True)
+        logger.info("Ordered Expired Services ascending by Service Name")
         return unique_svc_max_sorted
 
 
@@ -184,6 +190,7 @@ class Metrics(object):
                 percent10.append(username[0])
             if (username[1] / sqlcount) < 0.10:
                 percent0.append(username[0])
+        logger.info("Grouped Accounts w/ Multiple Machine Hashes by Percentage Tiers")
         return percent95, percent90, percent80, percent70, \
             percent60, percent50, percent40, percent30, \
             percent20, percent10, percent0
