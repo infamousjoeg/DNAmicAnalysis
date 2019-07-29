@@ -9,9 +9,10 @@ FROM Accounts
 		ON Accounts.Machine_id = Machines.Id
 WHERE OSAccounts.LastPasswordSet <= datetime('{scanDateTime}', '-90 days')
 	AND Accounts.AccountType = 'Local'
-	AND OSGroupModel.Name = 'Administrators'
+	AND (OSGroupModel.Name = 'Administrators'
+		OR OSGroupModel.Name = 'Power Users')
 	AND NOT (Accounts.Name LIKE '%*%'
 		OR Accounts.Name LIKE '')
 	{disabled}
 GROUP BY Accounts.Id
-ORDER BY PasswordAge DESC
+ORDER BY LOWER(Accounts.Name) ASC

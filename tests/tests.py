@@ -54,7 +54,7 @@ class Tests(object):
                     print(Style.BRIGHT + 'Username: {}'.format(key) + Style.NORMAL)
 
         print(Fore.CYAN + "----------------------------------------------------")
-        print(Fore.YELLOW + Style.BRIGHT + "Total Local Accounts Non-Compliant: {} / {} = {:.2%}".format(len(max_grouped),count_accounts,percent_accounts))
+        print(Fore.YELLOW + Style.BRIGHT + "Total Local Accounts Non-Compliant: {}".format(len(max_grouped)))
         print(Fore.CYAN + Style.NORMAL + "====================================================")
 
         print(Style.RESET_ALL)
@@ -222,7 +222,7 @@ class Tests(object):
 
     def unique_expired_svcs(max_sorted,avg_sum,avg_len,avg_overall,percent_len,all_len,percent_overall):
         print(Fore.CYAN + "====================================================")
-        print(Fore.RED + "Unique Expired Services")
+        print(Fore.RED + "Unique Expired Services *(Check against manual report)*")
         print(Fore.CYAN + "----------------------------------------------------")
         print(Fore.YELLOW + "Oldest Non-Compliant Service: {}".format(max_sorted[0][0]))
         print(Fore.YELLOW + "Max Password Age: {} days".format(max_sorted[0][2]))

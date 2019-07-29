@@ -10,7 +10,8 @@ FROM Accounts
 WHERE OSAccounts.LastPasswordSet <= datetime('{scanDateTime}', '-90 days')
 	AND OSAccounts.LastLogon <= datetime('{scanDateTime}', '-1 year')
 	AND Accounts.AccountType = 'Local'
-	AND NOT Accounts.Name LIKE 'Administrator'
+	AND NOT (OSAccounts.Description LIKE 'Built-in account for administering the computer/domain'
+		OR Accounts.Name = 'Administrator')
 	AND (OSGroupModel.Name LIKE 'Administrators'
 		OR OSGroupModel.Name LIKE 'Power Users')
 	{disabled}

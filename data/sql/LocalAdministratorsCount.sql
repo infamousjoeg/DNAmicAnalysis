@@ -5,7 +5,8 @@ FROM Accounts
 	LEFT JOIN OSGroupModel
 		ON Accounts.Id = OSGroupModel.OSAccount_id
 WHERE Accounts.AccountType = 'Local'
-	AND OSGroupModel.Name = 'Administrators'
+	AND (OSGroupModel.Name = 'Administrators'
+		OR OSGroupModel.Name = 'Power Users')
 	AND NOT (Accounts.Name LIKE '%*%'
 		OR Accounts.Name LIKE '')
 	{disabled}

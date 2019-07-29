@@ -1,10 +1,10 @@
 SELECT Name,
 	MAX(Cast ((JulianDay(datetime('{scanDateTime}')) - JulianDay(LastPasswordSet)) As Integer)) as PasswordAge
 FROM SPN
-WHERE Compliant = 1
+WHERE LastPasswordSet <= datetime('{scanDateTime}', '-90 days')
 	AND NOT (Name LIKE '%*%'
 		OR Name LIKE ''
 		OR Name LIKE 'S-%')
 	{disabled}
 GROUP BY LOWER(Name)
-ORDER BY PasswordAge DESC
+ORDER BY LOWER(Name) ASC

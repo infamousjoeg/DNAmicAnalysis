@@ -2,7 +2,8 @@ SELECT Accounts.Name, OSAccounts.LastPasswordSet,
 	MAX(Cast ((JulianDay(datetime('{scanDateTime}')) - JulianDay(OSAccounts.LastPasswordSet)) As Integer)) as PasswordAge
 FROM Services
 	LEFT OUTER JOIN Accounts
-		ON Accounts.Name = Services.AccountName
+		ON Services.AccountName = Accounts.Name
+		COLLATE nocase
 	LEFT OUTER JOIN OSAccounts
 		ON Accounts.Id = OSAccounts.accountbase_id
 WHERE OSAccounts.LastPasswordSet <= datetime('{scanDateTime}', '-90 days')
