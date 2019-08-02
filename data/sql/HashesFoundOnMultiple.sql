@@ -12,10 +12,10 @@ FROM Accounts
 	LEFT OUTER JOIN OSGroupModel
 		ON Accounts.Id = OSGroupModel.OSAccount_id
 WHERE NOT (Accounts.Name LIKE '%*%'
-		OR Accounts.Name LIKE '')
+		OR Accounts.Name LIKE ''
+		OR Accounts.Name LIKE 'S-%')
 	AND WindowsAccounts.CausesVulnerabilityOnXOfMachines > 0
-	AND (OSGroupModel.Name = 'Administrators'
-		OR OSGroupModel.Name = 'Power Users')
 	AND PrivilegedCount > 0
-	{disabled}
+	AND OSAccounts.Enabled != 0
+GROUP BY LOWER(Accounts.Name) 
 ORDER BY LOWER(Accounts.Name) ASC

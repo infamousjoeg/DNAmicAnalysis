@@ -107,3 +107,4 @@ data/report/*
 img/*.mov
 templates/
 .vagrant/
+*.xls

@@ -291,7 +291,7 @@ class Tests(object):
         print(Fore.RED + "Hashes Found on Multiple Machines")
         print(Fore.CYAN + "----------------------------------------------------")
         print(Fore.YELLOW + "Total Unique Accounts: {}".format(uniquecount))
-        print(Fore.YELLOW + "Total Hashes Found: {}".format(totalcount))
+        print(Fore.YELLOW + "Total Administrative Hashes Found: {}".format(totalcount))
         print(Fore.CYAN + "----------------------------------------------------")
         print(Fore.YELLOW + "Total on Workstations: {}".format(totalwks))
         print(Fore.YELLOW + "Total on Servers: {}".format(totalsrv))
@@ -303,7 +303,7 @@ class Tests(object):
 
     def multi_machine_hashes(multi_machine_hashes):
         print(Fore.CYAN + "====================================================")
-        print(Fore.RED + "Accounts with Multiple Machine Access")
+        print(Fore.RED + "Accounts with Multiple Machine Hashes")
         print(Fore.CYAN + "----------------------------------------------------")
         if len(multi_machine_hashes[0]) != 0:
             print(Fore.YELLOW + "> 95% Access")
