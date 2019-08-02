@@ -11,10 +11,14 @@ FROM Accounts
 		ON WindowsAccounts.OSAccount_id = OSAccounts.AccountBase_id
 	OUTER LEFT JOIN Machines
 		ON Accounts.Machine_id = Machines.Id
+	LEFT OUTER JOIN OSGroupModel
+		ON OSGroupModel.OSAccount_id = Accounts.Id
 WHERE NOT (Accounts.Name LIKE '%*%'
 		OR Accounts.Name LIKE '')
 	AND WindowsAccounts.CausesVulnerabilityOnXOfMachines > 0
+	AND (OSGroupModel.Name = 'Administrators'
+		OR OSGroupModel.Name = 'Power Users')
 	AND PrivilegedCount > 0
 	{disabled}
 GROUP BY LOWER(Accounts.Name)
-ORDER BY MachineCount DESC
+ORDER BY LOWER(Accounts.Name) ASC
