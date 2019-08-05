@@ -32,7 +32,12 @@ class DomainCheck(object):
                 print(Fore.CYAN + "====================================================")
                 print(Fore.YELLOW + "Found " + Style.BRIGHT + "{}".format(domain) + Style.NORMAL + " out of {} total domains".format(len(domain_names)))
                 print("in the provided DNA scan database.")
-                print(Style.BRIGHT + "Press ENTER to continue..." + Style.NORMAL)
+                print(Fore.CYAN + "----------------------------------------------------")
+                print(Fore.YELLOW + Style.BRIGHT + 'Domains found:' + Style.NORMAL)
+                for index in enumerate(domain_names):
+                    print(domain_names[index[0]][0])
+                print(Fore.CYAN + "----------------------------------------------------")
+                print(Fore.WHITE + "Press " + Style.BRIGHT + "ENTER" + Style.NORMAL + " to continue...")
                 if self._test is False:
                     input(Fore.CYAN + "====================================================")
                 else:
