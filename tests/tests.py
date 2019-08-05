@@ -185,7 +185,7 @@ class Tests(object):
         deinit()
 
 
-    def unique_domain_expired(max_sorted,avg_sum,avg_len,avg_overall,percent_len,all_len,percent_overall):
+    def unique_domain_expired(max_sorted,avg_sum,avg_len,avg_overall,percent_len,all_len,percent_overall,domain_admins):
         print(Fore.CYAN + "====================================================")
         print(Fore.RED + "Unique Expired Domain Admins")
         print(Fore.CYAN + "----------------------------------------------------")
@@ -195,8 +195,10 @@ class Tests(object):
         print(Fore.YELLOW + "Total Avg Password Age: {} / {} = {:.2f} days ({:.1f} years)".format(avg_sum,avg_len,avg_overall,avg_overall/365))
         print(Fore.CYAN + "----------------------------------------------------")
         print(Fore.YELLOW + "Total Percent Non-Compliant: {} / {} = {:.2%}".format(percent_len,all_len,percent_overall))
+        print(Fore.CYAN + "----------------------------------------------------")
+        for username in domain_admins:
+            print(Fore.YELLOW + "Username: {}".format(username))
         print(Fore.CYAN + "====================================================")
-
         print(Style.RESET_ALL)
         deinit()
 

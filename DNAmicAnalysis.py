@@ -194,6 +194,10 @@ def main(args):
     uniqueDomainMaxSorted = Metrics.unique_domain_max(unique_expired_domain)
     uniqueDomainAverage = Metrics.unique_domain_avg(unique_expired_domain)
     uniqueDomainPercent = Metrics.unique_domain_percent(unique_expired_domain, len(unique_domain_admins), uniqueDomainMaxSorted)
+    
+    uniqueDomainNames = []
+    for x in range(len(unique_expired_domain)):
+        uniqueDomainNames.append(unique_expired_domain[x][0])
 
     # If --output detected, make results verbose to console
     if args.output is True:
@@ -204,7 +208,8 @@ def main(args):
             uniqueDomainAverage[2],
             uniqueDomainPercent[0],
             uniqueDomainPercent[1],
-            uniqueDomainPercent[2])
+            uniqueDomainPercent[2],
+            uniqueDomainNames)
         if args.test is False:
             input("Press ENTER to continue...")
         print()
