@@ -1,12 +1,33 @@
-# :bar_chart: DNAmic Analysis
+# :bar_chart: DNAmic Analysis <!-- omit in toc -->
 
 [![Build Status](https://travis-ci.com/infamousjoeg/DNAmicAnalysis.svg?branch=master)](https://travis-ci.com/infamousjoeg/DNAmicAnalysis) [![Codacy Badge](https://api.codacy.com/project/badge/Grade/c3c0f19291884a5fb58199644618b420)](https://www.codacy.com/app/infamousjoeg/DNAmicAnalysis?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=infamousjoeg/DNAmicAnalysis&amp;utm_campaign=Badge_Grade) [![Codacy Badge](https://api.codacy.com/project/badge/Coverage/c3c0f19291884a5fb58199644618b420)](https://www.codacy.com/app/infamousjoeg/DNAmicAnalysis?utm_source=github.com&utm_medium=referral&utm_content=infamousjoeg/DNAmicAnalysis&utm_campaign=Badge_Coverage)
 
-Automation for CyberArk's Discovery & Audit (DNA) reports.
+![GitHub All Releases](https://img.shields.io/github/downloads/infamousjoeg/DNAmicAnalysis/total) [![GitHub issues](https://img.shields.io/github/issues/infamousjoeg/DNAmicAnalysis)](https://github.com/infamousjoeg/DNAmicAnalysis/issues) [![GitHub license](https://img.shields.io/github/license/infamousjoeg/DNAmicAnalysis)](https://github.com/infamousjoeg/DNAmicAnalysis/blob/master/LICENSE)
+
+Automation for CyberArk's Discovery & Audit (DNA) deep dive analysis reports.
+
+## Table of Contents
+- [Table of Contents](#table-of-contents)
+- [About](#about)
+  - [Project Info](#project-info)
+- [Installation](#installation)
+  - [Windows](#windows)
+  - [Linux](#linux)
+    - [RHEL/CentOS](#rhelcentos)
+    - [Ubuntu/Debian](#ubuntudebian)
+  - [MacOS](#macos)
+- [Pre-Requisites](#pre-requisites)
+- [Usage](#usage)
+  - [Required Parameters](#required-parameters)
+  - [Optional Parameters](#optional-parameters)
+- [Version](#version)
+- [Example Output](#example-output)
+  - [Video Example](#video-example)
+  - [Plaintext Example](#plaintext-example)
 
 ## About
 
-This project is for the PAS Programs Office of @CyberArk.  It is open-sourced for anyone to utilize, however it is _strongly recommended_ for customers to reach out to your CyberArk Account Team or people without CyberArk to reach out via [CyberArk.com](https://cyberark.com) for a proper deep dive analysis and presentation.
+This project is for the PAS Programs Office of [CyberArk](https://cyberark.com).  It is open-sourced for anyone to utilize, however it is _strongly recommended_ for customers to reach out to your CyberArk Account Team or people without CyberArk to reach out via [CyberArk.com](https://cyberark.com) for a proper deep dive analysis and presentation.
 
 ### Project Info
 
@@ -18,63 +39,161 @@ The metrics reported in this application are based on SQL queries ran on the DNA
 
 ## Installation
 
-```shell
-$ git clone git@github.com/infamousjoeg/DNAmicAnalysis.git
-$ cd DNAmicAnalysis
-$ pip install -r requirements.txt
-$ ./DNAmicAnalysis.py --version
-```
+### Windows
 
-### Using Pipenv
+1. Download & install the latest version of [Python 3](https://www.python.org/downloads/) for Windows.
 
-```shell
-$ git clone git@github.com/infamousjoeg/DNAmicAnalysis.git
-$ cd DNAmicAnalysis
-$ pip install pipenv
-$ pipenv install
-$ pipenv run ./DNAmicAnalysis --version
-```
+   **Note:** _If endpoint security is installed, download the **Windows x86-64 embeddable zip file** to bypass privilege escalation requirements._
+2. Download the source code zip of the [latest DNAmic Analysis release](https://github.com/infamousjoeg/DNAmicAnalysis/releases).
+3. Unpack the source code zip file and start a command prompt from within the directory.
+
+   **Note:** _Holding `Shift` while right-clicking will bring up a context menu with the option "Open Command Prompt here"._
+4. `pip install -r requirements.txt`
+
+   ![](img/windows-pipinstall.png)
+
+5. Run the application with valid arguments as outlined in the [Usage](#usage) section below. 
+
+   ![](img/windows-runpy.png)
+
+### Linux
+
+#### RHEL/CentOS
+
+1. Install EPEL Release repository.
+   
+   `$ sudo yum install epel-release -y`
+
+2. Install Python 3.6 from EPEL.
+   
+   `$ sudo yum install python36 -y`
+
+3. Install PIP for Python 3.6.
+   
+   `$ sudo python36 -m ensurepip`
+
+4. Upgrade PIP to latest version.
+   
+   `$ python36 -m pip install --upgrade pip`
+   
+5. Clone GitHub repository for DNAmic Analysis.
+   
+   `$ git clone https://github.com/infamousjoeg/DNAmicAnalysis.git`
+   
+6. Change directory to newly cloned GitHub repo directory.
+   
+   `$ cd DNAmicAnalysis/`
+   
+7. Install requirements.txt dependencies. 
+   
+   `$ python36 -m pip install -r requirements.txt`
+
+8. Run DNAmicAnalysis.py with proper arguments as outlined in the [Usage](#usage) section below.
+   
+   `$ python36 DNAmicAnalysis.py data/test/DNA_time_date.sql -d domain.com -s "svc, service" -a "adm, admin"`
+
+#### Ubuntu/Debian
+
+1. Install Python 3.6.
+   
+   `$ sudo apt install python3.6 -y`
+
+2. Install PIP for Python 3.6.
+   
+   `$ sudo python36 -m ensurepip`
+
+3. Upgrade PIP to latest version.
+   
+   `$ python36 -m pip install --upgrade pip`
+   
+4. Clone GitHub repository for DNAmic Analysis.
+   
+   `$ git clone https://github.com/infamousjoeg/DNAmicAnalysis.git`
+   
+5. Change directory to newly cloned GitHub repo directory.
+   
+   `$ cd DNAmicAnalysis/`
+   
+6. Install requirements.txt dependencies. 
+   
+   `$ python36 -m pip install -r requirements.txt`
+
+7. Run DNAmicAnalysis.py with proper arguments as outlined in the [Usage](#usage) section below.
+   
+   `$ python36 DNAmicAnalysis.py data/test/DNA_time_date.sql -d domain.com -s "svc, service" -a "adm, admin"`
+
+### MacOS
+
+1. Install Python 3.7.4.
+
+   `$ brew install python`
+
+2. Clone GitHub repository for DNAmic Analysis.
+   
+   `$ git clone https://github.com/infamousjoeg/DNAmicAnalysis.git`
+   
+5. Change directory to newly cloned GitHub repo directory.
+   
+   `$ cd DNAmicAnalysis/`
+   
+6. Install requirements.txt dependencies. 
+   
+   `$ pip install -r requirements.txt`
+
+7. Run DNAmicAnalysis.py with proper arguments as outlined in the [Usage](#usage) section below.
+   
+   `$ ./DNAmicAnalysis.py data/test/DNA_time_date.sql -d domain.com -s "svc, service" -a "adm, admin"`
+
+## Pre-Requisites
+
+* [Python 3.x.x](https://www.python.org/downloads/)
+* Application dependencies installed
+  * `$ pip3 install -r requirements.txt`
+* An unchanged DNA SQLite3 database file
+  * Please do not change the filename after it is created after a scan
+  * Please do not obfuscate the database file
+  * In order to save the SQLite3 database, adjust the following key/value pair:
+    * Open `dna.exe.config` for editing:
+
+      `DeleteDB=yes`
 
 ## Usage
 
-_NOTE: Until a release is available, this is considered a BETA. In a BETA state, the `--output` argument will be default. It will not be required to be provided during this phase. Attempting to not display output will not help you in anyway.  Your attempts are futile._
+_NOTE: Until a release is available, this is considered a BETA. In a BETA state, the `--output`/`-o` argument will be default. It will not be required to be provided during this phase. Attempting to not display output will not help you in anyway.  Your attempts are futile._
 
-### Pre-Requisite
-
-* An unchanged DNA SQLite3 database file
-  * Please do not change the filename after it is created after a scan
-  * In order to save the SQLite3 database, do the following prior to scan: \
-  ```
-  DNA.exe.config
-  --------------
-  DeleteDB=no```
-
-```./DNAmicAnalytics.py path/to/DNA_date_time.sql --svc-regex "svc, service" --adm-regex "adm, a_, _a, admin"```
+`./DNAmicAnalytics.py path/to/DNA_date_time.sql --domain cyberarkdemo.com --svc-regex "svc, service" --adm-regex "adm, a_, _a, admin"`
 
 ![](img/cli-help.png)
 
 ### Required Parameters
 
 * `database_file` - the SQLite3 database file should have an unaltered filename.  **This application relies on the date and time stamped in the filename for metrics.**
-* `--svc-regex` - this is a quote-encapsulated, comma-delimited list of regex terms denoting a service account.  See [Example Output](#Example-Output) for an example.
-* `--adm-regex` - this is a quote-encapsulated, comma-delimited list of regex terms denoting an administrator account.  See [Example Output](#Example-Output) for an example.
+* `--domain`, `-d` - this **MUST** match an Active Directory domain name that was included in the DNA scan.
+* `--svc-regex`, `-s` - this is a quote-encapsulated, comma-delimited list of regex terms denoting a service account.  See [Example Output](#Example-Output) for an example.
+* `--adm-regex`, `-a` - this is a quote-encapsulated, comma-delimited list of regex terms denoting an administrator account.  See [Example Output](#Example-Output) for an example.
 
 ### Optional Parameters
 
-* `-h, --help` - displays the available arguments for this application
-* `--output` - **Enabled by default while in BETA***.  This displays the metrics to the console.
+* `-h`, `--help` - displays the available arguments for this application
+* `--output`, `-o` - **Enabled by default while in BETA***.  This displays the metrics to the console.
 * `--disabled` - Include all disabled accounts in the metrics.  Disabled accounts are not included by default.
-* `--version` - Reports the version of this application
-* `--test` - Suppresses the "Press ENTER to continue" requirement of `--output` for automated testing
+* `--version`, `-v` - Reports the version of this application
+* `--test`, `-t` - Suppresses the "Press ENTER to continue" requirement of `--output`, `-o` for automated testing
 
 ## Version
 
 ```shell
 $ ./DNAmicAnalysis.py --version
-DNAmicAnalysis.py (version 0.2.0)
+DNAmicAnalysis.py (version 0.2.0-beta.1)
 ```
 
 ## Example Output
+
+### Video Example
+
+[![asciicast](https://asciinema.org/a/261071.svg)](https://asciinema.org/a/261071)
+
+### Plaintext Example
 
 ```plaintext
 $ ./DNAmicAnalysis.py data/test/DNA_2019-05-21_08-57-43-PM.db --svc-regex "svc, service" --adm-regex "adm, admin"
@@ -298,7 +417,3 @@ TOTAL ACCOUNTS: 1
 
 Press ENTER to continue...
 ```
-
-## License
-
-MIT
