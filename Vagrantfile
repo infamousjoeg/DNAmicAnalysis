@@ -12,7 +12,7 @@ Vagrant.configure("2") do |config|
 
   # Every Vagrant development environment requires a box. You can search for
   # boxes at https://vagrantcloud.com/search.
-  config.vm.box = "ubuntu/bionic64"
+  config.vm.box = "centos/7"
 
   # Disable automatic box update checking. If you disable this, then
   # boxes will only be checked for updates when the user runs
@@ -64,9 +64,11 @@ Vagrant.configure("2") do |config|
   # Puppet, Chef, Ansible, Salt, and Docker are also available. Please see the
   # documentation for more information about their specific syntax and use.
   config.vm.provision "shell", inline: <<-SHELL
-    sudo apt update
-    sudo apt upgrade -y
-    sudo apt install python3-pip -y
-    pip3 install -r /vagrant/requirements.txt
+    sudo yum install epel-release -y
+    sudo yum install -y python36
+    cd /vagrant
+    sudo python36 -m ensurepip
+    sudo python36 -m pip install --upgrade pip
+    sudo python36 -m pip install -r requirements.txt
   SHELL
 end
