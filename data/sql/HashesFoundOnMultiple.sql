@@ -16,6 +16,6 @@ WHERE NOT (Accounts.Name LIKE '%*%'
 		OR Accounts.Name LIKE 'S-%')
 	AND WindowsAccounts.CausesVulnerabilityOnXOfMachines > 0
 	AND PrivilegedCount > 0
-	AND OSAccounts.Enabled != 0
+	{disabled}
 GROUP BY LOWER(Accounts.Name) 
 ORDER BY LOWER(Accounts.Name) ASC
