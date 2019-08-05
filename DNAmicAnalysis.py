@@ -322,23 +322,32 @@ def main(args):
     #######################################
 
     hashes_found_on_multiple = db.exec_fromfile("data/sql/HashesFoundOnMultiple.sql")
-    total_hash_srv = 0
-    total_hash_wks = 0
-    total_hash_name = []
+    total_privileged_ids = db.exec_fromfile("data/sql/TotalPrivilegedIDs.sql")
 
     if hashes_found_on_multiple:
+        total_hash_srv = 0
+        total_hash_wks = 0
+        total_hash_name = []
+        
         for x in range(len(hashes_found_on_multiple)):
             total_hash_srv += hashes_found_on_multiple[x][4]
             total_hash_wks += hashes_found_on_multiple[x][3]
             total_hash_name.append(hashes_found_on_multiple[x][0])
-        
         unique_hash_name = set(total_hash_name)
+
+        admin_hash_found = []
+        for hash_name in unique_hash_name:
+            for x in range(len(total_privileged_ids)):
+                if hash_name == total_privileged_ids[x][0]:
+                    admin_hash_found.append(hash_name)
+
+        #admin_hash_sorted = sorted(admin_hash_found, key=str.lower)
 
     # If --output detected, make results verbose to console
     if args.output is True:
         Tests.hashes_found_on_multiple(
             len(unique_hash_name),
-            len(total_hash_name),
+            sorted(admin_hash_found, key=str.lower),
             total_hash_srv,
             total_hash_wks)
         if args.test is False:
