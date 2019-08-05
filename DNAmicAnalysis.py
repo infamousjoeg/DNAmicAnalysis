@@ -85,6 +85,10 @@ def main(args):
     expired_local = db.exec_fromfile("data/sql/UniqueExpiredLocalPrivID.sql")
     all_local_count = db.exec_fromfile("data/sql/LocalAdministratorsCount.sql")
 
+    all_local_unique_count = []
+    for x in range(len(all_local_count)):
+        all_local_unique_count.append(all_local_count[x][0])
+
     localMaxSorted = Metrics.local_max(expired_local)
     localAverage = Metrics.local_avg(expired_local)
     localPercent = Metrics.local_percent(expired_local, all_local_count, localMaxSorted)
@@ -98,7 +102,9 @@ def main(args):
             localAverage[2],
             localPercent[0],
             localPercent[1],
-            localPercent[2])
+            localPercent[2],
+            len(all_local_count),
+            len(set(all_local_unique_count)))
         if args.test is False:
             input("Press ENTER to continue...")
         print()

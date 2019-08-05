@@ -23,7 +23,7 @@ class Tests(object):
         deinit()
 
 
-    def local_expired(max_sorted,avg_sum,avg_len,avg_overall,percent_len,all_len,percent_overall):
+    def local_expired(max_sorted,avg_sum,avg_len,avg_overall,percent_len,all_len,percent_overall,sqlcount,unique_count):
         print(Fore.CYAN + "====================================================")
         print(Fore.RED + "Unique Expired Local Privileged IDs")
         print(Fore.CYAN + "----------------------------------------------------")
@@ -33,6 +33,9 @@ class Tests(object):
         print(Fore.YELLOW + "Total Avg Password Age: {:.2f} / {} = {:.2f} days ({:.1f} years)".format(avg_sum,avg_len,avg_overall,avg_overall/365))
         print(Fore.CYAN + "----------------------------------------------------")
         print(Fore.YELLOW + "Total Percent Non-Compliant: {} / {} = {:.2%}".format(percent_len,all_len,percent_overall))
+        print(Fore.CYAN + "----------------------------------------------------")
+        print(Fore.YELLOW + "Total Unique Local Privileged IDs: {}".format(sqlcount))
+        print(Fore.YELLOW + "Total Unique Local Privileged ID Names: {}".format(unique_count))
         print(Fore.CYAN + "====================================================")
 
         print(Style.RESET_ALL)
