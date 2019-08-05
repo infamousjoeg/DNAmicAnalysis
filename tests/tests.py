@@ -169,15 +169,18 @@ class Tests(object):
         deinit()
 
 
-    def unique_domain_admins(sqlresults, svc_sqlresults):
+    def unique_domain_admins(sqlresults, svc_sqlresults, svc_domadm, svc_domadm2):
         print(Fore.CYAN + "====================================================")
         print(Fore.RED + "Unique Domain Admins")
         print(Fore.CYAN + "----------------------------------------------------")
         print(Fore.YELLOW + "Total Detected: {}".format(len(sqlresults)))
         print(Fore.CYAN + "----------------------------------------------------")
-        print(Fore.YELLOW + "Total Potential Service Accounts: {}".format(len(svc_sqlresults)))
+        print(Fore.YELLOW + Style.BRIGHT + "Total Potential Service Accounts: {}".format(len(svc_sqlresults)) + Style.NORMAL)
+        for username in svc_domadm:
+            print("Username: {}".format(username))
+        for username2 in svc_domadm2:
+            print("Username: {}".format(username2))
         print(Fore.CYAN + "====================================================")
-
         print(Style.RESET_ALL)
         deinit()
 

@@ -166,10 +166,21 @@ def main(args):
     unique_svcacct_domain_admins = db.exec_fromfile("data/sql/UniqueSvcDomainAdmins.sql", True, svc_array)
     unique_svcacct_domain_admins2 = db.exec_fromfile("data/sql/UniqueSvcDomainAdmins2.sql", True, svc_array)
 
+    unique_svcacct_domadm_usernames = []
+    if unique_svcacct_domain_admins:
+        for username in unique_svcacct_domain_admins:
+            unique_svcacct_domadm_usernames.append(username[0])
+
+    unique_svcacct_domadm2_usernames = []
+    if unique_svcacct_domain_admins2:
+        for username in unique_svcacct_domain_admins2:
+            unique_svcacct_domadm2_usernames.append(username[0])
+
     # If --output detected, make results verbose to console
     if args.output is True:
         Tests.unique_domain_admins(
-            unique_domain_admins, (unique_svcacct_domain_admins+unique_svcacct_domain_admins2))
+            unique_domain_admins, (unique_svcacct_domain_admins+unique_svcacct_domain_admins2),
+            set(unique_svcacct_domadm_usernames), set(unique_svcacct_domadm2_usernames))
         if args.test is False:
             input("Press ENTER to continue...")
         print()
