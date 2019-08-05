@@ -6,8 +6,8 @@
 
 Automation for CyberArk's Discovery & Audit (DNA) deep dive analysis reports.
 
-## Table of Contents
-- [Table of Contents](#table-of-contents)
+## Table of Contents <!-- omit in toc -->
+
 - [About](#about)
   - [Project Info](#project-info)
 - [Installation](#installation)
