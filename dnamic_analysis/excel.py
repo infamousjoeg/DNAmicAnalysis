@@ -1,3 +1,6 @@
+import os
+from datetime import datetime
+
 import xlwt
 
 
@@ -25,12 +28,17 @@ class Excel(object):
         self.header_style = header_style
         self.normal_style = normal_style
 
+        # Get datetime stamp for save filename
+        self.timestamp = datetime.now().isoformat(timespec='seconds')
 
+    # Creates the workbook class
     def create(self):
         # Init Excel workbook class
         workbook = xlwt.Workbook()
         return workbook
 
+    
+    # Adds a worksheet to the workbook (tab)
     def add(self, workbook, name):
 
         try:
@@ -40,6 +48,7 @@ class Excel(object):
             return False
 
 
+    # Writes a row to the worksheet specified
     def write(self, worksheet, col, row, data, style='normal'):
 
         try:
@@ -52,10 +61,13 @@ class Excel(object):
             return False
 
 
-    def save(self, workbook, save_path):
+    # Saves the workbook to the reports/ directory
+    def save(self, workbook):
 
         try:
-            workbook.save(save_path)
+            if not os.path.exists('reports'):
+                os.mkdir('reports')
+            workbook.save('DNAmicAnalysis_' + self.timestamp + '.xls')
             return True
         except:
             return False
