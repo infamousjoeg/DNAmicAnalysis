@@ -37,7 +37,7 @@ class Excel(object):
         workbook = xlwt.Workbook()
         return workbook
 
-    
+
     # Adds a worksheet to the workbook (tab)
     def add(self, workbook, name):
 
