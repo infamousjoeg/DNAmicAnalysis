@@ -229,16 +229,23 @@ class Tests(object):
 
 
     def unique_expired_svcs(max_sorted,avg_sum,avg_len,avg_overall,percent_len,all_len,percent_overall):
-        print(Fore.CYAN + "====================================================")
-        print(Fore.RED + "Unique Expired Services *(Check against manual report)*")
-        print(Fore.CYAN + "----------------------------------------------------")
-        print(Fore.YELLOW + "Oldest Non-Compliant Service: {}".format(max_sorted[0][0]))
-        print(Fore.YELLOW + "Max Password Age: {} days ({:.1f} years)".format(max_sorted[0][2],max_sorted[0][2]/365))
-        print(Fore.CYAN + "----------------------------------------------------")
-        print(Fore.YELLOW + "Total Avg Password Age: {} / {} = {:.2f} days ({:.1f} years)".format(avg_sum,avg_len,avg_overall,avg_overall/365))
-        print(Fore.CYAN + "----------------------------------------------------")
-        print(Fore.YELLOW + "Total Percent Non-Compliant: {} / {} = {:.2%}".format(percent_len,all_len,percent_overall))
-        print(Fore.CYAN + "====================================================")
+        if max_sorted == 'No services found.':
+            print(Fore.CYAN + "====================================================")
+            print(Fore.RED + "Unique Expired Services *(Check against manual report)*")
+            print(Fore.CYAN + "----------------------------------------------------")
+            print(Fore.YELLOW + max_sorted)
+            print(Fore.CYAN + "====================================================")
+        else:
+            print(Fore.CYAN + "====================================================")
+            print(Fore.RED + "Unique Expired Services *(Check against manual report)*")
+            print(Fore.CYAN + "----------------------------------------------------")
+            print(Fore.YELLOW + "Oldest Non-Compliant Service: {}".format(max_sorted[0][0]))
+            print(Fore.YELLOW + "Max Password Age: {} days ({:.1f} years)".format(max_sorted[0][2],max_sorted[0][2]/365))
+            print(Fore.CYAN + "----------------------------------------------------")
+            print(Fore.YELLOW + "Total Avg Password Age: {} / {} = {:.2f} days ({:.1f} years)".format(avg_sum,avg_len,avg_overall,avg_overall/365))
+            print(Fore.CYAN + "----------------------------------------------------")
+            print(Fore.YELLOW + "Total Percent Non-Compliant: {} / {} = {:.2%}".format(percent_len,all_len,percent_overall))
+            print(Fore.CYAN + "====================================================")
 
         print(Style.RESET_ALL)
         deinit()
