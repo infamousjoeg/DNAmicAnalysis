@@ -155,7 +155,7 @@ The metrics reported in this application are based on SQL queries ran on the DNA
   * In order to save the SQLite3 database, adjust the following key/value pair:
     * Open `dna.exe.config` for editing:
 
-      `DeleteDB=yes`
+      `DeleteDB=no`
 
 ## Usage
 
