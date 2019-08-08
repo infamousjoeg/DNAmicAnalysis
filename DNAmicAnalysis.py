@@ -256,10 +256,6 @@ def main(args):
     svc_accts_count = db.exec_fromfile("data/sql/ServiceAccountsCount.sql")
 
     if unique_expired_svcs and svc_accts_count:
-        print(unique_expired_svcs)
-        print('---')
-        print(svc_accts_count)
-        print('---')
         uniqueSvcMaxSorted = Metrics.unique_svc_max(unique_expired_svcs)
         uniqueSvcAverage = Metrics.unique_svc_avg(unique_expired_svcs)
         uniqueSvcPercent = Metrics.unique_svc_percent(unique_expired_svcs, len(svc_accts_count), len(uniqueSvcMaxSorted))
