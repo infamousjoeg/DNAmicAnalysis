@@ -46,16 +46,21 @@ class Tests(object):
         print(Fore.CYAN + "====================================================")
         print(Fore.RED + "Expired Local Admins Total w/ Machine Addresses" + Fore.YELLOW)
 
+        count = 0
         for value in max_grouped.items():
             for key in value:
                 if not isinstance(key, str):
                     if isinstance(key, list):
                         for machine in key:
                             print('Machine Address: {}'.format(machine))
+                            count = len(key)
                 else:
+                    if count:
+                        print(Fore.YELLOW + Style.BRIGHT + "Total Machines for User: {}".format(count) + Style.NORMAL)
                     print(Fore.CYAN + "----------------------------------------------------" + Fore.YELLOW)
                     print(Style.BRIGHT + 'Username: {}'.format(key) + Style.NORMAL)
 
+        print(Fore.YELLOW + Style.BRIGHT + "Total Machines for User: {}".format(count) + Style.NORMAL)
         print(Fore.CYAN + "----------------------------------------------------")
         print(Fore.YELLOW + Style.BRIGHT + "Total Local Accounts Non-Compliant: {}".format(len(max_grouped)))
         print(Fore.CYAN + Style.NORMAL + "====================================================")
