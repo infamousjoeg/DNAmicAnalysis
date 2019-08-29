@@ -333,6 +333,7 @@ def main(args):
     #######################################
 
     hashes_found_on_multiple = db.exec_fromfile("data/sql/HashesFoundOnMultiple.sql")
+    hashes_found_on_multiple_admins = db.exec_fromfile("data/sql/HashesFoundOnMultipleAdmins.sql")
     total_privileged_ids = db.exec_fromfile("data/sql/TotalPrivilegedIDs.sql")
 
     if hashes_found_on_multiple:
@@ -352,6 +353,14 @@ def main(args):
                 if hash_name == total_privileged_ids[x][0]:
                     admin_hash_found.append(hash_name)
 
+    # This is looking for hashes returned that are in the Domain Group "Domain Admins"
+    if hashes_found_on_multiple_admins:
+        total_hash_admins_srv = 0
+        total_hash_admins_wks = 0
+        for x in range(len(hashes_found_on_multiple_admins)):
+            total_hash_admins_srv += hashes_found_on_multiple_admins[x][4]
+            total_hash_admins_wks += hashes_found_on_multiple_admins[x][3]
+
         #admin_hash_sorted = sorted(admin_hash_found, key=str.lower)
 
     # If --output detected, make results verbose to console
@@ -360,7 +369,9 @@ def main(args):
             len(unique_hash_name),
             sorted(admin_hash_found, key=str.lower),
             total_hash_srv,
-            total_hash_wks)
+            total_hash_wks,
+            total_hash_admins_srv,
+            total_hash_admins_wks)
         if args.test is False:
             input("Press ENTER to continue...")
         print()

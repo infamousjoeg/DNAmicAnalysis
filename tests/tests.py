@@ -306,7 +306,7 @@ class Tests(object):
         deinit()
 
 
-    def hashes_found_on_multiple(uniquecount, admin_hash_found, totalsrv, totalwks):
+    def hashes_found_on_multiple(uniquecount, admin_hash_found, totalsrv, totalwks, totaladminsrv, totaladminwks):
         print(Fore.CYAN + "====================================================")
         print(Fore.RED + "Hashes Found on Multiple Machines")
         print(Fore.CYAN + "----------------------------------------------------")
@@ -315,6 +315,9 @@ class Tests(object):
         print(Fore.CYAN + "----------------------------------------------------")
         print(Fore.YELLOW + "Total on Workstations: {}".format(totalwks))
         print(Fore.YELLOW + "Total on Servers: {}".format(totalsrv))
+        print(Fore.CYAN + "----------------------------------------------------")
+        print(Fore.YELLOW + "Total Admin Hashes on Workstations: {}".format(totaladminwks))
+        print(Fore.YELLOW + "Total Admin Hashes on Servers: {}".format(totaladminsrv))
         print(Fore.CYAN + "----------------------------------------------------")
         for username in admin_hash_found:
             print(Fore.YELLOW + "Username: {}".format(username))
