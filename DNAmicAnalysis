@@ -6,7 +6,7 @@ import logging
 import os
 
 import logzero
-from dnamic_analysis import Database, DomainCheck, Metrics
+from dnamic_analysis import Database, DomainCheck, Metrics, Excel
 from logzero import logger
 from tests import Tests
 
@@ -35,8 +35,15 @@ def main(args):
 
     logger.info("Arguments received: {}".format(args))
 
+    # Database class init
     db = Database(args.database_file, args.disabled)
 
+    # Excel class init
+    excel = Excel()
+    workbook = excel.create()
+    worksheet = excel.add(workbook, args.domain.lower())
+
+    # Declare svc, adm, and both arrays properly
     svc_array = args.svc_regex.replace(' ', '').split(',')
     adm_array = args.adm_regex.replace(' ', '').split(',')
     regex_array = svc_array + adm_array
@@ -73,7 +80,9 @@ def main(args):
             domainAverage[2],
             domainPercent[0],
             domainPercent[1],
-            domainPercent[2])
+            domainPercent[2],
+            None,
+            None)
         if args.test is False:
             input("Press ENTER to continue...")
         print()
@@ -197,28 +206,34 @@ def main(args):
 
     unique_expired_domain = db.exec_fromfile("data/sql/UniqueExpiredDomainPrivID.sql")
 
-    uniqueDomainMaxSorted = Metrics.unique_domain_max(unique_expired_domain)
-    uniqueDomainAverage = Metrics.unique_domain_avg(unique_expired_domain)
-    uniqueDomainPercent = Metrics.unique_domain_percent(unique_expired_domain, len(unique_domain_admins), uniqueDomainMaxSorted)
+    if unique_expired_domain:
+        uniqueDomainMaxSorted = Metrics.unique_domain_max(unique_expired_domain)
+        uniqueDomainAverage = Metrics.unique_domain_avg(unique_expired_domain)
+        uniqueDomainPercent = Metrics.unique_domain_percent(unique_expired_domain, len(unique_domain_admins), uniqueDomainMaxSorted)
     
-    uniqueDomainNames = []
-    for x in range(len(unique_expired_domain)):
-        uniqueDomainNames.append(unique_expired_domain[x][0])
+        uniqueDomainNames = []
+        for x in range(len(unique_expired_domain)):
+            uniqueDomainNames.append(unique_expired_domain[x][0])
+    else:
+        null_check = True
 
     # If --output detected, make results verbose to console
-    if args.output is True:
-        Tests.unique_domain_expired(
-            uniqueDomainMaxSorted,
-            uniqueDomainAverage[0],
-            uniqueDomainAverage[1],
-            uniqueDomainAverage[2],
-            uniqueDomainPercent[0],
-            uniqueDomainPercent[1],
-            uniqueDomainPercent[2],
-            uniqueDomainNames)
-        if args.test is False:
-            input("Press ENTER to continue...")
-        print()
+    if null_check is True:
+        Tests.unique_domain_expired_null()
+    else:
+        if args.output is True:
+            Tests.unique_domain_expired(
+                uniqueDomainMaxSorted,
+                uniqueDomainAverage[0],
+                uniqueDomainAverage[1],
+                uniqueDomainAverage[2],
+                uniqueDomainPercent[0],
+                uniqueDomainPercent[1],
+                uniqueDomainPercent[2],
+                uniqueDomainNames)
+            if args.test is False:
+                input("Press ENTER to continue...")
+            print()
 
     ########################################
     ## Personal Accounts Running Services ##
