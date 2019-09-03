@@ -206,7 +206,7 @@ def main(args):
 
     unique_expired_domain = db.exec_fromfile("data/sql/UniqueExpiredDomainPrivID.sql")
     null_check = False
-    
+
     if unique_expired_domain:
         uniqueDomainMaxSorted = Metrics.unique_domain_max(unique_expired_domain)
         uniqueDomainAverage = Metrics.unique_domain_avg(unique_expired_domain)
@@ -351,12 +351,13 @@ def main(args):
     hashes_found_on_multiple = db.exec_fromfile("data/sql/HashesFoundOnMultiple.sql")
     hashes_found_on_multiple_admins = db.exec_fromfile("data/sql/HashesFoundOnMultipleAdmins.sql")
     total_privileged_ids = db.exec_fromfile("data/sql/TotalPrivilegedIDs.sql")
+    total_hash_srv = 0
+    total_hash_wks = 0
+    total_hash_name = []
+    total_hash_admins_srv = 0
+    total_hash_admins_wks = 0
 
     if hashes_found_on_multiple:
-        total_hash_srv = 0
-        total_hash_wks = 0
-        total_hash_name = []
-        
         for x in range(len(hashes_found_on_multiple)):
             total_hash_srv += hashes_found_on_multiple[x][4]
             total_hash_wks += hashes_found_on_multiple[x][3]
@@ -370,12 +371,10 @@ def main(args):
                     admin_hash_found.append(hash_name)
 
     # This is looking for hashes returned that are in the Domain Group "Domain Admins"
-    if hashes_found_on_multiple_admins:
-        total_hash_admins_srv = 0
-        total_hash_admins_wks = 0
-        for x in range(len(hashes_found_on_multiple_admins)):
-            total_hash_admins_srv += hashes_found_on_multiple_admins[x][4]
-            total_hash_admins_wks += hashes_found_on_multiple_admins[x][3]
+        if hashes_found_on_multiple_admins:
+            for x in range(len(hashes_found_on_multiple_admins)):
+                total_hash_admins_srv += hashes_found_on_multiple_admins[x][4]
+                total_hash_admins_wks += hashes_found_on_multiple_admins[x][3]
 
         #admin_hash_sorted = sorted(admin_hash_found, key=str.lower)
 
