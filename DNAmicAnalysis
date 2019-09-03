@@ -205,7 +205,8 @@ def main(args):
     ##########################################
 
     unique_expired_domain = db.exec_fromfile("data/sql/UniqueExpiredDomainPrivID.sql")
-
+    null_check = False
+    
     if unique_expired_domain:
         uniqueDomainMaxSorted = Metrics.unique_domain_max(unique_expired_domain)
         uniqueDomainAverage = Metrics.unique_domain_avg(unique_expired_domain)
