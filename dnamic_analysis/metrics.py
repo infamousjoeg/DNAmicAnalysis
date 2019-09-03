@@ -108,11 +108,11 @@ class Metrics(object):
 
 
     def unique_domain_max(sqlresults):
-        unique_domain_max_sorted = sorted(sqlresults,
-                                    key=lambda unique_expired_domain: sqlresults[0],
-                                    reverse=False)
-        logger.info("Ordered Non-Compliant Domain Admins ascending by Username")
-        return unique_domain_max_sorted
+            unique_domain_max_sorted = sorted(sqlresults,
+                                        key=lambda unique_expired_domain: sqlresults[0],
+                                        reverse=False)
+            logger.info("Ordered Non-Compliant Domain Admins ascending by Username")
+            return unique_domain_max_sorted
 
 
     def unique_domain_avg(sqlresults):

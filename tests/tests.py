@@ -1,4 +1,10 @@
-from colorama import init, deinit, Fore, Style
+import os
+import sys
+
+from colorama import Fore, Style, deinit, init
+
+sys.path.append(os.path.abspath('..'))
+from dnamic_analysis import Excel
 
 
 class Tests(object):
@@ -7,7 +13,7 @@ class Tests(object):
         init()
 
 
-    def domain_expired(max_sorted,avg_sum,avg_len,avg_overall,percent_len,all_len,percent_overall):
+    def domain_expired(max_sorted,avg_sum,avg_len,avg_overall,percent_len,all_len,percent_overall,excel_object,worksheet):
         print(Fore.CYAN + "====================================================")
         print(Fore.RED + "Expired Domain Privileged IDs")
         print(Fore.CYAN + "----------------------------------------------------")
@@ -18,6 +24,8 @@ class Tests(object):
         print(Fore.CYAN + "----------------------------------------------------")
         print(Fore.YELLOW + "Total Percent Non-Compliant: {} / {} = {:.2%}".format(percent_len,all_len,percent_overall))
         print(Fore.CYAN + "====================================================")
+
+        # excel_object.write(worksheet, col, row, data, style)
 
         print(Style.RESET_ALL)
         deinit()
@@ -206,6 +214,15 @@ class Tests(object):
         print(Fore.CYAN + "----------------------------------------------------")
         for username in domain_admins:
             print(Fore.YELLOW + "Username: {}".format(username))
+        print(Fore.CYAN + "====================================================")
+        print(Style.RESET_ALL)
+        deinit()
+
+    def unique_domain_expired_null():
+        print(Fore.CYAN + "====================================================")
+        print(Fore.RED + "Unique Expired Domain Admins")
+        print(Fore.CYAN + "----------------------------------------------------")
+        print(Fore.YELLOW + "No unique expired domain admins returned.")
         print(Fore.CYAN + "====================================================")
         print(Style.RESET_ALL)
         deinit()

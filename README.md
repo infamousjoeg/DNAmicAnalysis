@@ -88,9 +88,9 @@ The metrics reported in this application are based on SQL queries ran on the DNA
    
    `$ python36 -m pip install -r requirements.txt`
 
-8. Run DNAmicAnalysis.py with proper arguments as outlined in the [Usage](#usage) section below.
+8. Run DNAmicAnalysis with proper arguments as outlined in the [Usage](#usage) section below.
    
-   `$ python36 DNAmicAnalysis.py data/test/DNA_time_date.sql -d domain.com -s "svc, service" -a "adm, admin"`
+   `$ python36 DNAmicAnalysis data/test/DNA_time_date.sql -d domain.com -s "svc, service" -a "adm, admin"`
 
 #### Ubuntu/Debian
 
@@ -118,9 +118,9 @@ The metrics reported in this application are based on SQL queries ran on the DNA
    
    `$ python36 -m pip install -r requirements.txt`
 
-7. Run DNAmicAnalysis.py with proper arguments as outlined in the [Usage](#usage) section below.
+7. Run DNAmicAnalysis with proper arguments as outlined in the [Usage](#usage) section below.
    
-   `$ python36 DNAmicAnalysis.py data/test/DNA_time_date.sql -d domain.com -s "svc, service" -a "adm, admin"`
+   `$ python36 DNAmicAnalysis data/test/DNA_time_date.sql -d domain.com -s "svc, service" -a "adm, admin"`
 
 ### MacOS
 
@@ -140,9 +140,9 @@ The metrics reported in this application are based on SQL queries ran on the DNA
    
    `$ pip install -r requirements.txt`
 
-7. Run DNAmicAnalysis.py with proper arguments as outlined in the [Usage](#usage) section below.
+7. Run DNAmicAnalysis with proper arguments as outlined in the [Usage](#usage) section below.
    
-   `$ ./DNAmicAnalysis.py data/test/DNA_time_date.sql -d domain.com -s "svc, service" -a "adm, admin"`
+   `$ ./DNAmicAnalysis data/test/DNA_time_date.sql -d domain.com -s "svc, service" -a "adm, admin"`
 
 ## Pre-Requisites
 
@@ -161,7 +161,7 @@ The metrics reported in this application are based on SQL queries ran on the DNA
 
 _NOTE: Until a release is available, this is considered a BETA. In a BETA state, the `--output`/`-o` argument will be default. It will not be required to be provided during this phase. Attempting to not display output will not help you in anyway.  Your attempts are futile._
 
-`./DNAmicAnalytics.py path/to/DNA_date_time.sql --domain cyberarkdemo.com --svc-regex "svc, service" --adm-regex "adm, a_, _a, admin"`
+`./DNAmicAnalytics path/to/DNA_date_time.db --domain cyberarkdemo.com --svc-regex "svc, service" --adm-regex "adm, a_, _a, admin"`
 
 ![](img/cli-help.png)
 
@@ -183,8 +183,8 @@ _NOTE: Until a release is available, this is considered a BETA. In a BETA state,
 ## Version
 
 ```shell
-$ ./DNAmicAnalysis.py --version
-DNAmicAnalysis.py (version 0.2.0-beta.1)
+$ ./DNAmicAnalysis --version
+DNAmicAnalysis (version 0.2.0-beta.1)
 ```
 
 ## Example Output
@@ -196,7 +196,7 @@ DNAmicAnalysis.py (version 0.2.0-beta.1)
 ### Plaintext Example
 
 ```plaintext
-$ ./DNAmicAnalysis.py data/test/DNA_2019-05-21_08-57-43-PM.db --svc-regex "svc, service" --adm-regex "adm, admin"
+$ ./DNAmicAnalysis data/test/DNA_2019-05-21_08-57-43-PM.db --svc-regex "svc, service" --adm-regex "adm, admin"
 ====================================================
 Expired Domain Privileged IDs
 ----------------------------------------------------
