@@ -10,6 +10,7 @@ Automation for CyberArk's Discovery & Audit (DNA) deep dive analysis reports.
 
 - [About](#about)
   - [Project Info](#project-info)
+- [IMPORTANT NOTES](#important-notes)
 - [Installation](#installation)
   - [Windows](#windows)
   - [Linux](#linux)
@@ -20,6 +21,7 @@ Automation for CyberArk's Discovery & Audit (DNA) deep dive analysis reports.
 - [Usage](#usage)
   - [Required Parameters](#required-parameters)
   - [Optional Parameters](#optional-parameters)
+  - [Output](#output)
 - [Version](#version)
 - [Example Output](#example-output)
   - [Video Example](#video-example)
@@ -36,6 +38,13 @@ DNAmic Analysis is a command-line application written in Python 3 for OS indepen
 The metrics presented from this application were chosen based on deep dive analysis presentations the PAS Programs Office conducts on a frequent basis.  If you have a metric you'd like added, please feel free to add it to this codebase by opening a Pull Request to have your contribution added.
 
 The metrics reported in this application are based on SQL queries ran on the DNA SQLite3 database produced during its scans.  An unmodified DNA SQLite3 database is required for this application to work.  If your DNA SQLite3 database filename is modified, you will receive an error and warning to correct it.
+
+## IMPORTANT NOTES
+
+* Make sure you run DNA.exe as Administrator when scanning.  This ensures the DNA database file is saved properly with timestamping.
+* The filename DNA.db **will not work.**
+* If you receive a DNA.db file, modify the filename to the following format: `DNA_year-month-day_12hr-min-sec-AMPM.db`
+  * e.g. `DNA_2019-05-30_10-31-22-PM.db`
 
 ## Installation
 
@@ -180,11 +189,17 @@ _NOTE: Until a release is available, this is considered a BETA. In a BETA state,
 * `--version`, `-v` - Reports the version of this application
 * `--test`, `-t` - Suppresses the "Press ENTER to continue" requirement of `--output`, `-o` for automated testing
 
+### Output
+
+If the argument `--output` is passed, the metrics will be output to STDOUT on the console.  In addition, an Excel workbook in .xls format will be created and will contain the bulk data of the metrics' output.  The file is created in the same directory that the `DNAmicAnalysis` executable is run from.
+
+The format for the Excel filename is `DNAmicAnalysis_<domain>_<date>_<time>.xls`.
+
 ## Version
 
 ```shell
 $ ./DNAmicAnalysis --version
-DNAmicAnalysis (version 0.2.0-beta.1)
+DNAmicAnalysis (version 0.3.0-beta.2)
 ```
 
 ## Example Output
@@ -196,7 +211,7 @@ DNAmicAnalysis (version 0.2.0-beta.1)
 ### Plaintext Example
 
 ```plaintext
-$ ./DNAmicAnalysis data/test/DNA_2019-05-21_08-57-43-PM.db --svc-regex "svc, service" --adm-regex "adm, admin"
+$ ./DNAmicAnalysis data/test/DNA_2019-05-21_08-57-43-PM.db --domain cyberarkdemo.com --svc-regex "svc, service" --adm-regex "adm, admin"
 ====================================================
 Expired Domain Privileged IDs
 ----------------------------------------------------
