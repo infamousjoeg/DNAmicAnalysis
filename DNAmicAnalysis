@@ -16,6 +16,8 @@ __version__ = "0.3.0-beta.2"
 __license__ = "MIT"
 
 log_timestamp = time.strftime("%Y-%m-%d_%H-%M-%S")
+if not os.path.exists('logs'):
+    os.makedirs('logs')
 LOGFILE = 'logs/DNAmicAnalysis_{}.log'.format(log_timestamp)
 
 def config_logger(logfile):
