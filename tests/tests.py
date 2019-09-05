@@ -152,139 +152,143 @@ class Tests(object):
         print(Fore.CYAN + "====================================================")
         print(Fore.RED + "Accounts with Multiple Machine Access")
         print(Fore.CYAN + "----------------------------------------------------")
-        self.excel_object.write(self.worksheet, 5, 0, 'Accounts with Multiple Machine Access', 'header')
-        if len(multi_machine_accts[0]) != 0:
-            print(Fore.YELLOW + "> 95% Access")
-            self.excel_object.write(self.worksheet, self.col, 1, '> 95% Access', 'subheader')
-            print(Fore.CYAN + "----------------------------------------------------" + Fore.YELLOW)
-            row = 2
-            for username in multi_machine_accts[0]:
-                print("Username: {}".format(username))
-                self.excel_object.write(self.worksheet, self.col, row, username)
-                row += 1
-            self.col += 1
-            print(Style.BRIGHT + "TOTAL ACCOUNTS: {}".format(len(multi_machine_accts[0])) + Style.NORMAL)
+        if multi_machine_accts is not False:
+            self.excel_object.write(self.worksheet, 5, 0, 'Accounts with Multiple Machine Access', 'header')
+            if len(multi_machine_accts[0]) != 0:
+                print(Fore.YELLOW + "> 95% Access")
+                self.excel_object.write(self.worksheet, self.col, 1, '> 95% Access', 'subheader')
+                print(Fore.CYAN + "----------------------------------------------------" + Fore.YELLOW)
+                row = 2
+                for username in multi_machine_accts[0]:
+                    print("Username: {}".format(username))
+                    self.excel_object.write(self.worksheet, self.col, row, username)
+                    row += 1
+                self.col += 1
+                print(Style.BRIGHT + "TOTAL ACCOUNTS: {}".format(len(multi_machine_accts[0])) + Style.NORMAL)
+                print(Fore.CYAN + "====================================================")
+            if len(multi_machine_accts[1]) != 0:
+                print(Fore.YELLOW + "90-95% Access")
+                self.excel_object.write(self.worksheet, self.col, 1, '90-95% Access', 'subheader')
+                print(Fore.CYAN + "----------------------------------------------------" + Fore.YELLOW)
+                row = 2
+                for username in multi_machine_accts[1]:
+                    print("Username: {}".format(username))
+                    self.excel_object.write(self.worksheet, self.col, row, username)
+                    row += 1
+                print(Style.BRIGHT + "TOTAL ACCOUNTS: {}".format(len(multi_machine_accts[1])) + Style.NORMAL)
+                print(Fore.CYAN + "====================================================")
+                self.col += 1
+            if len(multi_machine_accts[2]) != 0:
+                print(Fore.YELLOW + "80-90% Access")
+                self.excel_object.write(self.worksheet, self.col, 1, '80-90% Access', 'subheader')
+                print(Fore.CYAN + "----------------------------------------------------" + Fore.YELLOW)
+                row = 2
+                for username in multi_machine_accts[2]:
+                    print("Username: {}".format(username))
+                    self.excel_object.write(self.worksheet, self.col, row, username)
+                    row += 1
+                print(Style.BRIGHT + "TOTAL ACCOUNTS: {}".format(len(multi_machine_accts[2])) + Style.NORMAL)
+                print(Fore.CYAN + "====================================================")
+                self.col += 1
+            if len(multi_machine_accts[3]) != 0:
+                print(Fore.YELLOW + "70-80% Access")
+                self.excel_object.write(self.worksheet, self.col, 1, '70-80% Access', 'subheader')
+                print(Fore.CYAN + "----------------------------------------------------" + Fore.YELLOW)
+                row = 2
+                for username in multi_machine_accts[3]:
+                    print("Username: {}".format(username))
+                    self.excel_object.write(self.worksheet, self.col, row, username)
+                    row += 1
+                print(Style.BRIGHT + "TOTAL ACCOUNTS: {}".format(len(multi_machine_accts[3])) + Style.NORMAL)
+                print(Fore.CYAN + "====================================================")
+                self.col += 1
+            if len(multi_machine_accts[4]) != 0:
+                print(Fore.YELLOW + "60-70% Access")
+                self.excel_object.write(self.worksheet, self.col, 1, '60-70% Access', 'subheader')
+                print(Fore.CYAN + "----------------------------------------------------" + Fore.YELLOW)
+                row = 2
+                for username in multi_machine_accts[4]:
+                    print("Username: {}".format(username))
+                    self.excel_object.write(self.worksheet, self.col, row, username)
+                    row += 1
+                print(Style.BRIGHT + "TOTAL ACCOUNTS: {}".format(len(multi_machine_accts[4])) + Style.NORMAL)
+                print(Fore.CYAN + "====================================================")
+                self.col += 1
+            if len(multi_machine_accts[5]) != 0:
+                print(Fore.YELLOW + "50-60% Access")
+                self.excel_object.write(self.worksheet, self.col, 1, '50-60% Access', 'subheader')
+                print(Fore.CYAN + "----------------------------------------------------" + Fore.YELLOW)
+                row = 2
+                for username in multi_machine_accts[5]:
+                    print("Username: {}".format(username))
+                    self.excel_object.write(self.worksheet, self.col, row, username)
+                    row += 1
+                print(Style.BRIGHT + "TOTAL ACCOUNTS: {}".format(len(multi_machine_accts[5])) + Style.NORMAL)
+                print(Fore.CYAN + "====================================================")
+                self.col += 1
+            if len(multi_machine_accts[6]) != 0:
+                print(Fore.YELLOW + "40-50% Access")
+                self.excel_object.write(self.worksheet, self.col, 1, '40-50% Access', 'subheader')
+                print(Fore.CYAN + "----------------------------------------------------" + Fore.YELLOW)
+                row = 2
+                for username in multi_machine_accts[6]:
+                    print("Username: {}".format(username))
+                    self.excel_object.write(self.worksheet, self.col, row, username)
+                    row += 1
+                print(Style.BRIGHT + "TOTAL ACCOUNTS: {}".format(len(multi_machine_accts[6])) + Style.NORMAL)
+                print(Fore.CYAN + "====================================================")
+                self.col += 1
+            if len(multi_machine_accts[7]) != 0:
+                print(Fore.YELLOW + "30-40% Access")
+                self.excel_object.write(self.worksheet, self.col, 1, '30-40% Access', 'subheader')
+                print(Fore.CYAN + "----------------------------------------------------" + Fore.YELLOW)
+                row = 2
+                for username in multi_machine_accts[7]:
+                    print("Username: {}".format(username))
+                    self.excel_object.write(self.worksheet, self.col, row, username)
+                    row += 1
+                print(Style.BRIGHT + "TOTAL ACCOUNTS: {}".format(len(multi_machine_accts[7])) + Style.NORMAL)
+                print(Fore.CYAN + "====================================================")
+                self.col += 1
+            if len(multi_machine_accts[8]) != 0:
+                print(Fore.YELLOW + "20-30% Access")
+                self.excel_object.write(self.worksheet, self.col, 1, '20-30% Access', 'subheader')
+                print(Fore.CYAN + "----------------------------------------------------" + Fore.YELLOW)
+                row = 2
+                for username in multi_machine_accts[8]:
+                    print("Username: {}".format(username))
+                    self.excel_object.write(self.worksheet, self.col, row, username)
+                    row += 1
+                print(Style.BRIGHT + "TOTAL ACCOUNTS: {}".format(len(multi_machine_accts[8])) + Style.NORMAL)
+                print(Fore.CYAN + "====================================================")
+                self.col += 1
+            if len(multi_machine_accts[9]) != 0:
+                print(Fore.YELLOW + "10-20% Access")
+                self.excel_object.write(self.worksheet, self.col, 1, '10-20% Access', 'subheader')
+                print(Fore.CYAN + "----------------------------------------------------" + Fore.YELLOW)
+                row = 2
+                for username in multi_machine_accts[9]:
+                    print("Username: {}".format(username))
+                    self.excel_object.write(self.worksheet, self.col, row, username)
+                    row += 1
+                print(Style.BRIGHT + "TOTAL ACCOUNTS: {}".format(len(multi_machine_accts[9])) + Style.NORMAL)
+                print(Fore.CYAN + "====================================================")
+                self.col += 1
+            if len(multi_machine_accts[10]) != 0:
+                print(Fore.YELLOW + "< 10% Access")
+                self.excel_object.write(self.worksheet, self.col, 1, '< 10% Access', 'subheader')
+                print(Fore.CYAN + "----------------------------------------------------" + Fore.YELLOW)
+                row = 2
+                for username in multi_machine_accts[10]:
+                    print("Username: {}".format(username))
+                    self.excel_object.write(self.worksheet, self.col, row, username)
+                    row += 1
+                print(Style.BRIGHT + "TOTAL ACCOUNTS: {}".format(len(multi_machine_accts[10])) + Style.NORMAL)
+                print(Fore.CYAN + "====================================================")
+                self.col += 1
+        else:
+            print("None found.")
             print(Fore.CYAN + "====================================================")
-        if len(multi_machine_accts[1]) != 0:
-            print(Fore.YELLOW + "90-95% Access")
-            self.excel_object.write(self.worksheet, self.col, 1, '90-95% Access', 'subheader')
-            print(Fore.CYAN + "----------------------------------------------------" + Fore.YELLOW)
-            row = 2
-            for username in multi_machine_accts[1]:
-                print("Username: {}".format(username))
-                self.excel_object.write(self.worksheet, self.col, row, username)
-                row += 1
-            print(Style.BRIGHT + "TOTAL ACCOUNTS: {}".format(len(multi_machine_accts[1])) + Style.NORMAL)
-            print(Fore.CYAN + "====================================================")
-            self.col += 1
-        if len(multi_machine_accts[2]) != 0:
-            print(Fore.YELLOW + "80-90% Access")
-            self.excel_object.write(self.worksheet, self.col, 1, '80-90% Access', 'subheader')
-            print(Fore.CYAN + "----------------------------------------------------" + Fore.YELLOW)
-            row = 2
-            for username in multi_machine_accts[2]:
-                print("Username: {}".format(username))
-                self.excel_object.write(self.worksheet, self.col, row, username)
-                row += 1
-            print(Style.BRIGHT + "TOTAL ACCOUNTS: {}".format(len(multi_machine_accts[2])) + Style.NORMAL)
-            print(Fore.CYAN + "====================================================")
-            self.col += 1
-        if len(multi_machine_accts[3]) != 0:
-            print(Fore.YELLOW + "70-80% Access")
-            self.excel_object.write(self.worksheet, self.col, 1, '70-80% Access', 'subheader')
-            print(Fore.CYAN + "----------------------------------------------------" + Fore.YELLOW)
-            row = 2
-            for username in multi_machine_accts[3]:
-                print("Username: {}".format(username))
-                self.excel_object.write(self.worksheet, self.col, row, username)
-                row += 1
-            print(Style.BRIGHT + "TOTAL ACCOUNTS: {}".format(len(multi_machine_accts[3])) + Style.NORMAL)
-            print(Fore.CYAN + "====================================================")
-            self.col += 1
-        if len(multi_machine_accts[4]) != 0:
-            print(Fore.YELLOW + "60-70% Access")
-            self.excel_object.write(self.worksheet, self.col, 1, '60-70% Access', 'subheader')
-            print(Fore.CYAN + "----------------------------------------------------" + Fore.YELLOW)
-            row = 2
-            for username in multi_machine_accts[4]:
-                print("Username: {}".format(username))
-                self.excel_object.write(self.worksheet, self.col, row, username)
-                row += 1
-            print(Style.BRIGHT + "TOTAL ACCOUNTS: {}".format(len(multi_machine_accts[4])) + Style.NORMAL)
-            print(Fore.CYAN + "====================================================")
-            self.col += 1
-        if len(multi_machine_accts[5]) != 0:
-            print(Fore.YELLOW + "50-60% Access")
-            self.excel_object.write(self.worksheet, self.col, 1, '50-60% Access', 'subheader')
-            print(Fore.CYAN + "----------------------------------------------------" + Fore.YELLOW)
-            row = 2
-            for username in multi_machine_accts[5]:
-                print("Username: {}".format(username))
-                self.excel_object.write(self.worksheet, self.col, row, username)
-                row += 1
-            print(Style.BRIGHT + "TOTAL ACCOUNTS: {}".format(len(multi_machine_accts[5])) + Style.NORMAL)
-            print(Fore.CYAN + "====================================================")
-            self.col += 1
-        if len(multi_machine_accts[6]) != 0:
-            print(Fore.YELLOW + "40-50% Access")
-            self.excel_object.write(self.worksheet, self.col, 1, '40-50% Access', 'subheader')
-            print(Fore.CYAN + "----------------------------------------------------" + Fore.YELLOW)
-            row = 2
-            for username in multi_machine_accts[6]:
-                print("Username: {}".format(username))
-                self.excel_object.write(self.worksheet, self.col, row, username)
-                row += 1
-            print(Style.BRIGHT + "TOTAL ACCOUNTS: {}".format(len(multi_machine_accts[6])) + Style.NORMAL)
-            print(Fore.CYAN + "====================================================")
-            self.col += 1
-        if len(multi_machine_accts[7]) != 0:
-            print(Fore.YELLOW + "30-40% Access")
-            self.excel_object.write(self.worksheet, self.col, 1, '30-40% Access', 'subheader')
-            print(Fore.CYAN + "----------------------------------------------------" + Fore.YELLOW)
-            row = 2
-            for username in multi_machine_accts[7]:
-                print("Username: {}".format(username))
-                self.excel_object.write(self.worksheet, self.col, row, username)
-                row += 1
-            print(Style.BRIGHT + "TOTAL ACCOUNTS: {}".format(len(multi_machine_accts[7])) + Style.NORMAL)
-            print(Fore.CYAN + "====================================================")
-            self.col += 1
-        if len(multi_machine_accts[8]) != 0:
-            print(Fore.YELLOW + "20-30% Access")
-            self.excel_object.write(self.worksheet, self.col, 1, '20-30% Access', 'subheader')
-            print(Fore.CYAN + "----------------------------------------------------" + Fore.YELLOW)
-            row = 2
-            for username in multi_machine_accts[8]:
-                print("Username: {}".format(username))
-                self.excel_object.write(self.worksheet, self.col, row, username)
-                row += 1
-            print(Style.BRIGHT + "TOTAL ACCOUNTS: {}".format(len(multi_machine_accts[8])) + Style.NORMAL)
-            print(Fore.CYAN + "====================================================")
-            self.col += 1
-        if len(multi_machine_accts[9]) != 0:
-            print(Fore.YELLOW + "10-20% Access")
-            self.excel_object.write(self.worksheet, self.col, 1, '10-20% Access', 'subheader')
-            print(Fore.CYAN + "----------------------------------------------------" + Fore.YELLOW)
-            row = 2
-            for username in multi_machine_accts[9]:
-                print("Username: {}".format(username))
-                self.excel_object.write(self.worksheet, self.col, row, username)
-                row += 1
-            print(Style.BRIGHT + "TOTAL ACCOUNTS: {}".format(len(multi_machine_accts[9])) + Style.NORMAL)
-            print(Fore.CYAN + "====================================================")
-            self.col += 1
-        if len(multi_machine_accts[10]) != 0:
-            print(Fore.YELLOW + "< 10% Access")
-            self.excel_object.write(self.worksheet, self.col, 1, '< 10% Access', 'subheader')
-            print(Fore.CYAN + "----------------------------------------------------" + Fore.YELLOW)
-            row = 2
-            for username in multi_machine_accts[10]:
-                print("Username: {}".format(username))
-                self.excel_object.write(self.worksheet, self.col, row, username)
-                row += 1
-            print(Style.BRIGHT + "TOTAL ACCOUNTS: {}".format(len(multi_machine_accts[10])) + Style.NORMAL)
-            print(Fore.CYAN + "====================================================")
-            self.col += 1
 
         print(Style.RESET_ALL)
         deinit()

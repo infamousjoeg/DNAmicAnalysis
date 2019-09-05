@@ -170,7 +170,10 @@ def main(args):
     multi_machine_accts = db.exec_fromfile("data/sql/MultipleMachineAccounts.sql")
     all_machines_count = db.exec_fromfile("data/sql/TotalMachinesCount.sql")
 
-    multiMachineAccounts = Metrics.multi_machine_accts(multi_machine_accts, all_machines_count[0][0])
+    if multi_machine_accts:
+        multiMachineAccounts = Metrics.multi_machine_accts(multi_machine_accts, all_machines_count[0][0])
+    else:
+        multiMachineAccounts = False
 
     # If --output detected, make results verbose to console
     if args.output is True:
