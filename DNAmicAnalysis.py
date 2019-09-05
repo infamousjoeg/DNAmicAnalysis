@@ -4,17 +4,21 @@
 import argparse
 import logging
 import os
+import time
 
 import logzero
-from dnamic_analysis import Database, DomainCheck, Metrics
+from dnamic_analysis import Database, DomainCheck, Excel, Metrics
 from logzero import logger
 from tests import Tests
 
 __author__ = "Joe Garcia, CISSP"
-__version__ = "0.2.0-beta.1"
+__version__ = "0.3.0-beta.2"
 __license__ = "MIT"
 
-LOGFILE = 'DNAmicAnalysis.log'
+log_timestamp = time.strftime("%Y-%m-%d_%H-%M-%S")
+if not os.path.exists('logs'):
+    os.makedirs('logs')
+LOGFILE = 'logs/DNAmicAnalysis_{}.log'.format(log_timestamp)
 
 def config_logger(logfile):
     ## Configures logging of this application ##
@@ -35,8 +39,18 @@ def main(args):
 
     logger.info("Arguments received: {}".format(args))
 
+    # Database class init
     db = Database(args.database_file, args.disabled)
 
+    # Excel class init
+    excel = Excel(args.domain.lower())
+    workbook = excel.create()
+    worksheet = excel.add(workbook, args.domain.lower())
+
+    # Tests class init
+    tests = Tests(excel, workbook, worksheet)
+
+    # Declare svc, adm, and both arrays properly
     svc_array = args.svc_regex.replace(' ', '').split(',')
     adm_array = args.adm_regex.replace(' ', '').split(',')
     regex_array = svc_array + adm_array
@@ -66,7 +80,7 @@ def main(args):
 
     # If --output detected, make results verbose to console
     if args.output is True:
-        Tests.domain_expired(
+        tests.domain_expired(
             domainMaxSorted,
             domainAverage[0],
             domainAverage[1],
@@ -86,8 +100,8 @@ def main(args):
     all_local_count = db.exec_fromfile("data/sql/LocalAdministratorsCount.sql")
 
     all_local_unique_count = []
-    for x in range(len(all_local_count)):
-        all_local_unique_count.append(all_local_count[x][0])
+    for username in all_local_count:
+        all_local_unique_count.append(username)
 
     localMaxSorted = Metrics.local_max(expired_local)
     localAverage = Metrics.local_avg(expired_local)
@@ -95,7 +109,7 @@ def main(args):
 
     # If --output detected, make results verbose to console
     if args.output is True:
-        Tests.local_expired(
+        tests.local_expired(
             localMaxSorted,
             localAverage[0],
             localAverage[1],
@@ -117,7 +131,7 @@ def main(args):
 
     # If --output detected, make results verbose to console
     if args.output is True:
-        Tests.local_expired_machines(localMaxGrouped, len(all_local_count), len(localMaxGrouped)/len(all_local_count))
+        tests.local_expired_machines(localMaxGrouped, len(all_local_count), len(localMaxGrouped)/len(all_local_count))
         if args.test is False:
             input("Press ENTER to continue...")
         print()
@@ -127,10 +141,11 @@ def main(args):
     ##############################
 
     abandoned_local = db.exec_fromfile("data/sql/LocalAbandonedAccounts.sql")
+    abandoned_local_count = db.exec_fromfile("data/sql/LocalAbandonedCount.sql")
 
     # If --output detected, make results verbose to console
     if args.output is True:
-        Tests.local_abandoned(len(abandoned_local), len(all_local_count))
+        tests.local_abandoned(abandoned_local, len(abandoned_local_count))
         if args.test is False:
             input("Press ENTER to continue...")
         print()
@@ -143,7 +158,7 @@ def main(args):
 
     # If --output detected, make results verbose to console
     if args.output is True:
-        Tests.domain_abandoned(len(abandoned_domain), len(all_domain_count))
+        tests.domain_abandoned(abandoned_domain, len(all_domain_count))
         if args.test is False:
             input("Press ENTER to continue...")
         print()
@@ -155,11 +170,14 @@ def main(args):
     multi_machine_accts = db.exec_fromfile("data/sql/MultipleMachineAccounts.sql")
     all_machines_count = db.exec_fromfile("data/sql/TotalMachinesCount.sql")
 
-    multiMachineAccounts = Metrics.multi_machine_accts(multi_machine_accts, all_machines_count[0][0])
+    if multi_machine_accts:
+        multiMachineAccounts = Metrics.multi_machine_accts(multi_machine_accts, all_machines_count[0][0])
+    else:
+        multiMachineAccounts = False
 
     # If --output detected, make results verbose to console
     if args.output is True:
-        Tests.multi_machine_accts(multiMachineAccounts)
+        tests.multi_machine_accts(multiMachineAccounts)
         if args.test is False:
             input("Press ENTER to continue...")
         print()
@@ -184,7 +202,7 @@ def main(args):
 
     # If --output detected, make results verbose to console
     if args.output is True:
-        Tests.unique_domain_admins(
+        tests.unique_domain_admins(
             unique_domain_admins, (unique_svcacct_domain_admins+unique_svcacct_domain_admins2),
             set(unique_svcacct_domadm_usernames), set(unique_svcacct_domadm2_usernames))
         if args.test is False:
@@ -196,29 +214,31 @@ def main(args):
     ##########################################
 
     unique_expired_domain = db.exec_fromfile("data/sql/UniqueExpiredDomainPrivID.sql")
+    null_check = False
 
-    uniqueDomainMaxSorted = Metrics.unique_domain_max(unique_expired_domain)
-    uniqueDomainAverage = Metrics.unique_domain_avg(unique_expired_domain)
-    uniqueDomainPercent = Metrics.unique_domain_percent(unique_expired_domain, len(unique_domain_admins), uniqueDomainMaxSorted)
-    
-    uniqueDomainNames = []
-    for x in range(len(unique_expired_domain)):
-        uniqueDomainNames.append(unique_expired_domain[x][0])
+    if unique_expired_domain:
+        uniqueDomainMaxSorted = Metrics.unique_domain_max(unique_expired_domain)
+        uniqueDomainAverage = Metrics.unique_domain_avg(unique_expired_domain)
+        uniqueDomainPercent = Metrics.unique_domain_percent(unique_expired_domain, len(unique_domain_admins), uniqueDomainMaxSorted)
+    else:
+        null_check = True
 
     # If --output detected, make results verbose to console
-    if args.output is True:
-        Tests.unique_domain_expired(
-            uniqueDomainMaxSorted,
-            uniqueDomainAverage[0],
-            uniqueDomainAverage[1],
-            uniqueDomainAverage[2],
-            uniqueDomainPercent[0],
-            uniqueDomainPercent[1],
-            uniqueDomainPercent[2],
-            uniqueDomainNames)
-        if args.test is False:
-            input("Press ENTER to continue...")
-        print()
+    if null_check is True:
+        tests.unique_domain_expired_null()
+    else:
+        if args.output is True:
+            tests.unique_domain_expired(
+                uniqueDomainMaxSorted,
+                uniqueDomainAverage[0],
+                uniqueDomainAverage[1],
+                uniqueDomainAverage[2],
+                uniqueDomainPercent[0],
+                uniqueDomainPercent[1],
+                uniqueDomainPercent[2])
+            if args.test is False:
+                input("Press ENTER to continue...")
+            print()
 
     ########################################
     ## Personal Accounts Running Services ##
@@ -228,8 +248,8 @@ def main(args):
 
     # If --output detected, make results verbose to console
     if args.output is True:
-        Tests.personal_accts_running_svcs(
-            len(personal_accts_running_svcs))
+        tests.personal_accts_running_svcs(
+            personal_accts_running_svcs)
         if args.test is False:
             input("Press ENTER to continue...")
         print()
@@ -242,8 +262,8 @@ def main(args):
 
     # If --output detected, make results verbose to console
     if args.output is True:
-        Tests.non_admin_with_local_admin(
-            len(non_admin_with_local_admin))
+        tests.non_admin_with_local_admin(
+            non_admin_with_local_admin)
         if args.test is False:
             input("Press ENTER to continue...")
         print()
@@ -255,13 +275,18 @@ def main(args):
     unique_expired_svcs = db.exec_fromfile("data/sql/UniqueExpiredServiceAccounts.sql")
     svc_accts_count = db.exec_fromfile("data/sql/ServiceAccountsCount.sql")
 
-    uniqueSvcMaxSorted = Metrics.unique_svc_max(unique_expired_svcs)
-    uniqueSvcAverage = Metrics.unique_svc_avg(unique_expired_svcs)
-    uniqueSvcPercent = Metrics.unique_svc_percent(unique_expired_svcs, len(svc_accts_count), len(uniqueSvcMaxSorted))
+    if unique_expired_svcs and svc_accts_count:
+        uniqueSvcMaxSorted = Metrics.unique_svc_max(unique_expired_svcs)
+        uniqueSvcAverage = Metrics.unique_svc_avg(unique_expired_svcs)
+        uniqueSvcPercent = Metrics.unique_svc_percent(unique_expired_svcs, len(svc_accts_count), len(uniqueSvcMaxSorted))
+    else:
+        uniqueSvcMaxSorted = 'No services found.'
+        uniqueSvcAverage = [0, 0, 0]
+        uniqueSvcPercent = [0, 0, 0]
 
     # If --output detected, make results verbose to console
     if args.output is True:
-        Tests.unique_expired_svcs(
+        tests.unique_expired_svcs(
             uniqueSvcMaxSorted,
             uniqueSvcAverage[0],
             uniqueSvcAverage[1],
@@ -286,7 +311,7 @@ def main(args):
 
     # If --output detected, make results verbose to console
     if args.output is True:
-        Tests.clear_text_ids(
+        tests.clear_text_ids(
             clear_text_ids_count,
             clear_text_ids)
         if args.test is False:
@@ -301,7 +326,7 @@ def main(args):
 
     # If --output detected, make results verbose to console
     if args.output is True:
-        Tests.apps_clear_text_passwords(
+        tests.apps_clear_text_passwords(
             unique_clear_text_apps)
         if args.test is False:
             input("Press ENTER to continue...")
@@ -316,8 +341,8 @@ def main(args):
 
     # If --output detected, make results verbose to console
     if args.output is True:
-        Tests.risky_spns(
-            len(risky_spns),
+        tests.risky_spns(
+            risky_spns,
             spns_count[0][0])
         if args.test is False:
             input("Press ENTER to continue...")
@@ -328,13 +353,15 @@ def main(args):
     #######################################
 
     hashes_found_on_multiple = db.exec_fromfile("data/sql/HashesFoundOnMultiple.sql")
+    hashes_found_on_multiple_admins = db.exec_fromfile("data/sql/HashesFoundOnMultipleAdmins.sql")
     total_privileged_ids = db.exec_fromfile("data/sql/TotalPrivilegedIDs.sql")
+    total_hash_srv = 0
+    total_hash_wks = 0
+    total_hash_name = []
+    total_hash_admins_srv = 0
+    total_hash_admins_wks = 0
 
     if hashes_found_on_multiple:
-        total_hash_srv = 0
-        total_hash_wks = 0
-        total_hash_name = []
-        
         for x in range(len(hashes_found_on_multiple)):
             total_hash_srv += hashes_found_on_multiple[x][4]
             total_hash_wks += hashes_found_on_multiple[x][3]
@@ -347,15 +374,23 @@ def main(args):
                 if hash_name == total_privileged_ids[x][0]:
                     admin_hash_found.append(hash_name)
 
+    # This is looking for hashes returned that are in the Domain Group "Domain Admins"
+        if hashes_found_on_multiple_admins:
+            for x in range(len(hashes_found_on_multiple_admins)):
+                total_hash_admins_srv += hashes_found_on_multiple_admins[x][4]
+                total_hash_admins_wks += hashes_found_on_multiple_admins[x][3]
+
         #admin_hash_sorted = sorted(admin_hash_found, key=str.lower)
 
     # If --output detected, make results verbose to console
     if args.output is True:
-        Tests.hashes_found_on_multiple(
+        tests.hashes_found_on_multiple(
             len(unique_hash_name),
             sorted(admin_hash_found, key=str.lower),
             total_hash_srv,
-            total_hash_wks)
+            total_hash_wks,
+            total_hash_admins_srv,
+            total_hash_admins_wks)
         if args.test is False:
             input("Press ENTER to continue...")
         print()
@@ -370,7 +405,7 @@ def main(args):
 
     # If --output detected, make results verbose to console
     if args.output is True:
-        Tests.multi_machine_accts(multiMachineHashes)
+        tests.multi_machine_hashes(multiMachineHashes)
         if args.test is False:
             input("Press ENTER to continue...")
         print()
