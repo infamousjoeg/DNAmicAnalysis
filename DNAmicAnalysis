@@ -141,10 +141,11 @@ def main(args):
     ##############################
 
     abandoned_local = db.exec_fromfile("data/sql/LocalAbandonedAccounts.sql")
+    abandoned_local_count = db.exec_fromfile("data/sql/LocalAbandonedCount.sql")
 
     # If --output detected, make results verbose to console
     if args.output is True:
-        tests.local_abandoned(abandoned_local, len(all_local_count))
+        tests.local_abandoned(abandoned_local, len(abandoned_local_count))
         if args.test is False:
             input("Press ENTER to continue...")
         print()
