@@ -660,7 +660,7 @@ class Tests(object):
                 print("Username: {}".format(username))
                 self.excel_object.write(self.worksheet, self.col, row, username)
                 row += 1
-            print(Style.BRIGHT + "TOTAL ACCOUNTS: {}".format(len(multi_machine_hashehs[9])) + Style.NORMAL)
+            print(Style.BRIGHT + "TOTAL ACCOUNTS: {}".format(len(multi_machine_hashes[9])) + Style.NORMAL)
             print(Fore.CYAN + "====================================================")
             self.col += 1
         if len(multi_machine_hashes[10]) != 0:
