@@ -1,4 +1,4 @@
-name: DNAmic Analysis Ubuntu Test
+name: DNAmic Analysis Windows Test
 
 on: [push]
 
