@@ -1,9 +1,0 @@
-# env:
-#  global:
-#    secure: BszCDTzLjuHXhLrj9EfH+02s3TKAE7J3OQ8kbIeKRqTzmcMz0kYuJWuwBRHtc1KJTmNHWi3vqsb5n3/3oLuBfKPeG2wxXeF2gvfWniXCG+9o7jUZ67/OIeuhlwr73LZR+jg1a7xAljuXUvguKahGjxA9T2zAsKxdu84v7Q9JT5jD8n+vGQueT5CEVdqSivf7WK1cyDESBIspIdpaTwgBmTbfG9j8o6eiwAuOm7Odqk9FnVaM4WcSmGo8v/cgapWOWWH4iD/oOIYeLLOSp5aHbp0QyHaKvqjjzrrLF6KmkYU2f4PEmN2VrAXDas/lR6ydaYzasfX090XHPsPYml/LKVUju8SmE+d85A3uheimpwzSfDkrazOD1dJoQYnGWkoSB6x1SLQAtGhAYs7k0zkTP6o/gyO1wW8qjCurmsgCoQt5slLcRdDlD4+yVkmQZtIf111oyMUnU1iq1m6Pb+IpxuCa3vnC7xxvL4GonoDxqTnGpZc9SJfQhhPenilxBWL5mBBEWonLJRqIZC1d9teWTtKve+9E3WvGLS7rNkwH0lfQXknNKru1A4ZToG7onmO/Ons5xkyL3Q2QxOO0/FpbrdIF3MCc4UYKyXHj1fy5rqZ0krs8L7fnh27obKkt46ZkI+bnw0Ys0GsAfxlV0YdGlfQaHsgmN/Y5xV84oPmpdFk=
-# language: python
-# install: pip3 install -r requirements.txt
-# script: coverage run DNAmicAnalysis.py data/test/DNA_2019-05-21_08-57-43-PM.db -d cyberarkdemo.com -s "svc, service" -a "adm, admin" -t
-# after_success:
-#   - coverage xml
-#   - python-codacy-coverage -r coverage.xml
