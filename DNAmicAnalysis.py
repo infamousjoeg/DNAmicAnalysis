@@ -6,13 +6,15 @@ import logging
 import os
 import time
 
+import yaml
+
 import logzero
 from dnamic_analysis import Database, DomainCheck, Excel, Metrics
 from logzero import logger
 from tests import Tests
 
 __author__ = "Joe Garcia, CISSP"
-__version__ = "0.3.0-beta.2"
+__version__ = "0.4.0-beta.3"
 __license__ = "MIT"
 
 log_timestamp = time.strftime("%Y-%m-%d_%H-%M-%S")
@@ -34,25 +36,32 @@ def config_logger(logfile):
     logzero.formatter(formatter)
 
 
-def main(args):
+def main(cfg):
     ## Main entry point of the app ##
 
-    logger.info("Arguments received: {}".format(args))
+    logger.info("Configuration values read: {}".format(cfg))
 
+    # Check that database file exists
+    if not os.path.isfile(cfg['database_file']):
+        logger.exception("DNA database file located at {} does not exist".format(cfg['database_file']))
+        if cfg['console_output']:
+            print("DNA database file located at {} does not exist.".format(cfg['database_file']))
+        exit()
+        
     # Database class init
-    db = Database(args.database_file, args.disabled)
+    db = Database(cfg['database_file'], cfg['include_disabled_accts'], cfg['scan_datetime'])
 
     # Excel class init
-    excel = Excel(args.domain.lower())
+    excel = Excel(cfg['domain'].lower())
     workbook = excel.create()
-    worksheet = excel.add(workbook, args.domain.lower())
+    worksheet = excel.add(workbook, cfg['domain'].lower())
 
     # Tests class init
     tests = Tests(excel, workbook, worksheet)
 
     # Declare svc, adm, and both arrays properly
-    svc_array = args.svc_regex.replace(' ', '').split(',')
-    adm_array = args.adm_regex.replace(' ', '').split(',')
+    svc_array = cfg['account_regex']['service_account']
+    adm_array = cfg['account_regex']['admin_account']
     regex_array = svc_array + adm_array
 
     #####################################
@@ -61,7 +70,7 @@ def main(args):
 
     domain_names = db.exec_fromfile("data/sql/ADDomainCheck.sql")
 
-    action = DomainCheck(args.test).check(args.domain.lower(), domain_names)
+    action = DomainCheck(cfg['test_mode']).check(cfg['domain'].lower(), domain_names)
 
     if action is False:
         logger.info("{} does not want to proceed, exiting application".format(os.getenv('USER')))
@@ -79,7 +88,7 @@ def main(args):
     domainPercent = Metrics.domain_percent(expired_domain, all_domain_count, domainMaxSorted)
 
     # If --output detected, make results verbose to console
-    if args.output is True:
+    if cfg['console_output'] is True:
         tests.domain_expired(
             domainMaxSorted,
             domainAverage[0],
@@ -88,7 +97,7 @@ def main(args):
             domainPercent[0],
             domainPercent[1],
             domainPercent[2])
-        if args.test is False:
+        if cfg['test_mode'] is False:
             input("Press ENTER to continue...")
         print()
 
@@ -108,7 +117,7 @@ def main(args):
     localPercent = Metrics.local_percent(expired_local, all_local_count, localMaxSorted)
 
     # If --output detected, make results verbose to console
-    if args.output is True:
+    if cfg['console_output'] is True:
         tests.local_expired(
             localMaxSorted,
             localAverage[0],
@@ -119,7 +128,7 @@ def main(args):
             localPercent[2],
             len(all_local_count),
             len(set(all_local_unique_count)))
-        if args.test is False:
+        if cfg['test_mode'] is False:
             input("Press ENTER to continue...")
         print()
 
@@ -130,9 +139,9 @@ def main(args):
     localMaxGrouped = Metrics.local_expired_machines(localMaxSorted)
 
     # If --output detected, make results verbose to console
-    if args.output is True:
+    if cfg['console_output'] is True:
         tests.local_expired_machines(localMaxGrouped, len(all_local_count), len(localMaxGrouped)/len(all_local_count))
-        if args.test is False:
+        if cfg['test_mode'] is False:
             input("Press ENTER to continue...")
         print()
 
@@ -144,9 +153,9 @@ def main(args):
     abandoned_local_count = db.exec_fromfile("data/sql/LocalAbandonedCount.sql")
 
     # If --output detected, make results verbose to console
-    if args.output is True:
+    if cfg['console_output'] is True:
         tests.local_abandoned(abandoned_local, len(abandoned_local_count))
-        if args.test is False:
+        if cfg['test_mode'] is False:
             input("Press ENTER to continue...")
         print()
 
@@ -157,9 +166,9 @@ def main(args):
     abandoned_domain = db.exec_fromfile("data/sql/DomainAbandonedAccounts.sql")
 
     # If --output detected, make results verbose to console
-    if args.output is True:
+    if cfg['console_output'] is True:
         tests.domain_abandoned(abandoned_domain, len(all_domain_count))
-        if args.test is False:
+        if cfg['test_mode'] is False:
             input("Press ENTER to continue...")
         print()
 
@@ -176,9 +185,9 @@ def main(args):
         multiMachineAccounts = False
 
     # If --output detected, make results verbose to console
-    if args.output is True:
+    if cfg['console_output'] is True:
         tests.multi_machine_accts(multiMachineAccounts)
-        if args.test is False:
+        if cfg['test_mode'] is False:
             input("Press ENTER to continue...")
         print()
 
@@ -201,11 +210,11 @@ def main(args):
             unique_svcacct_domadm2_usernames.append(username[0])
 
     # If --output detected, make results verbose to console
-    if args.output is True:
+    if cfg['console_output'] is True:
         tests.unique_domain_admins(
             unique_domain_admins, (unique_svcacct_domain_admins+unique_svcacct_domain_admins2),
             set(unique_svcacct_domadm_usernames), set(unique_svcacct_domadm2_usernames))
-        if args.test is False:
+        if cfg['test_mode'] is False:
             input("Press ENTER to continue...")
         print()
 
@@ -227,7 +236,7 @@ def main(args):
     if null_check is True:
         tests.unique_domain_expired_null()
     else:
-        if args.output is True:
+        if cfg['console_output'] is True:
             tests.unique_domain_expired(
                 uniqueDomainMaxSorted,
                 uniqueDomainAverage[0],
@@ -236,7 +245,7 @@ def main(args):
                 uniqueDomainPercent[0],
                 uniqueDomainPercent[1],
                 uniqueDomainPercent[2])
-            if args.test is False:
+            if cfg['test_mode'] is False:
                 input("Press ENTER to continue...")
             print()
 
@@ -247,10 +256,10 @@ def main(args):
     personal_accts_running_svcs = db.exec_fromfile("data/sql/PersonalAccountsRunningSvcs.sql", True, svc_array)
 
     # If --output detected, make results verbose to console
-    if args.output is True:
+    if cfg['console_output'] is True:
         tests.personal_accts_running_svcs(
             personal_accts_running_svcs)
-        if args.test is False:
+        if cfg['test_mode'] is False:
             input("Press ENTER to continue...")
         print()
 
@@ -261,10 +270,10 @@ def main(args):
     non_admin_with_local_admin = db.exec_fromfile("data/sql/NonAdmLocalAdminAccounts.sql", True, regex_array)
 
     # If --output detected, make results verbose to console
-    if args.output is True:
+    if cfg['console_output'] is True:
         tests.non_admin_with_local_admin(
             non_admin_with_local_admin)
-        if args.test is False:
+        if cfg['test_mode'] is False:
             input("Press ENTER to continue...")
         print()
 
@@ -285,7 +294,7 @@ def main(args):
         uniqueSvcPercent = [0, 0, 0]
 
     # If --output detected, make results verbose to console
-    if args.output is True:
+    if cfg['console_output'] is True:
         tests.unique_expired_svcs(
             uniqueSvcMaxSorted,
             uniqueSvcAverage[0],
@@ -294,7 +303,7 @@ def main(args):
             uniqueSvcPercent[0],
             uniqueSvcPercent[1],
             uniqueSvcPercent[2])
-        if args.test is False:
+        if cfg['test_mode'] is False:
             input("Press ENTER to continue...")
         print()
 
@@ -310,11 +319,11 @@ def main(args):
             clear_text_ids_count += clear_text_ids[x][1]
 
     # If --output detected, make results verbose to console
-    if args.output is True:
+    if cfg['console_output'] is True:
         tests.clear_text_ids(
             clear_text_ids_count,
             clear_text_ids)
-        if args.test is False:
+        if cfg['test_mode'] is False:
             input("Press ENTER to continue...")
         print()
 
@@ -325,10 +334,10 @@ def main(args):
     unique_clear_text_apps = db.exec_fromfile("data/sql/UniqueClearTextApps.sql")
 
     # If --output detected, make results verbose to console
-    if args.output is True:
+    if cfg['console_output'] is True:
         tests.apps_clear_text_passwords(
             unique_clear_text_apps)
-        if args.test is False:
+        if cfg['test_mode'] is False:
             input("Press ENTER to continue...")
         print()
 
@@ -340,11 +349,11 @@ def main(args):
     spns_count = db.exec_fromfile("data/sql/TotalSPNs.sql")
 
     # If --output detected, make results verbose to console
-    if args.output is True:
+    if cfg['console_output'] is True:
         tests.risky_spns(
             risky_spns,
             spns_count[0][0])
-        if args.test is False:
+        if cfg['test_mode'] is False:
             input("Press ENTER to continue...")
         print()
 
@@ -383,7 +392,7 @@ def main(args):
         #admin_hash_sorted = sorted(admin_hash_found, key=str.lower)
 
     # If --output detected, make results verbose to console
-    if args.output is True:
+    if cfg['console_output'] is True:
         tests.hashes_found_on_multiple(
             len(unique_hash_name),
             sorted(admin_hash_found, key=str.lower),
@@ -391,7 +400,7 @@ def main(args):
             total_hash_wks,
             total_hash_admins_srv,
             total_hash_admins_wks)
-        if args.test is False:
+        if cfg['test_mode'] is False:
             input("Press ENTER to continue...")
         print()
 
@@ -404,9 +413,9 @@ def main(args):
     multiMachineHashes = Metrics.multi_machine_hashes(multi_machine_hashes, all_machines_count[0][0])
 
     # If --output detected, make results verbose to console
-    if args.output is True:
+    if cfg['console_output'] is True:
         tests.multi_machine_hashes(multiMachineHashes)
-        if args.test is False:
+        if cfg['test_mode'] is False:
             input("Press ENTER to continue...")
         print()
 
@@ -425,69 +434,10 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(
         description="CyberArk DNA report generation utility")
 
-    # Create "required optional" argument group
-    req_grp = parser.add_argument_group(title='required optional')
-
     # Required positional argument for database file to query against
     parser.add_argument(
-        "database_file",
-        help="path to the CyberArk DNA SQLite3 database file")
-
-    # Required argument flag for domain confirmation
-    req_grp.add_argument(
-        "--domain",
-        "-d",
-        dest="domain",
-        help="the AD domain name included in the scan for confirmation",
-        required=True
-    )
-
-    # Required argument flag for service account regex
-    req_grp.add_argument(
-        "--svc-regex",
-        "-s",
-        dest="svc_regex",
-        help="comma-delimited list of service account naming convention regex",
-        required=True
-    )
-
-    # Required argument flag for admin account regex
-    req_grp.add_argument(
-        "--adm-regex",
-        "-a",
-        dest="adm_regex",
-        help="comma-delimited list of admin account naming convention regex",
-        required=True
-    )
-
-    # Optional argument flag for output results
-    parser.add_argument(
-        "--output",
-        "-o",
-        action="store_true",
-        dest="output",
-        help="output the results to the console",
-        default=True
-    )
-
-    # Optional argument flag for including disabled accounts in results
-    parser.add_argument(
-        "--disabled",
-        action="store_true",
-        dest="disabled",
-        help="include disabled accounts in results returned",
-        default=False
-    )
-
-    # Optional argument flag for testing
-    parser.add_argument(
-        "--test",
-        "-t",
-        action="store_true",
-        dest="test",
-        help="for testing purposes only",
-        default=False
-    )
+        "config_file",
+        help="filename of config.yml file to use from configs directory")
 
     # Optional argument flag to output current version
     parser.add_argument(
@@ -497,10 +447,12 @@ if __name__ == "__main__":
         version="%(prog)s (version {version})".format(version=__version__),
         help="shows current version information and exit")
 
-    try:
-        args = parser.parse_args()
-    except:
-        logger.error("Invalid argument(s) passed at initialization")
-        raise
+    # Parse all arguments
+    args = parser.parse_args()
 
-    main(args)
+    # Read configuration file from config/ that was provided in argument
+    config_filename = "config/" + args.config_file
+    with open(config_filename, 'r') as ymlfile:
+        cfg = yaml.safe_load(ymlfile)
+
+    main(cfg)
