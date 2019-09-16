@@ -26,4 +26,4 @@ jobs:
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
     - name: Run Application Test
       run: |
-        python DNAmicAnalysis.py template_config.yml
+        python DNAmicAnalysis.py test_config.yml

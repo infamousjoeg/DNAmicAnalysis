@@ -17,10 +17,10 @@ console_output: yes
 include_disabled_accts: no
 # yes or no: activate test mode... do not adjust unless you
   # know what you are doing
-test_mode: no
+test_mode: yes
 # DNA scan date & time settings
 scan_datetime:
   # yes or no: override the timestamped DNA.db filename with the manual_scan_datetime
-  override: no
+  override: yes
   # Use 24-hour format for the time e.g. 2019-05-21 20:57:43 for 08:57:43 PM
   manual_scan_datetime: "2019-05-21 20:57:43"
