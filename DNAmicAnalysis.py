@@ -43,10 +43,9 @@ def main(cfg):
 
     # Check that database file exists
     if not os.path.isfile(cfg['database_file']):
-        logger.exception("DNA database file located at {} does not exist".format(cfg['database_file']))
-        if cfg['console_output']:
-            print("DNA database file located at {} does not exist.".format(cfg['database_file']))
-        exit()
+        e = Exception("DNA database file located at {} does not exist.".format(cfg['database_file']))
+        logger.exception(e)
+        raise e
         
     # Database class init
     db = Database(cfg['database_file'], cfg['include_disabled_accts'], cfg['scan_datetime'])
@@ -73,8 +72,9 @@ def main(cfg):
     action = DomainCheck(cfg['test_mode']).check(cfg['domain'].lower(), domain_names)
 
     if action is False:
-        logger.info("{} does not want to proceed, exiting application".format(os.getenv('USER')))
-        exit()
+        e = Exception("{} does not want to proceed, exiting application".format(os.getenv('USER')))
+        logger.exception(e)
+        raise e
 
     ###################################
     ## Expired Domain Privileged IDs ##
