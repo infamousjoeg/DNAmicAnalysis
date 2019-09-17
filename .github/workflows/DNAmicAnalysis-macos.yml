@@ -26,4 +26,4 @@ jobs:
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
     - name: Run Application Test
       run: |
-        ./DNAmicAnalysis.py data/test/DNA_2019-05-21_08-57-43-PM.db -d cyberarkdemo.com -s "svc, service" -a "adm, admin" -t
+        ./DNAmicAnalysis.py test_config.yml
