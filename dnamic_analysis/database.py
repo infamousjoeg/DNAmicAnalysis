@@ -7,12 +7,28 @@ from logzero import logger
 
 class Database(object):
 
-    def __init__(self, dbfile, disabled):
+    def __init__(self, dbfile, disabled, scan_datetime):
 
         self._dbfile = dbfile
         self._disabledSqlQuery = ""
         if disabled is False:
             self._disabledSqlQuery = "AND Enabled = 1"
+        
+        # Parse scan date & time if no override detected
+        if not scan_datetime['override']:
+            # Split to arrays
+            dbFileNameSplit = self._dbfile.split("_")
+            dbFileTimeSplit = dbFileNameSplit[2].split(".")
+            # Format as proper datetime value
+            inScanTime = datetime.strptime(dbFileTimeSplit[0].replace("-", " "), "%I %M %S %p")
+            # Strip 1900-01-01 placemarker date and format to 24-hour
+            scanTime = datetime.strftime(inScanTime, "%H:%M:%S")
+            # Combine datetime for SQL query
+            self._scanDateTime = dbFileNameSplit[1] + " " + scanTime
+            logger.info("Parsed scan datetime from database filename: {}".format(self._scanDateTime))
+        else:
+            self._scanDateTime = scan_datetime['manual_scan_datetime']
+            logger.info("Manual override detected, received scan datetime as: {}".format(self._scanDateTime))
 
 
     def create_connection(self):
@@ -47,23 +63,9 @@ class Database(object):
         except Error as e:
             logger.exception(e)
 
-        # Parse scan date from database file provided
         try:
-            # Split to arrays
-            dbFileNameSplit = self._dbfile.split("_")
-            dbFileTimeSplit = dbFileNameSplit[2].split(".")
-            # Format as proper datetime value
-            inScanTime = datetime.strptime(dbFileTimeSplit[0].replace("-", " "), "%I %M %S %p")
-            # Strip 1900-01-01 placemarker date and format to 24-hour
-            scanTime = datetime.strftime(inScanTime, "%H:%M:%S")
-            # Combine datetime for SQL query
-            scanDateTime = dbFileNameSplit[1] + " " + scanTime
-            # Make sure SQL filename was valid
-            if scanDateTime is None:
-                raise Exception("DNA Database filename should remain unchanged. Modifications detected.")
-            logger.info("Parsed scan datetime from database filename: {}".format(scanDateTime))
             # Make replacement in SQL query
-            sqlQueryDT = sqlQuery.replace("{scanDateTime}", scanDateTime)
+            sqlQueryDT = sqlQuery.replace("{scanDateTime}", self._scanDateTime)
             # Replace disabled section of SQL query
             sqlQueryFinal = sqlQueryDT.replace("{disabled}", self._disabledSqlQuery)
         except Exception as e:
