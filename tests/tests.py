@@ -10,10 +10,10 @@ from dnamic_analysis import Excel
 class Tests(object):
 
     def __init__(self, excel_object, workbook, worksheet):
-        self.excel_object = excel_object
-        self.workbook = workbook
-        self.worksheet = worksheet
-        self.col = 0
+        self._excel_object = excel_object
+        self._workbook = workbook
+        self._worksheet = worksheet
+        self._col = 0
 
 
     def domain_expired(self,max_sorted,avg_sum,avg_len,avg_overall,percent_len,all_len,percent_overall):
@@ -32,13 +32,19 @@ class Tests(object):
         deinit()
 
         # Write bulk data to Excel workbook
-        self.excel_object.write(self.worksheet, self.col, 0, 'Expired Domain Privileged IDs', 'header')
-        row = 1
+        data = 'Oldest Non-Compliant Username: {}\n' \
+                'Max Password Age: {} days ({:.1f} years)\n' \
+                'Total Avg Password Age: {:.2f} / {} = {:.2f} days ({:.1f} years)\n' \
+                'Total Percent Non-Compliant: {} / {} = {:.2%}'.format(max_sorted[0][0],max_sorted[0][2],max_sorted[0][2]/365,
+                                                                    avg_sum,avg_len,avg_overall,avg_overall/365,percent_len,all_len,percent_overall)
+        self._excel_object.write(self._worksheet, self._col, 0, data, 'row1')
+        self._excel_object.write(self._worksheet, self._col, 1, 'Expired Domain Privileged IDs', 'header')
+        row = 2
         for username,_,_ in max_sorted:
-            self.excel_object.write(self.worksheet, self.col, row, username)
+            self._excel_object.write(self._worksheet, self._col, row, username)
             row += 1
-        self.col += 1
-        self.excel_object.save(self.workbook)
+        self._col += 1
+        self._excel_object.save(self._workbook)
 
 
     def local_expired(self,max_sorted,avg_sum,avg_len,avg_overall,percent_len,all_len,percent_overall,sqlcount,unique_count):
@@ -60,32 +66,41 @@ class Tests(object):
         deinit()
 
         # Write bulk data to Excel workbook
-        self.excel_object.write(self.worksheet, self.col, 0, 'Unique Expired Local Privileged IDs', 'header')
-        row = 1
+        data = 'Oldest Non-Compliant Username: {}\n' \
+                'Max Password Age: {} days ({:.1f} years)\n' \
+                'Total Avg Password Age: {:.2f} / {} = {:.2f} days ({:.1f} years)\n' \
+                'Total Percent Non-Compliant: {} / {} = {:.2%}\n' \
+                'Total Unique Local Privileged IDs: {}\n' \
+                'Total Unique Local Privileged ID Names: {}'.format(max_sorted[0][0],max_sorted[0][3],max_sorted[0][3]/365,
+                                                                avg_sum,avg_len,avg_overall,avg_overall/365,percent_len,
+                                                                all_len,percent_overall,sqlcount,unique_count)
+        self._excel_object.write(self._worksheet, self._col, 0, data, 'row1')
+        self._excel_object.write(self._worksheet, self._col, 1, 'Unique Expired Local Privileged IDs', 'header')
+        row = 2
         used_usernames = []
         for username,_,_,_ in max_sorted:
             if username not in used_usernames:
-                self.excel_object.write(self.worksheet, self.col, row, username)
+                self._excel_object.write(self._worksheet, self._col, row, username)
                 used_usernames.append(username)
                 row += 1
-        self.col += 1
-        self.excel_object.save(self.workbook)
+        self._col += 1
+        self._excel_object.save(self._workbook)
 
 
     def local_expired_machines(self,max_grouped,count_accounts,percent_accounts):
         print(Fore.CYAN + "====================================================")
         print(Fore.RED + "Expired Local Admins Total w/ Machine Addresses" + Fore.YELLOW)
 
-        self.excel_object.write(self.worksheet, self.col, 0, 'Expired Local Admins Total w/ Machine Addresses', 'header')
+        self._excel_object.write(self._worksheet, self._col, 1, 'Expired Local Admins Total w/ Machine Addresses', 'header')
         count = 0
-        row = 1
+        row = 2
         for value in max_grouped.items():
             for key in value:
                 if not isinstance(key, str):
                     if isinstance(key, list):
                         for machine in key:
                             print('Machine Address: {}'.format(machine))
-                            self.excel_object.write(self.worksheet, self.col, row, machine)
+                            self._excel_object.write(self._worksheet, self._col, row, machine)
                             count = len(key)
                             row += 1
                 else:
@@ -93,7 +108,7 @@ class Tests(object):
                         print(Fore.YELLOW + Style.BRIGHT + "Total Machines for User: {}".format(count) + Style.NORMAL)
                     print(Fore.CYAN + "----------------------------------------------------" + Fore.YELLOW)
                     print(Style.BRIGHT + 'Username: {}'.format(key) + Style.NORMAL)
-                    self.excel_object.write(self.worksheet, self.col, row, key, 'subheader')
+                    self._excel_object.write(self._worksheet, self._col, row, key, 'subheader')
                     row += 1
 
         print(Fore.YELLOW + Style.BRIGHT + "Total Machines for User: {}".format(count) + Style.NORMAL)
@@ -104,8 +119,8 @@ class Tests(object):
         print(Style.RESET_ALL)
         deinit()
 
-        self.col += 1
-        self.excel_object.save(self.workbook)
+        self._col += 1
+        self._excel_object.save(self._workbook)
 
 
     def local_abandoned(self,abandoned_accounts, count_accounts):
@@ -119,13 +134,15 @@ class Tests(object):
         deinit()
 
         # Write bulk data to Excel workbook
-        self.excel_object.write(self.worksheet, self.col, 0, 'Local Abandoned / Leftover Accounts', 'header')
-        row = 1
+        data = 'Total Detected: {} / {}'.format(len(abandoned_accounts), count_accounts)
+        self._excel_object.write(self._worksheet, self._col, 0, data, 'row1')
+        self._excel_object.write(self._worksheet, self._col, 1, 'Local Abandoned / Leftover Accounts', 'header')
+        row = 2
         for username,_,_,_ in abandoned_accounts:
-            self.excel_object.write(self.worksheet, self.col, row, username)
+            self._excel_object.write(self._worksheet, self._col, row, username)
             row += 1
-        self.col += 1
-        self.excel_object.save(self.workbook)
+        self._col += 1
+        self._excel_object.save(self._workbook)
 
 
     def domain_abandoned(self,abandoned_accounts, count_accounts):
@@ -139,13 +156,15 @@ class Tests(object):
         deinit()
 
         # Write bulk data to Excel workbook
-        self.excel_object.write(self.worksheet, self.col, 0, 'Domain Abandoned / Leftover Accounts', 'header')
-        row = 1
+        data = 'Total Detected: {} / {}'.format(len(abandoned_accounts), count_accounts)
+        self._excel_object.write(self._worksheet, self._col, 0, data, 'row1')
+        self._excel_object.write(self._worksheet, self._col, 1, 'Domain Abandoned / Leftover Accounts', 'header')
+        row = 2
         for username,_,_,_ in abandoned_accounts:
-            self.excel_object.write(self.worksheet, self.col, row, username)
+            self._excel_object.write(self._worksheet, self._col, row, username)
             row += 1
-        self.col += 1
-        self.excel_object.save(self.workbook)
+        self._col += 1
+        self._excel_object.save(self._workbook)
 
 
     def multi_machine_accts(self,multi_machine_accts):
@@ -153,139 +172,139 @@ class Tests(object):
         print(Fore.RED + "Accounts with Multiple Machine Access")
         print(Fore.CYAN + "----------------------------------------------------")
         if multi_machine_accts is not False:
-            self.excel_object.write(self.worksheet, 5, 0, 'Accounts with Multiple Machine Access', 'header')
+            self._excel_object.write(self._worksheet, 5, 1, 'Accounts with Multiple Machine Access', 'header')
             if len(multi_machine_accts[0]) != 0:
                 print(Fore.YELLOW + "> 95% Access")
-                self.excel_object.write(self.worksheet, self.col, 1, '> 95% Access', 'subheader')
+                self._excel_object.write(self._worksheet, self._col, 2, '> 95% Access', 'subheader')
                 print(Fore.CYAN + "----------------------------------------------------" + Fore.YELLOW)
-                row = 2
+                row = 3
                 for username in multi_machine_accts[0]:
                     print("Username: {}".format(username))
-                    self.excel_object.write(self.worksheet, self.col, row, username)
+                    self._excel_object.write(self._worksheet, self._col, row, username)
                     row += 1
-                self.col += 1
+                self._col += 1
                 print(Style.BRIGHT + "TOTAL ACCOUNTS: {}".format(len(multi_machine_accts[0])) + Style.NORMAL)
                 print(Fore.CYAN + "====================================================")
             if len(multi_machine_accts[1]) != 0:
                 print(Fore.YELLOW + "90-95% Access")
-                self.excel_object.write(self.worksheet, self.col, 1, '90-95% Access', 'subheader')
+                self._excel_object.write(self._worksheet, self._col, 2, '90-95% Access', 'subheader')
                 print(Fore.CYAN + "----------------------------------------------------" + Fore.YELLOW)
-                row = 2
+                row = 3
                 for username in multi_machine_accts[1]:
                     print("Username: {}".format(username))
-                    self.excel_object.write(self.worksheet, self.col, row, username)
+                    self._excel_object.write(self._worksheet, self._col, row, username)
                     row += 1
                 print(Style.BRIGHT + "TOTAL ACCOUNTS: {}".format(len(multi_machine_accts[1])) + Style.NORMAL)
                 print(Fore.CYAN + "====================================================")
-                self.col += 1
+                self._col += 1
             if len(multi_machine_accts[2]) != 0:
                 print(Fore.YELLOW + "80-90% Access")
-                self.excel_object.write(self.worksheet, self.col, 1, '80-90% Access', 'subheader')
+                self._excel_object.write(self._worksheet, self._col, 2, '80-90% Access', 'subheader')
                 print(Fore.CYAN + "----------------------------------------------------" + Fore.YELLOW)
-                row = 2
+                row = 3
                 for username in multi_machine_accts[2]:
                     print("Username: {}".format(username))
-                    self.excel_object.write(self.worksheet, self.col, row, username)
+                    self._excel_object.write(self._worksheet, self._col, row, username)
                     row += 1
                 print(Style.BRIGHT + "TOTAL ACCOUNTS: {}".format(len(multi_machine_accts[2])) + Style.NORMAL)
                 print(Fore.CYAN + "====================================================")
-                self.col += 1
+                self._col += 1
             if len(multi_machine_accts[3]) != 0:
                 print(Fore.YELLOW + "70-80% Access")
-                self.excel_object.write(self.worksheet, self.col, 1, '70-80% Access', 'subheader')
+                self._excel_object.write(self._worksheet, self._col, 2, '70-80% Access', 'subheader')
                 print(Fore.CYAN + "----------------------------------------------------" + Fore.YELLOW)
-                row = 2
+                row = 3
                 for username in multi_machine_accts[3]:
                     print("Username: {}".format(username))
-                    self.excel_object.write(self.worksheet, self.col, row, username)
+                    self._excel_object.write(self._worksheet, self._col, row, username)
                     row += 1
                 print(Style.BRIGHT + "TOTAL ACCOUNTS: {}".format(len(multi_machine_accts[3])) + Style.NORMAL)
                 print(Fore.CYAN + "====================================================")
-                self.col += 1
+                self._col += 1
             if len(multi_machine_accts[4]) != 0:
                 print(Fore.YELLOW + "60-70% Access")
-                self.excel_object.write(self.worksheet, self.col, 1, '60-70% Access', 'subheader')
+                self._excel_object.write(self._worksheet, self._col, 2, '60-70% Access', 'subheader')
                 print(Fore.CYAN + "----------------------------------------------------" + Fore.YELLOW)
-                row = 2
+                row = 3
                 for username in multi_machine_accts[4]:
                     print("Username: {}".format(username))
-                    self.excel_object.write(self.worksheet, self.col, row, username)
+                    self._excel_object.write(self._worksheet, self._col, row, username)
                     row += 1
                 print(Style.BRIGHT + "TOTAL ACCOUNTS: {}".format(len(multi_machine_accts[4])) + Style.NORMAL)
                 print(Fore.CYAN + "====================================================")
-                self.col += 1
+                self._col += 1
             if len(multi_machine_accts[5]) != 0:
                 print(Fore.YELLOW + "50-60% Access")
-                self.excel_object.write(self.worksheet, self.col, 1, '50-60% Access', 'subheader')
+                self._excel_object.write(self._worksheet, self._col, 2, '50-60% Access', 'subheader')
                 print(Fore.CYAN + "----------------------------------------------------" + Fore.YELLOW)
-                row = 2
+                row = 3
                 for username in multi_machine_accts[5]:
                     print("Username: {}".format(username))
-                    self.excel_object.write(self.worksheet, self.col, row, username)
+                    self._excel_object.write(self._worksheet, self._col, row, username)
                     row += 1
                 print(Style.BRIGHT + "TOTAL ACCOUNTS: {}".format(len(multi_machine_accts[5])) + Style.NORMAL)
                 print(Fore.CYAN + "====================================================")
-                self.col += 1
+                self._col += 1
             if len(multi_machine_accts[6]) != 0:
                 print(Fore.YELLOW + "40-50% Access")
-                self.excel_object.write(self.worksheet, self.col, 1, '40-50% Access', 'subheader')
+                self._excel_object.write(self._worksheet, self._col, 2, '40-50% Access', 'subheader')
                 print(Fore.CYAN + "----------------------------------------------------" + Fore.YELLOW)
-                row = 2
+                row = 3
                 for username in multi_machine_accts[6]:
                     print("Username: {}".format(username))
-                    self.excel_object.write(self.worksheet, self.col, row, username)
+                    self._excel_object.write(self._worksheet, self._col, row, username)
                     row += 1
                 print(Style.BRIGHT + "TOTAL ACCOUNTS: {}".format(len(multi_machine_accts[6])) + Style.NORMAL)
                 print(Fore.CYAN + "====================================================")
-                self.col += 1
+                self._col += 1
             if len(multi_machine_accts[7]) != 0:
                 print(Fore.YELLOW + "30-40% Access")
-                self.excel_object.write(self.worksheet, self.col, 1, '30-40% Access', 'subheader')
+                self._excel_object.write(self._worksheet, self._col, 2, '30-40% Access', 'subheader')
                 print(Fore.CYAN + "----------------------------------------------------" + Fore.YELLOW)
-                row = 2
+                row = 3
                 for username in multi_machine_accts[7]:
                     print("Username: {}".format(username))
-                    self.excel_object.write(self.worksheet, self.col, row, username)
+                    self._excel_object.write(self._worksheet, self._col, row, username)
                     row += 1
                 print(Style.BRIGHT + "TOTAL ACCOUNTS: {}".format(len(multi_machine_accts[7])) + Style.NORMAL)
                 print(Fore.CYAN + "====================================================")
-                self.col += 1
+                self._col += 1
             if len(multi_machine_accts[8]) != 0:
                 print(Fore.YELLOW + "20-30% Access")
-                self.excel_object.write(self.worksheet, self.col, 1, '20-30% Access', 'subheader')
+                self._excel_object.write(self._worksheet, self._col, 2, '20-30% Access', 'subheader')
                 print(Fore.CYAN + "----------------------------------------------------" + Fore.YELLOW)
-                row = 2
+                row = 3
                 for username in multi_machine_accts[8]:
                     print("Username: {}".format(username))
-                    self.excel_object.write(self.worksheet, self.col, row, username)
+                    self._excel_object.write(self._worksheet, self._col, row, username)
                     row += 1
                 print(Style.BRIGHT + "TOTAL ACCOUNTS: {}".format(len(multi_machine_accts[8])) + Style.NORMAL)
                 print(Fore.CYAN + "====================================================")
-                self.col += 1
+                self._col += 1
             if len(multi_machine_accts[9]) != 0:
                 print(Fore.YELLOW + "10-20% Access")
-                self.excel_object.write(self.worksheet, self.col, 1, '10-20% Access', 'subheader')
+                self._excel_object.write(self._worksheet, self._col, 2, '10-20% Access', 'subheader')
                 print(Fore.CYAN + "----------------------------------------------------" + Fore.YELLOW)
-                row = 2
+                row = 3
                 for username in multi_machine_accts[9]:
                     print("Username: {}".format(username))
-                    self.excel_object.write(self.worksheet, self.col, row, username)
+                    self._excel_object.write(self._worksheet, self._col, row, username)
                     row += 1
                 print(Style.BRIGHT + "TOTAL ACCOUNTS: {}".format(len(multi_machine_accts[9])) + Style.NORMAL)
                 print(Fore.CYAN + "====================================================")
-                self.col += 1
+                self._col += 1
             if len(multi_machine_accts[10]) != 0:
                 print(Fore.YELLOW + "< 10% Access")
-                self.excel_object.write(self.worksheet, self.col, 1, '< 10% Access', 'subheader')
+                self._excel_object.write(self._worksheet, self._col, 2, '< 10% Access', 'subheader')
                 print(Fore.CYAN + "----------------------------------------------------" + Fore.YELLOW)
-                row = 2
+                row = 3
                 for username in multi_machine_accts[10]:
                     print("Username: {}".format(username))
-                    self.excel_object.write(self.worksheet, self.col, row, username)
+                    self._excel_object.write(self._worksheet, self._col, row, username)
                     row += 1
                 print(Style.BRIGHT + "TOTAL ACCOUNTS: {}".format(len(multi_machine_accts[10])) + Style.NORMAL)
                 print(Fore.CYAN + "====================================================")
-                self.col += 1
+                self._col += 1
         else:
             print("None found.")
             print(Fore.CYAN + "====================================================")
@@ -293,7 +312,7 @@ class Tests(object):
         print(Style.RESET_ALL)
         deinit()
 
-        self.excel_object.save(self.workbook)
+        self._excel_object.save(self._workbook)
 
 
     def unique_domain_admins(self,sqlresults, svc_sqlresults, svc_domadm, svc_domadm2):
@@ -303,30 +322,33 @@ class Tests(object):
         print(Fore.YELLOW + "Total Detected: {}".format(len(sqlresults)))
         print(Fore.CYAN + "----------------------------------------------------")
         print(Fore.YELLOW + Style.BRIGHT + "Total Potential Service Accounts: {}".format(len(svc_sqlresults)) + Style.NORMAL)
-        self.excel_object.write(self.worksheet, self.col, 0, 'Unique Domain Admins', 'header')
-        self.excel_object.write(self.worksheet, self.col, 1, 'Total Detected', 'subheader')
-        row = 2
+        data = 'Total Detected: {}\n' \
+                'Total Potential Service Accounts: {}'.format(len(sqlresults),len(svc_sqlresults))
+        self._excel_object.write(self._worksheet, self._col, 0, data, 'row1')
+        self._excel_object.write(self._worksheet, self._col, 1, 'Unique Domain Admins', 'header')
+        self._excel_object.write(self._worksheet, self._col, 2, 'Total Detected', 'subheader')
+        row = 3
         for username in sqlresults:
-            self.excel_object.write(self.worksheet, self.col, row, username)
+            self._excel_object.write(self._worksheet, self._col, row, username)
             row += 1
-        self.col += 1
-        self.excel_object.write(self.worksheet, self.col, 1, 'Potential Service Accounts', 'subheader')
-        row = 2
+        self._col += 1
+        self._excel_object.write(self._worksheet, self._col, 2, 'Potential Service Accounts', 'subheader')
+        row = 3
         for username in svc_domadm:
             print("Username: {}".format(username))
-            self.excel_object.write(self.worksheet, self.col, row, username)
+            self._excel_object.write(self._worksheet, self._col, row, username)
             row += 1
         for username2 in svc_domadm2:
             print("Username: {}".format(username2))
-            self.excel_object.write(self.worksheet, self.col, row, username2)
+            self._excel_object.write(self._worksheet, self._col, row, username2)
             row += 1
         print(Fore.CYAN + "====================================================")
 
         print(Style.RESET_ALL)
         deinit()
 
-        self.col += 1
-        self.excel_object.save(self.workbook)
+        self._col += 1
+        self._excel_object.save(self._workbook)
 
 
     def unique_domain_expired(self,max_sorted,avg_sum,avg_len,avg_overall,percent_len,all_len,percent_overall):
@@ -340,19 +362,26 @@ class Tests(object):
         print(Fore.CYAN + "----------------------------------------------------")
         print(Fore.YELLOW + "Total Percent Non-Compliant: {} / {} = {:.2%}".format(percent_len,all_len,percent_overall))
         print(Fore.CYAN + "----------------------------------------------------")
-        self.excel_object.write(self.worksheet, self.col, 0, 'Unique Expired Domain Admins', 'header')
-        row = 1
+        data = 'Oldest Non-Compliant Username: {}\n' \
+                'Max Password Age: {} days ({:.1f} years)\n' \
+                'Total Avg Password Age: {} / {} = {:.2f} days ({:.1f} years)\n' \
+                'Total Percent Non-Compliant: {} / {} = {:.2%}'.format(max_sorted[0][0],max_sorted[0][3],max_sorted[0][3]/365,
+                                                                    avg_sum,avg_len,avg_overall,avg_overall/365,percent_len,
+                                                                    all_len,percent_overall)
+        self._excel_object.write(self._worksheet, self._col, 0, data, 'row1')
+        self._excel_object.write(self._worksheet, self._col, 1, 'Unique Expired Domain Admins', 'header')
+        row = 2
         for username,_,_,_,_ in max_sorted:
             print(Fore.YELLOW + "Username: {}".format(username))
-            self.excel_object.write(self.worksheet, self.col, row, username)
+            self._excel_object.write(self._worksheet, self._col, row, username)
             row += 1
         print(Fore.CYAN + "====================================================")
 
         print(Style.RESET_ALL)
         deinit()
 
-        self.col += 1
-        self.excel_object.save(self.workbook)
+        self._col += 1
+        self._excel_object.save(self._workbook)
 
 
     def unique_domain_expired_null(self):
@@ -376,13 +405,15 @@ class Tests(object):
         deinit()
 
         # Write bulk data to Excel workbook
-        self.excel_object.write(self.worksheet, self.col, 0, 'Personal Accounts Running Services', 'header')
-        row = 1
+        data = 'Total Personal Accounts: {}'.format(len(sqlresults))
+        self._excel_object.write(self._worksheet, self._col, 0, data, 'row1')
+        self._excel_object.write(self._worksheet, self._col, 1, 'Personal Accounts Running Services', 'header')
+        row = 2
         for username in sqlresults:
-            self.excel_object.write(self.worksheet, self.col, row, username)
+            self._excel_object.write(self._worksheet, self._col, row, username)
             row += 1
-        self.col += 1
-        self.excel_object.save(self.workbook)
+        self._col += 1
+        self._excel_object.save(self._workbook)
 
 
     def non_admin_with_local_admin(self,sqlresults):
@@ -396,13 +427,15 @@ class Tests(object):
         deinit()
 
         # Write bulk data to Excel workbook
-        self.excel_object.write(self.worksheet, self.col, 0, 'Non-Admin Accounts w/ Local Admin to Systems', 'header')
-        row = 1
+        data = 'Total Non-Admin Accounts: {}'.format(len(sqlresults))
+        self._excel_object.write(self._worksheet, self._col, 0, data, 'row1')
+        self._excel_object.write(self._worksheet, self._col, 1, 'Non-Admin Accounts w/ Local Admin to Systems', 'header')
+        row = 2
         for username,_ in sqlresults:
-            self.excel_object.write(self.worksheet, self.col, row, username)
+            self._excel_object.write(self._worksheet, self._col, row, username)
             row += 1
-        self.col += 1
-        self.excel_object.save(self.workbook)
+        self._col += 1
+        self._excel_object.save(self._workbook)
 
 
     def unique_expired_svcs(self,max_sorted,avg_sum,avg_len,avg_overall,percent_len,all_len,percent_overall):
@@ -425,13 +458,20 @@ class Tests(object):
             print(Fore.CYAN + "====================================================")
 
             # Write bulk data to Excel workbook
-            self.excel_object.write(self.worksheet, self.col, 0, 'Unique Expired Services', 'header')
-            row = 1
+            data = 'Oldest Non-Compliant Service: {}\n' \
+                    'Max Password Age: {} days ({:.1f} years)\n' \
+                    'Total Avg Password Age: {} / {} = {:.2f} days ({:.1f} years)\n' \
+                    'Total Percent Non-Compliant: {} / {} = {:.2%}'.format(max_sorted[0][0],max_sorted[0][2],max_sorted[0][2]/365,
+                                                                        avg_sum,avg_len,avg_overall,avg_overall/365,percent_len,
+                                                                        all_len,percent_overall)
+            self._excel_object.write(self._worksheet, self._col, 0, data, 'row1')
+            self._excel_object.write(self._worksheet, self._col, 1, 'Unique Expired Services', 'header')
+            row = 2
             for username,_,_ in max_sorted:
-                self.excel_object.write(self.worksheet, self.col, row, username)
+                self._excel_object.write(self._worksheet, self._col, row, username)
                 row += 1
-            self.col += 1
-            self.excel_object.save(self.workbook)
+            self._col += 1
+            self._excel_object.save(self._workbook)
 
         print(Style.RESET_ALL)
         deinit()
@@ -443,15 +483,15 @@ class Tests(object):
         print(Fore.CYAN + "====================================================")
         print(Fore.RED + "Clear Text IDs")
         print(Fore.CYAN + "----------------------------------------------------")
-        self.excel_object.write(self.worksheet, self.col, 0, 'Clear Text IDs', 'header')
-        row = 1
+        self._excel_object.write(self._worksheet, self._col, 1, 'Clear Text IDs', 'header')
+        row = 2
         if sqlcount > 0:
             for username,total,length in sqlresults:
                 print(Fore.YELLOW + "Username: {}".format(username))
                 print(Fore.YELLOW + "Total Found: {}".format(total))
                 print(Fore.YELLOW + "Password Length: {}".format(length))
                 print(Fore.CYAN + "----------------------------------------------------")
-                self.excel_object.write(self.worksheet, self.col, row, username)
+                self._excel_object.write(self._worksheet, self._col, row, username)
                 row += 1
 
             print(Fore.YELLOW + Style.BRIGHT + "Total Found Overall: {}".format(sqlcount))
@@ -462,16 +502,16 @@ class Tests(object):
         print(Style.RESET_ALL)
         deinit()
 
-        self.col += 1
-        self.excel_object.save(self.workbook)
+        self._col += 1
+        self._excel_object.save(self._workbook)
 
 
     def apps_clear_text_passwords(self,sqlresults):
         print(Fore.CYAN + "====================================================")
         print(Fore.RED + "Applications with Clear Text Passwords")
         print(Fore.CYAN + "----------------------------------------------------")
-        self.excel_object.write(self.worksheet, self.col, 0, 'Applications with Clear Text Passwords', 'header')
-        row = 1
+        self._excel_object.write(self._worksheet, self._col, 1, 'Applications with Clear Text Passwords', 'header')
+        row = 2
         if len(sqlresults) > 0:
             app_names = []
             for app_name,machine_address in sqlresults:
@@ -481,7 +521,7 @@ class Tests(object):
                 app_names.append(app_name)
             print(Fore.YELLOW + Style.BRIGHT + "Total Unique Found Overall: {}".format(len(set(app_names))))
             for app_name in set(app_names):
-                self.excel_object.write(self.worksheet, self.col, row, app_name)
+                self._excel_object.write(self._worksheet, self._col, row, app_name)
                 row += 1
         else:
             print(Fore.YELLOW + "No Applications with Clear Text Passwords found.")
@@ -490,8 +530,8 @@ class Tests(object):
         print(Style.RESET_ALL)
         deinit()
 
-        self.col += 1
-        self.excel_object.save(self.workbook)
+        self._col += 1
+        self._excel_object.save(self._workbook)
 
 
     def risky_spns(self,risky_spns, sqlcount):
@@ -505,13 +545,15 @@ class Tests(object):
         deinit()
 
         # Write bulk data to Excel workbook
-        self.excel_object.write(self.worksheet, self.col, 0, 'Risky Expired Service Principal Names', 'header')
-        row = 1
+        data = 'Total Unique Expired over Total Overall: {} / {}'.format(len(risky_spns), sqlcount)
+        self._excel_object.write(self._worksheet, self._col, 0, data, 'row1')
+        self._excel_object.write(self._worksheet, self._col, 1, 'Risky Expired Service Principal Names', 'header')
+        row = 2
         for username,_ in risky_spns:
-            self.excel_object.write(self.worksheet, self.col, row, username)
+            self._excel_object.write(self._worksheet, self._col, row, username)
             row += 1
-        self.col += 1
-        self.excel_object.save(self.workbook)
+        self._col += 1
+        self._excel_object.save(self._workbook)
 
 
     def hashes_found_on_multiple(self,uniquecount, admin_hash_found, totalsrv, totalwks, totaladminsrv, totaladminwks):
@@ -527,160 +569,167 @@ class Tests(object):
         print(Fore.YELLOW + "Total Admin Hashes on Workstations: {}".format(totaladminwks))
         print(Fore.YELLOW + "Total Admin Hashes on Servers: {}".format(totaladminsrv))
         print(Fore.CYAN + "----------------------------------------------------")
-        self.excel_object.write(self.worksheet, self.col, 0, 'Hashes Found on Multiple Machines', 'header')
-        row = 1
+        data = 'Total Unique Accounts: {}\n' \
+                'Total Administrative Hashes Found: {}\n' \
+                'Total on Workstations: {}\n' \
+                'Total on Servers: {}\n' \
+                'Total Admin Hashes on Workstations: {}\n' \
+                'Total Admin Hashes on Servers: {}'.format(uniquecount,len(admin_hash_found),totalwks,totalsrv,totaladminwks,totaladminsrv)
+        self._excel_object.write(self._worksheet, self._col, 0, data, 'row1')
+        self._excel_object.write(self._worksheet, self._col, 1, 'Hashes Found on Multiple Machines', 'header')
+        row = 2
         for username in admin_hash_found:
             print(Fore.YELLOW + "Username: {}".format(username))
-            self.excel_object.write(self.worksheet, self.col, row, username)
+            self._excel_object.write(self._worksheet, self._col, row, username)
             row += 1
         print(Fore.CYAN + "====================================================")
 
         print(Style.RESET_ALL)
         deinit()
 
-        self.col += 1
-        self.excel_object.save(self.workbook)
+        self._col += 1
+        self._excel_object.save(self._workbook)
 
 
     def multi_machine_hashes(self,multi_machine_hashes):
         print(Fore.CYAN + "====================================================")
         print(Fore.RED + "Accounts with Multiple Machine Hashes")
         print(Fore.CYAN + "----------------------------------------------------")
-        self.excel_object.write(self.worksheet, self.col, 0, 'Accounts with Multiple Machine Hashes', 'header')
+        self._excel_object.write(self._worksheet, self._col, 1, 'Accounts with Multiple Machine Hashes', 'header')
         if len(multi_machine_hashes[0]) != 0:
             print(Fore.YELLOW + "> 95% Access")
-            self.excel_object.write(self.worksheet, self.col, 1, '> 95% Access', 'subheader')
+            self._excel_object.write(self._worksheet, self._col, 2, '> 95% Access', 'subheader')
             print(Fore.CYAN + "----------------------------------------------------" + Fore.YELLOW)
-            row = 2
+            row = 3
             for username in multi_machine_hashes[0]:
                 print("Username: {}".format(username))
-                self.excel_object.write(self.worksheet, self.col, row, username)
+                self._excel_object.write(self._worksheet, self._col, row, username)
                 row += 1
             print(Style.BRIGHT + "TOTAL ACCOUNTS: {}".format(len(multi_machine_hashes[0])) + Style.NORMAL)
             print(Fore.CYAN + "====================================================")
-            self.col += 1
+            self._col += 1
         if len(multi_machine_hashes[1]) != 0:
             print(Fore.YELLOW + "90-95% Access")
-            self.excel_object.write(self.worksheet, self.col, 1, '90-95% Access', 'subheader')
+            self._excel_object.write(self._worksheet, self._col, 2, '90-95% Access', 'subheader')
             print(Fore.CYAN + "----------------------------------------------------" + Fore.YELLOW)
-            row = 2
+            row = 3
             for username in multi_machine_hashes[1]:
                 print("Username: {}".format(username))
-                self.excel_object.write(self.worksheet, self.col, row, username)
+                self._excel_object.write(self._worksheet, self._col, row, username)
                 row += 1
             print(Style.BRIGHT + "TOTAL ACCOUNTS: {}".format(len(multi_machine_hashes[1])) + Style.NORMAL)
             print(Fore.CYAN + "====================================================")
-            self.col += 1
+            self._col += 1
         if len(multi_machine_hashes[2]) != 0:
             print(Fore.YELLOW + "80-90% Access")
-            self.excel_object.write(self.worksheet, self.col, 1, '80-90% Access', 'subheader')
+            self._excel_object.write(self._worksheet, self._col, 2, '80-90% Access', 'subheader')
             print(Fore.CYAN + "----------------------------------------------------" + Fore.YELLOW)
-            row = 2
+            row = 3
             for username in multi_machine_hashes[2]:
                 print("Username: {}".format(username))
-                self.excel_object.write(self.worksheet, self.col, row, username)
+                self._excel_object.write(self._worksheet, self._col, row, username)
                 row += 1
             print(Style.BRIGHT + "TOTAL ACCOUNTS: {}".format(len(multi_machine_hashes[2])) + Style.NORMAL)
             print(Fore.CYAN + "====================================================")
-            self.col += 1
+            self._col += 1
         if len(multi_machine_hashes[3]) != 0:
             print(Fore.YELLOW + "70-80% Access")
-            self.excel_object.write(self.worksheet, self.col, 1, '70-80% Access', 'subheader')
+            self._excel_object.write(self._worksheet, self._col, 2, '70-80% Access', 'subheader')
             print(Fore.CYAN + "----------------------------------------------------" + Fore.YELLOW)
-            row = 2
+            row = 3
             for username in multi_machine_hashes[3]:
                 print("Username: {}".format(username))
-                self.excel_object.write(self.worksheet, self.col, row, username)
+                self._excel_object.write(self._worksheet, self._col, row, username)
                 row += 1
             print(Style.BRIGHT + "TOTAL ACCOUNTS: {}".format(len(multi_machine_hashes[3])) + Style.NORMAL)
             print(Fore.CYAN + "====================================================")
-            self.col += 1
+            self._col += 1
         if len(multi_machine_hashes[4]) != 0:
             print(Fore.YELLOW + "60-70% Access")
-            self.excel_object.write(self.worksheet, self.col, 1, '60-70% Access', 'subheader')
+            self._excel_object.write(self._worksheet, self._col, 2, '60-70% Access', 'subheader')
             print(Fore.CYAN + "----------------------------------------------------" + Fore.YELLOW)
-            row = 2
+            row = 3
             for username in multi_machine_hashes[4]:
                 print("Username: {}".format(username))
-                self.excel_object.write(self.worksheet, self.col, row, username)
+                self._excel_object.write(self._worksheet, self._col, row, username)
                 row += 1
             print(Style.BRIGHT + "TOTAL ACCOUNTS: {}".format(len(multi_machine_hashes[4])) + Style.NORMAL)
             print(Fore.CYAN + "====================================================")
-            self.col += 1
+            self._col += 1
         if len(multi_machine_hashes[5]) != 0:
             print(Fore.YELLOW + "50-60% Access")
-            self.excel_object.write(self.worksheet, self.col, 1, '50-60% Access', 'subheader')
+            self._excel_object.write(self._worksheet, self._col, 2, '50-60% Access', 'subheader')
             print(Fore.CYAN + "----------------------------------------------------" + Fore.YELLOW)
-            row = 2
+            row = 3
             for username in multi_machine_hashes[5]:
                 print("Username: {}".format(username))
-                self.excel_object.write(self.worksheet, self.col, row, username)
+                self._excel_object.write(self._worksheet, self._col, row, username)
                 row += 1
             print(Style.BRIGHT + "TOTAL ACCOUNTS: {}".format(len(multi_machine_hashes[5])) + Style.NORMAL)
             print(Fore.CYAN + "====================================================")
-            self.col += 1
+            self._col += 1
         if len(multi_machine_hashes[6]) != 0:
             print(Fore.YELLOW + "40-50% Access")
-            self.excel_object.write(self.worksheet, self.col, 1, '40-50% Access', 'subheader')
+            self._excel_object.write(self._worksheet, self._col, 2, '40-50% Access', 'subheader')
             print(Fore.CYAN + "----------------------------------------------------" + Fore.YELLOW)
-            row = 2
+            row = 3
             for username in multi_machine_hashes[6]:
                 print("Username: {}".format(username))
-                self.excel_object.write(self.worksheet, self.col, row, username)
+                self._excel_object.write(self._worksheet, self._col, row, username)
                 row += 1
             print(Style.BRIGHT + "TOTAL ACCOUNTS: {}".format(len(multi_machine_hashes[6])) + Style.NORMAL)
             print(Fore.CYAN + "====================================================")
-            self.col += 1
+            self._col += 1
         if len(multi_machine_hashes[7]) != 0:
             print(Fore.YELLOW + "30-40% Access")
-            self.excel_object.write(self.worksheet, self.col, 1, '30-40% Access', 'subheader')
+            self._excel_object.write(self._worksheet, self._col, 2, '30-40% Access', 'subheader')
             print(Fore.CYAN + "----------------------------------------------------" + Fore.YELLOW)
-            row = 2
+            row = 3
             for username in multi_machine_hashes[7]:
                 print("Username: {}".format(username))
-                self.excel_object.write(self.worksheet, self.col, row, username)
+                self._excel_object.write(self._worksheet, self._col, row, username)
                 row += 1
             print(Style.BRIGHT + "TOTAL ACCOUNTS: {}".format(len(multi_machine_hashes[7])) + Style.NORMAL)
             print(Fore.CYAN + "====================================================")
-            self.col += 1
+            self._col += 1
         if len(multi_machine_hashes[8]) != 0:
             print(Fore.YELLOW + "20-30% Access")
-            self.excel_object.write(self.worksheet, self.col, 1, '20-30% Access', 'subheader')
+            self._excel_object.write(self._worksheet, self._col, 2, '20-30% Access', 'subheader')
             print(Fore.CYAN + "----------------------------------------------------" + Fore.YELLOW)
-            row = 2
+            row = 3
             for username in multi_machine_hashes[8]:
                 print("Username: {}".format(username))
-                self.excel_object.write(self.worksheet, self.col, row, username)
+                self._excel_object.write(self._worksheet, self._col, row, username)
                 row += 1
             print(Style.BRIGHT + "TOTAL ACCOUNTS: {}".format(len(multi_machine_hashes[8])) + Style.NORMAL)
             print(Fore.CYAN + "====================================================")
-            self.col += 1
+            self._col += 1
         if len(multi_machine_hashes[9]) != 0:
             print(Fore.YELLOW + "10-20% Access")
-            self.excel_object.write(self.worksheet, self.col, 1, '10-20% Access', 'subheader')
+            self._excel_object.write(self._worksheet, self._col, 2, '10-20% Access', 'subheader')
             print(Fore.CYAN + "----------------------------------------------------" + Fore.YELLOW)
-            row = 2
+            row = 3
             for username in multi_machine_hashes[9]:
                 print("Username: {}".format(username))
-                self.excel_object.write(self.worksheet, self.col, row, username)
+                self._excel_object.write(self._worksheet, self._col, row, username)
                 row += 1
             print(Style.BRIGHT + "TOTAL ACCOUNTS: {}".format(len(multi_machine_hashes[9])) + Style.NORMAL)
             print(Fore.CYAN + "====================================================")
-            self.col += 1
+            self._col += 1
         if len(multi_machine_hashes[10]) != 0:
             print(Fore.YELLOW + "< 10% Access")
-            self.excel_object.write(self.worksheet, self.col, 1, '< 10% Access', 'subheader')
+            self._excel_object.write(self._worksheet, self._col, 2, '< 10% Access', 'subheader')
             print(Fore.CYAN + "----------------------------------------------------" + Fore.YELLOW)
-            row = 2
+            row = 3
             for username in multi_machine_hashes[10]:
                 print("Username: {}".format(username))
-                self.excel_object.write(self.worksheet, self.col, row, username)
+                self._excel_object.write(self._worksheet, self._col, row, username)
                 row += 1
             print(Style.BRIGHT + "TOTAL ACCOUNTS: {}".format(len(multi_machine_hashes[10])) + Style.NORMAL)
             print(Fore.CYAN + "====================================================")
-            self.col += 1
+            self._col += 1
 
         print(Style.RESET_ALL)
         deinit()
 
-        self.excel_object.save(self.workbook)
+        self._excel_object.save(self._workbook)
