@@ -8,6 +8,11 @@ class Excel(object):
 
     def __init__(self, domain):
 
+        # Define font for Row 1 data
+        row1_font = xlwt.Font()
+        row1_font.name = 'Calibri'
+        row1_font.height = 200
+
         # Define font for column headers
         header_font = xlwt.Font()
         header_font.name = 'Calibri'
@@ -27,6 +32,9 @@ class Excel(object):
         normal_font.height = 280
 
         # Define styles for column headers & values
+        row1_style  = xlwt.XFStyle()
+        row1_style.font = row1_font
+        row1_style.alignment.wrap = 1
         header_style = xlwt.XFStyle()
         header_style.font = header_font
         subheader_style = xlwt.XFStyle()
@@ -36,15 +44,16 @@ class Excel(object):
         normal_style.num_format_str = "#,###.##"
 
         # Declare styles to class
-        self.header_style = header_style
-        self.subheader_style = subheader_style
-        self.normal_style = normal_style
+        self._row1_style = row1_style
+        self._header_style = header_style
+        self._subheader_style = subheader_style
+        self._normal_style = normal_style
 
         # Get datetime stamp for save filename
-        self.timestamp = time.strftime("%Y-%m-%d_%H-%M-%S")
+        self._timestamp = time.strftime("%Y-%m-%d_%H-%M-%S")
 
         # Declare domain name of scan
-        self.domain = domain
+        self._domain = domain
 
     # Creates the workbook class
     def create(self):
@@ -66,13 +75,17 @@ class Excel(object):
     # Writes a row to the worksheet specified
     def write(self, worksheet, col, row, data, style='normal'):
 
+        worksheet.col(col).width = 640 * 20
+
         try:
             if style == 'header':
-                worksheet.write(row, col, data, self.header_style)
+                worksheet.write(row, col, data, self._header_style)
             elif style == 'subheader':
-                worksheet.write(row, col, data, self.subheader_style)
+                worksheet.write(row, col, data, self._subheader_style)
+            elif style == 'row1':
+                worksheet.write(row, col, data, self._row1_style)
             else:
-                worksheet.write(row, col, data, self.normal_style)
+                worksheet.write(row, col, data, self._normal_style)
             return True
         except:
             return False
@@ -84,7 +97,7 @@ class Excel(object):
         try:
             if not os.path.exists('reports'):
                 os.mkdir('reports')
-            workbook.save('DNAmicAnalysis_' + self.domain + '_' + self.timestamp + '.xls')
+            workbook.save('DNAmicAnalysis_' + self._domain + '_' + self._timestamp + '.xls')
             return True
         except:
             return False
