@@ -1,10 +1,7 @@
-SELECT Accounts.Name, Machines.Address
+SELECT Accounts.Name, HCPA.Name
 FROM HardCodedPasswordAccounts AS HCPA
 	LEFT OUTER JOIN Accounts
 		ON Accounts.Id = HCPA.WebAppAccount_id
-	LEFT OUTER JOIN Machines
-		ON Accounts.Machine_id = Machines.Id
-WHERE NOT (Accounts.Name LIKE '%*%'
-		OR Accounts.Name LIKE ''
-		OR Accounts.Name LIKE 'S-%')
-ORDER BY Accounts.Name, Machines.Address ASC
+WHERE NOT (Accounts.Name LIKE '')
+GROUP BY LOWER(Accounts.Name)
+ORDER BY Accounts.Name ASC

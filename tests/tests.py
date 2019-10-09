@@ -514,11 +514,10 @@ class Tests(object):
         row = 2
         if len(sqlresults) > 0:
             app_names = []
-            for app_name,machine_address in sqlresults:
+            for app_name,username in sqlresults:
                 print(Fore.YELLOW + "Application Name: {}".format(app_name))
-                print(Fore.YELLOW + "Machine Address: {}".format(machine_address))
-                print(Fore.CYAN + "----------------------------------------------------")
                 app_names.append(app_name)
+            print(Fore.CYAN + "----------------------------------------------------")
             print(Fore.YELLOW + Style.BRIGHT + "Total Unique Found Overall: {}".format(len(set(app_names))))
             for app_name in set(app_names):
                 self._excel_object.write(self._worksheet, self._col, row, app_name)
