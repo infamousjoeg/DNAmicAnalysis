@@ -24,6 +24,12 @@ jobs:
         flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
         # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
-    - name: Run Application Test
+    - name: Run Application Test - Normal Config
       run: |
-        python DNAmicAnalysis.py test_config.yml
+        python DNAmicAnalysis.py tests/normal_test_config.yml
+    - name: Run Application Test - Domain Config
+      run: /
+        python DNAmicAnalysis.py tests/domain_test_config.yml
+    - name: Run Application Test - Database Config
+      run: /
+        python DNAmicAnalysis.py tests/database_test_config.yml
