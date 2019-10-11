@@ -19,15 +19,15 @@ class Database(object):
             # Split to arrays
             dbFileNameSplit = self._dbfile.split("_")
             dnaIndex = dbFileNameSplit.index("DNA")
-            dateIndex += dnaIndex
-            timeIndex += dateIndex
-            dbFileTimeSplit = dbFileNameSplit[timeIndex].split(".")
+            dIndex += dnaIndex
+            tIndex += dIndex
+            dbFileTimeSplit = dbFileNameSplit[tIndex].split(".")
             # Format as proper datetime value
             inScanTime = datetime.strptime(dbFileTimeSplit[0].replace("-", " "), "%I %M %S %p")
             # Strip 1900-01-01 placemarker date and format to 24-hour
             scanTime = datetime.strftime(inScanTime, "%H:%M:%S")
             # Combine datetime for SQL query
-            self._scanDateTime = dbFileNameSplit[dateIndex] + " " + scanTime
+            self._scanDateTime = dbFileNameSplit[dIndex] + " " + scanTime
             logger.info("Parsed scan datetime from database filename: {}".format(self._scanDateTime))
         else:
             self._scanDateTime = scan_datetime['manual_scan_datetime']
