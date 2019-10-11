@@ -108,6 +108,3 @@ img/*.mov
 templates/
 .vagrant/
 *.xls
-config/
-!config/template_config.yml
-!config/test_config.yml
