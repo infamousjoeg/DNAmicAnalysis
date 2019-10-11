@@ -592,9 +592,9 @@ class Tests(object):
 
     def multi_machine_hashes(self,multi_machine_hashes):
         print(Fore.CYAN + "====================================================")
-        print(Fore.RED + "Accounts with Multiple Machine Hashes")
+        print(Fore.RED + "Accounts Hashes Exposed on Multiple Machines")
         print(Fore.CYAN + "----------------------------------------------------")
-        self._excel_object.write(self._worksheet, self._col, 1, 'Accounts with Multiple Machine Hashes', 'header')
+        self._excel_object.write(self._worksheet, self._col, 1, 'Accounts Hashes Exposed on Multiple Machines', 'header')
         if len(multi_machine_hashes[0]) != 0:
             print(Fore.YELLOW + "> 95% Access")
             self._excel_object.write(self._worksheet, self._col, 2, '> 95% Access', 'subheader')

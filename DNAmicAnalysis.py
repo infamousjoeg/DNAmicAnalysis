@@ -404,9 +404,9 @@ def main(cfg):
             input("Press ENTER to continue...")
         print()
 
-    #######################################################
-    ## Hashes w/ Multiple Machine Access - By %age Tiers ##
-    #######################################################
+    ##################################################################
+    ## Accounts Hashes Exposed on Multiple Machines - By %age Tiers ##
+    ##################################################################
 
     multi_machine_hashes = db.exec_fromfile("data/sql/MultipleMachineHashes.sql")
 
