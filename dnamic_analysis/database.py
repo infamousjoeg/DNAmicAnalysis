@@ -19,8 +19,8 @@ class Database(object):
             # Split to arrays
             dbFileNameSplit = self._dbfile.split("_")
             dnaIndex = dbFileNameSplit.index("DNA")
-            dIndex += dnaIndex
-            tIndex += dIndex
+            dIndex = dnaIndex + 1
+            tIndex = dIndex + 1
             dbFileTimeSplit = dbFileNameSplit[tIndex].split(".")
             # Format as proper datetime value
             inScanTime = datetime.strptime(dbFileTimeSplit[0].replace("-", " "), "%I %M %S %p")
