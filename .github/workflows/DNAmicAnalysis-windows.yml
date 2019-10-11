@@ -28,8 +28,8 @@ jobs:
       run: |
         python DNAmicAnalysis.py tests/normal_test_config.yml
     - name: Run Application Test - Domain Config
-      run: /
+      run: |
         python DNAmicAnalysis.py tests/domain_test_config.yml
     - name: Run Application Test - Database Config
-      run: /
+      run: |
         python DNAmicAnalysis.py tests/database_test_config.yml
