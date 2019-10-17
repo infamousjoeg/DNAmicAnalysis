@@ -96,7 +96,10 @@ def main(cfg):
         domainPercent[1],
         domainPercent[2])
     if cfg['test_mode'] is False or cfg['console_output'] is True:
-        input("Press ENTER to continue...")
+        try:
+            input("Press ENTER to continue...")
+        except SyntaxError:
+            pass
         print()
 
     #########################################
@@ -125,7 +128,10 @@ def main(cfg):
         len(all_local_count),
         len(set(all_local_unique_count)))
     if cfg['test_mode'] is False or cfg['console_output'] is True:
-        input("Press ENTER to continue...")
+        try:
+            input("Press ENTER to continue...")
+        except SyntaxError:
+            pass
         print()
 
     #####################################################
@@ -136,7 +142,10 @@ def main(cfg):
 
     tests.local_expired_machines(localMaxGrouped, len(all_local_count), len(localMaxGrouped)/len(all_local_count))
     if cfg['test_mode'] is False or cfg['console_output'] is True:
-        input("Press ENTER to continue...")
+        try:
+            input("Press ENTER to continue...")
+        except SyntaxError:
+            pass
         print()
 
     ##############################
@@ -148,7 +157,10 @@ def main(cfg):
 
     tests.local_abandoned(abandoned_local, len(abandoned_local_count))
     if cfg['test_mode'] is False or cfg['console_output'] is True:
-        input("Press ENTER to continue...")
+        try:
+            input("Press ENTER to continue...")
+        except SyntaxError:
+            pass
         print()
 
     ###############################
@@ -159,7 +171,10 @@ def main(cfg):
 
     tests.domain_abandoned(abandoned_domain, len(all_domain_count))
     if cfg['test_mode'] is False or cfg['console_output'] is True:
-        input("Press ENTER to continue...")
+        try:
+            input("Press ENTER to continue...")
+        except SyntaxError:
+            pass
         print()
 
     #########################################################
@@ -176,7 +191,10 @@ def main(cfg):
 
     tests.multi_machine_accts(multiMachineAccounts)
     if cfg['test_mode'] is False or cfg['console_output'] is True:
-        input("Press ENTER to continue...")
+        try:
+            input("Press ENTER to continue...")
+        except SyntaxError:
+            pass
         print()
 
     ##########################
@@ -201,7 +219,10 @@ def main(cfg):
         unique_domain_admins, (unique_svcacct_domain_admins+unique_svcacct_domain_admins2),
         set(unique_svcacct_domadm_usernames), set(unique_svcacct_domadm2_usernames))
     if cfg['test_mode'] is False or cfg['console_output'] is True:
-        input("Press ENTER to continue...")
+        try:
+            input("Press ENTER to continue...")
+        except SyntaxError:
+            pass
         print()
 
     ##########################################
@@ -230,7 +251,10 @@ def main(cfg):
             uniqueDomainPercent[1],
             uniqueDomainPercent[2])
         if cfg['test_mode'] is False or cfg['console_output'] is True:
-            input("Press ENTER to continue...")
+            try:
+                input("Press ENTER to continue...")
+            except SyntaxError:
+                pass
             print()
 
     ########################################
@@ -242,7 +266,10 @@ def main(cfg):
     tests.personal_accts_running_svcs(
         personal_accts_running_svcs)
     if cfg['test_mode'] is False or cfg['console_output'] is True:
-        input("Press ENTER to continue...")
+        try:
+            input("Press ENTER to continue...")
+        except SyntaxError:
+            pass
         print()
 
     #######################################################
@@ -254,7 +281,10 @@ def main(cfg):
     tests.non_admin_with_local_admin(
         non_admin_with_local_admin)
     if cfg['test_mode'] is False or cfg['console_output'] is True:
-        input("Press ENTER to continue...")
+        try:
+            input("Press ENTER to continue...")
+        except SyntaxError:
+            pass
         print()
 
     #############################
@@ -282,7 +312,10 @@ def main(cfg):
         uniqueSvcPercent[1],
         uniqueSvcPercent[2])
     if cfg['test_mode'] is False or cfg['console_output'] is True:
-        input("Press ENTER to continue...")
+        try:
+            input("Press ENTER to continue...")
+        except SyntaxError:
+            pass
         print()
 
     ####################
@@ -300,7 +333,10 @@ def main(cfg):
         clear_text_ids_count,
         clear_text_ids)
     if cfg['test_mode'] is False or cfg['console_output'] is True:
-        input("Press ENTER to continue...")
+        try:
+            input("Press ENTER to continue...")
+        except SyntaxError:
+            pass
         print()
 
     ##########################################
@@ -312,7 +348,10 @@ def main(cfg):
     tests.apps_clear_text_passwords(
         unique_clear_text_apps)
     if cfg['test_mode'] is False or cfg['console_output'] is True:
-        input("Press ENTER to continue...")
+        try:
+            input("Press ENTER to continue...")
+        except SyntaxError:
+            pass
         print()
 
     #################################################
@@ -326,7 +365,10 @@ def main(cfg):
         risky_spns,
         spns_count[0][0])
     if cfg['test_mode'] is False or cfg['console_output'] is True:
-        input("Press ENTER to continue...")
+        try:
+            input("Press ENTER to continue...")
+        except SyntaxError:
+            pass
         print()
 
     #######################################
@@ -371,7 +413,10 @@ def main(cfg):
         total_hash_admins_srv,
         total_hash_admins_wks)
     if cfg['test_mode'] is False or cfg['console_output'] is True:
-        input("Press ENTER to continue...")
+        try:
+            input("Press ENTER to continue...")
+        except SyntaxError:
+            pass
         print()
 
     ##################################################################
@@ -384,7 +429,10 @@ def main(cfg):
 
     tests.multi_machine_hashes(multiMachineHashes)
     if cfg['test_mode'] is False or cfg['console_output'] is True:
-        input("Press ENTER to continue...")
+        try:
+            input("Press ENTER to continue...")
+        except SyntaxError:
+            pass
         print()
 
 ##########
