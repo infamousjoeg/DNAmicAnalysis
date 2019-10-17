@@ -56,7 +56,7 @@ def main(cfg):
     worksheet = excel.add(workbook, cfg['domain'].lower())
 
     # Tests class init
-    tests = Tests(excel, workbook, worksheet)
+    tests = Tests(excel, workbook, worksheet, cfg['console_output'])
 
     # Declare svc, adm, and both arrays properly
     svc_array = cfg['account_regex']['service_account']
@@ -87,19 +87,17 @@ def main(cfg):
     domainAverage = Metrics.domain_avg(expired_domain)
     domainPercent = Metrics.domain_percent(expired_domain, all_domain_count, domainMaxSorted)
 
-    # If --output detected, make results verbose to console
-    if cfg['console_output'] is True:
-        tests.domain_expired(
-            domainMaxSorted,
-            domainAverage[0],
-            domainAverage[1],
-            domainAverage[2],
-            domainPercent[0],
-            domainPercent[1],
-            domainPercent[2])
-        if cfg['test_mode'] is False:
-            input("Press ENTER to continue...")
-        print()
+    tests.domain_expired(
+        domainMaxSorted,
+        domainAverage[0],
+        domainAverage[1],
+        domainAverage[2],
+        domainPercent[0],
+        domainPercent[1],
+        domainPercent[2])
+    if cfg['test_mode'] is False:
+        input("Press ENTER to continue...")
+    print()
 
     #########################################
     ## Unique Expired Local Privileged IDs ##
@@ -116,21 +114,19 @@ def main(cfg):
     localAverage = Metrics.local_avg(expired_local)
     localPercent = Metrics.local_percent(expired_local, all_local_count, localMaxSorted)
 
-    # If --output detected, make results verbose to console
-    if cfg['console_output'] is True:
-        tests.local_expired(
-            localMaxSorted,
-            localAverage[0],
-            localAverage[1],
-            localAverage[2],
-            localPercent[0],
-            localPercent[1],
-            localPercent[2],
-            len(all_local_count),
-            len(set(all_local_unique_count)))
-        if cfg['test_mode'] is False:
-            input("Press ENTER to continue...")
-        print()
+    tests.local_expired(
+        localMaxSorted,
+        localAverage[0],
+        localAverage[1],
+        localAverage[2],
+        localPercent[0],
+        localPercent[1],
+        localPercent[2],
+        len(all_local_count),
+        len(set(all_local_unique_count)))
+    if cfg['test_mode'] is False:
+        input("Press ENTER to continue...")
+    print()
 
     #####################################################
     ## Expired Local Admins Total w/ Machine Addresses ##
@@ -138,12 +134,10 @@ def main(cfg):
 
     localMaxGrouped = Metrics.local_expired_machines(localMaxSorted)
 
-    # If --output detected, make results verbose to console
-    if cfg['console_output'] is True:
-        tests.local_expired_machines(localMaxGrouped, len(all_local_count), len(localMaxGrouped)/len(all_local_count))
-        if cfg['test_mode'] is False:
-            input("Press ENTER to continue...")
-        print()
+    tests.local_expired_machines(localMaxGrouped, len(all_local_count), len(localMaxGrouped)/len(all_local_count))
+    if cfg['test_mode'] is False:
+        input("Press ENTER to continue...")
+    print()
 
     ##############################
     ## Local Abandoned Accounts ##
@@ -152,12 +146,10 @@ def main(cfg):
     abandoned_local = db.exec_fromfile("data/sql/LocalAbandonedAccounts.sql")
     abandoned_local_count = db.exec_fromfile("data/sql/LocalAbandonedCount.sql")
 
-    # If --output detected, make results verbose to console
-    if cfg['console_output'] is True:
-        tests.local_abandoned(abandoned_local, len(abandoned_local_count))
-        if cfg['test_mode'] is False:
-            input("Press ENTER to continue...")
-        print()
+    tests.local_abandoned(abandoned_local, len(abandoned_local_count))
+    if cfg['test_mode'] is False:
+        input("Press ENTER to continue...")
+    print()
 
     ###############################
     ## Domain Abandoned Accounts ##
@@ -165,12 +157,10 @@ def main(cfg):
 
     abandoned_domain = db.exec_fromfile("data/sql/DomainAbandonedAccounts.sql")
 
-    # If --output detected, make results verbose to console
-    if cfg['console_output'] is True:
-        tests.domain_abandoned(abandoned_domain, len(all_domain_count))
-        if cfg['test_mode'] is False:
-            input("Press ENTER to continue...")
-        print()
+    tests.domain_abandoned(abandoned_domain, len(all_domain_count))
+    if cfg['test_mode'] is False:
+        input("Press ENTER to continue...")
+    print()
 
     #########################################################
     ## Accounts w/ Multiple Machine Access - By %age Tiers ##
@@ -184,12 +174,10 @@ def main(cfg):
     else:
         multiMachineAccounts = False
 
-    # If --output detected, make results verbose to console
-    if cfg['console_output'] is True:
-        tests.multi_machine_accts(multiMachineAccounts)
-        if cfg['test_mode'] is False:
-            input("Press ENTER to continue...")
-        print()
+    tests.multi_machine_accts(multiMachineAccounts)
+    if cfg['test_mode'] is False:
+        input("Press ENTER to continue...")
+    print()
 
     ##########################
     ## Unique Domain Admins ##
@@ -209,14 +197,12 @@ def main(cfg):
         for username in unique_svcacct_domain_admins2:
             unique_svcacct_domadm2_usernames.append(username[0])
 
-    # If --output detected, make results verbose to console
-    if cfg['console_output'] is True:
-        tests.unique_domain_admins(
-            unique_domain_admins, (unique_svcacct_domain_admins+unique_svcacct_domain_admins2),
-            set(unique_svcacct_domadm_usernames), set(unique_svcacct_domadm2_usernames))
-        if cfg['test_mode'] is False:
-            input("Press ENTER to continue...")
-        print()
+    tests.unique_domain_admins(
+        unique_domain_admins, (unique_svcacct_domain_admins+unique_svcacct_domain_admins2),
+        set(unique_svcacct_domadm_usernames), set(unique_svcacct_domadm2_usernames))
+    if cfg['test_mode'] is False:
+        input("Press ENTER to continue...")
+    print()
 
     ##########################################
     ## Unique Expired Domain Privileged IDs ##
@@ -232,22 +218,20 @@ def main(cfg):
     else:
         null_check = True
 
-    # If --output detected, make results verbose to console
     if null_check is True:
         tests.unique_domain_expired_null()
     else:
-        if cfg['console_output'] is True:
-            tests.unique_domain_expired(
-                uniqueDomainMaxSorted,
-                uniqueDomainAverage[0],
-                uniqueDomainAverage[1],
-                uniqueDomainAverage[2],
-                uniqueDomainPercent[0],
-                uniqueDomainPercent[1],
-                uniqueDomainPercent[2])
-            if cfg['test_mode'] is False:
-                input("Press ENTER to continue...")
-            print()
+        tests.unique_domain_expired(
+            uniqueDomainMaxSorted,
+            uniqueDomainAverage[0],
+            uniqueDomainAverage[1],
+            uniqueDomainAverage[2],
+            uniqueDomainPercent[0],
+            uniqueDomainPercent[1],
+            uniqueDomainPercent[2])
+        if cfg['test_mode'] is False:
+            input("Press ENTER to continue...")
+        print()
 
     ########################################
     ## Personal Accounts Running Services ##
@@ -255,13 +239,11 @@ def main(cfg):
 
     personal_accts_running_svcs = db.exec_fromfile("data/sql/PersonalAccountsRunningSvcs.sql", True, svc_array)
 
-    # If --output detected, make results verbose to console
-    if cfg['console_output'] is True:
-        tests.personal_accts_running_svcs(
-            personal_accts_running_svcs)
-        if cfg['test_mode'] is False:
-            input("Press ENTER to continue...")
-        print()
+    tests.personal_accts_running_svcs(
+        personal_accts_running_svcs)
+    if cfg['test_mode'] is False:
+        input("Press ENTER to continue...")
+    print()
 
     #######################################################
     ## Non-adm Accounts w/ Local Admin Rights on Systems ##
@@ -269,13 +251,11 @@ def main(cfg):
 
     non_admin_with_local_admin = db.exec_fromfile("data/sql/NonAdmLocalAdminAccounts.sql", True, regex_array)
 
-    # If --output detected, make results verbose to console
-    if cfg['console_output'] is True:
-        tests.non_admin_with_local_admin(
-            non_admin_with_local_admin)
-        if cfg['test_mode'] is False:
-            input("Press ENTER to continue...")
-        print()
+    tests.non_admin_with_local_admin(
+        non_admin_with_local_admin)
+    if cfg['test_mode'] is False:
+        input("Press ENTER to continue...")
+    print()
 
     #############################
     ## Unique Expired Services ##
@@ -293,19 +273,17 @@ def main(cfg):
         uniqueSvcAverage = [0, 0, 0]
         uniqueSvcPercent = [0, 0, 0]
 
-    # If --output detected, make results verbose to console
-    if cfg['console_output'] is True:
-        tests.unique_expired_svcs(
-            uniqueSvcMaxSorted,
-            uniqueSvcAverage[0],
-            uniqueSvcAverage[1],
-            uniqueSvcAverage[2],
-            uniqueSvcPercent[0],
-            uniqueSvcPercent[1],
-            uniqueSvcPercent[2])
-        if cfg['test_mode'] is False:
-            input("Press ENTER to continue...")
-        print()
+    tests.unique_expired_svcs(
+        uniqueSvcMaxSorted,
+        uniqueSvcAverage[0],
+        uniqueSvcAverage[1],
+        uniqueSvcAverage[2],
+        uniqueSvcPercent[0],
+        uniqueSvcPercent[1],
+        uniqueSvcPercent[2])
+    if cfg['test_mode'] is False:
+        input("Press ENTER to continue...")
+    print()
 
     ####################
     ## Clear Text IDs ##
@@ -318,14 +296,12 @@ def main(cfg):
         for x in range(len(clear_text_ids)):
             clear_text_ids_count += clear_text_ids[x][1]
 
-    # If --output detected, make results verbose to console
-    if cfg['console_output'] is True:
-        tests.clear_text_ids(
-            clear_text_ids_count,
-            clear_text_ids)
-        if cfg['test_mode'] is False:
-            input("Press ENTER to continue...")
-        print()
+    tests.clear_text_ids(
+        clear_text_ids_count,
+        clear_text_ids)
+    if cfg['test_mode'] is False:
+        input("Press ENTER to continue...")
+    print()
 
     ##########################################
     ## Applications w/ Clear Text Passwords ##
@@ -333,13 +309,11 @@ def main(cfg):
 
     unique_clear_text_apps = db.exec_fromfile("data/sql/UniqueClearTextApps.sql")
 
-    # If --output detected, make results verbose to console
-    if cfg['console_output'] is True:
-        tests.apps_clear_text_passwords(
-            unique_clear_text_apps)
-        if cfg['test_mode'] is False:
-            input("Press ENTER to continue...")
-        print()
+    tests.apps_clear_text_passwords(
+        unique_clear_text_apps)
+    if cfg['test_mode'] is False:
+        input("Press ENTER to continue...")
+    print()
 
     #################################################
     ## Risky Expired Service Principal Names (SPN) ##
@@ -348,14 +322,12 @@ def main(cfg):
     risky_spns = db.exec_fromfile("data/sql/UniqueExpiredSPNAccounts.sql")
     spns_count = db.exec_fromfile("data/sql/TotalSPNs.sql")
 
-    # If --output detected, make results verbose to console
-    if cfg['console_output'] is True:
-        tests.risky_spns(
-            risky_spns,
-            spns_count[0][0])
-        if cfg['test_mode'] is False:
-            input("Press ENTER to continue...")
-        print()
+    tests.risky_spns(
+        risky_spns,
+        spns_count[0][0])
+    if cfg['test_mode'] is False:
+        input("Press ENTER to continue...")
+    print()
 
     #######################################
     ## Hashes Found on Multiple Machines ##
@@ -391,18 +363,16 @@ def main(cfg):
 
         #admin_hash_sorted = sorted(admin_hash_found, key=str.lower)
 
-    # If --output detected, make results verbose to console
-    if cfg['console_output'] is True:
-        tests.hashes_found_on_multiple(
-            len(unique_hash_name),
-            sorted(admin_hash_found, key=str.lower),
-            total_hash_srv,
-            total_hash_wks,
-            total_hash_admins_srv,
-            total_hash_admins_wks)
-        if cfg['test_mode'] is False:
-            input("Press ENTER to continue...")
-        print()
+    tests.hashes_found_on_multiple(
+        len(unique_hash_name),
+        sorted(admin_hash_found, key=str.lower),
+        total_hash_srv,
+        total_hash_wks,
+        total_hash_admins_srv,
+        total_hash_admins_wks)
+    if cfg['test_mode'] is False:
+        input("Press ENTER to continue...")
+    print()
 
     ##################################################################
     ## Accounts Hashes Exposed on Multiple Machines - By %age Tiers ##
@@ -412,12 +382,10 @@ def main(cfg):
 
     multiMachineHashes = Metrics.multi_machine_hashes(multi_machine_hashes, all_machines_count[0][0])
 
-    # If --output detected, make results verbose to console
-    if cfg['console_output'] is True:
-        tests.multi_machine_hashes(multiMachineHashes)
-        if cfg['test_mode'] is False:
-            input("Press ENTER to continue...")
-        print()
+    tests.multi_machine_hashes(multiMachineHashes)
+    if cfg['test_mode'] is False:
+        input("Press ENTER to continue...")
+    print()
 
 ##########
 ## Main ##
