@@ -25,7 +25,7 @@ jobs:
           flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
       - name: Slack Notification
         uses: rtCamp/action-slack-notify@master
-        if: failure
+        if: failure()
         env:
           SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
           SLACK_USERNAME: DNAmicAnalysisBot
@@ -49,7 +49,7 @@ jobs:
           python DNAmicAnalysis.py tests/normal_test_config.yml
       - name: Slack Notification
         uses: rtCamp/action-slack-notify@master
-        if: failure
+        if: failure()
         env:
           SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
           SLACK_USERNAME: DNAmicAnalysisBot
@@ -73,7 +73,7 @@ jobs:
           python DNAmicAnalysis.py tests/domain_test_config.yml
       - name: Slack Notification
         uses: rtCamp/action-slack-notify@master
-        if: failure
+        if: failure()
         env:
           SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
           SLACK_USERNAME: DNAmicAnalysisBot
@@ -97,7 +97,7 @@ jobs:
           python DNAmicAnalysis.py tests/database_test_config.yml
       - name: Slack Notification
         uses: rtCamp/action-slack-notify@master
-        if: failure
+        if: failure()
         env:
           SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
           SLACK_USERNAME: DNAmicAnalysisBot
@@ -121,7 +121,7 @@ jobs:
           python DNAmicAnalysis.py tests/noconsole_test_config.yml
       - name: Slack Notification
         uses: rtCamp/action-slack-notify@master
-        if: failure
+        if: failure()
         env:
           SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
           SLACK_USERNAME: DNAmicAnalysisBot
