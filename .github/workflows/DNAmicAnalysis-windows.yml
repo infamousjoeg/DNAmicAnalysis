@@ -42,7 +42,7 @@ jobs:
           python DNAmicAnalysis.py tests/normal_test_config.yml
       - name: Check for Excel Output
         run: |
-          IF EXIST "reports/DNAmicAnaylsis_cyberarkdemo.com_*" (ECHO "Found") ELSE (exit /b 1)
+          pwsh -c "if (Test-Path reports\DNAmicAnaylsis_cyberarkdemo.com_* -PathType Leaf) { Write-Output 'Found' } else { throw 'File not found.' }"
 
   domain:
     runs-on: windows-latest
@@ -62,7 +62,7 @@ jobs:
           python DNAmicAnalysis.py tests/domain_test_config.yml
       - name: Check for Excel Output
         run: |
-          IF EXIST "reports/DNAmicAnaylsis_demo.com_*" (ECHO "Found") ELSE (exit /b 1)
+          pwsh -c "if (Test-Path reports\DNAmicAnaylsis_demo.com_* -PathType Leaf) { Write-Output 'Found' } else { throw 'File not found.' }"
 
   database:
     runs-on: windows-latest
@@ -82,7 +82,7 @@ jobs:
           python DNAmicAnalysis.py tests/database_test_config.yml
       - name: Check for Excel Output
         run: |
-          IF EXIST "reports/DNAmicAnaylsis_cyberarkdemo.com_*" (ECHO "Found") ELSE (exit /b 1)
+          pwsh -c "if (Test-Path reports\DNAmicAnaylsis_cyberarkdemo.com_* -PathType Leaf) { Write-Output 'Found' } else { throw 'File not found.' }"
 
   noconsole:
     runs-on: windows-latest
@@ -102,4 +102,4 @@ jobs:
           python DNAmicAnalysis.py tests/noconsole_test_config.yml
       - name: Check for Excel Output
         run: |
-          IF EXIST "reports/DNAmicAnaylsis_cyberarkdemo.com_*" (ECHO "Found") ELSE (exit /b 1)
+          pwsh -c "if (Test-Path reports\DNAmicAnaylsis_cyberarkdemo.com_* -PathType Leaf) { Write-Output 'Found' } else { throw 'File not found.' }"
