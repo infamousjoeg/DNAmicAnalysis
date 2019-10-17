@@ -23,6 +23,13 @@ jobs:
           flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
           # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
           flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+      - name: Slack Notification
+        uses: rtCamp/action-slack-notify@master
+        if: failure
+        env:
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+          SLACK_USERNAME: DNAmicAnalysisBot
+          SLACK_COLOR: '#FF0000'
 
   normal:
     runs-on: macos-latest
@@ -42,7 +49,14 @@ jobs:
           ./DNAmicAnalysis.py tests/normal_test_config.yml
       - name: Check for Excel Output
         run: |
-          [ -n "reports/DNAmicAnalysis_cyberarkdemo.com_"* ] && echo "Found" || exit 1
+          [ -n "reports/DNAmicAnalysis_cyberarkdemo.com_"* ] && echo "Found" || 
+      - name: Slack Notification
+        uses: rtCamp/action-slack-notify@master
+        if: failure
+        env:
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+          SLACK_USERNAME: DNAmicAnalysisBot
+          SLACK_COLOR: '#FF0000'
 
   domain:
     runs-on: macos-latest
@@ -63,6 +77,13 @@ jobs:
       - name: Check for Excel Output
         run: |
           [ -n "reports/DNAmicAnalysis_demo.com_"* ] && echo "Found" || exit 1
+      - name: Slack Notification
+        uses: rtCamp/action-slack-notify@master
+        if: failure
+        env:
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+          SLACK_USERNAME: DNAmicAnalysisBot
+          SLACK_COLOR: '#FF0000'
 
   database:
     runs-on: macos-latest
@@ -83,6 +104,13 @@ jobs:
       - name: Check for Excel Output
         run: |
           [ -n "reports/DNAmicAnalysis_cyberarkdemo.com_"* ] && echo "Found" || exit 1
+      - name: Slack Notification
+        uses: rtCamp/action-slack-notify@master
+        if: failure
+        env:
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+          SLACK_USERNAME: DNAmicAnalysisBot
+          SLACK_COLOR: '#FF0000'
 
   noconsole:
     runs-on: macos-latest
@@ -103,3 +131,10 @@ jobs:
       - name: Check for Excel Output
         run: |
           [ -n "reports/DNAmicAnalysis_cyberarkdemo.com_"* ] && echo "Found" || exit 1
+      - name: Slack Notification
+        uses: rtCamp/action-slack-notify@master
+        if: failure
+        env:
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+          SLACK_USERNAME: DNAmicAnalysisBot
+          SLACK_COLOR: '#FF0000'

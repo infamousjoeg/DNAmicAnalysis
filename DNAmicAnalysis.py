@@ -95,9 +95,9 @@ def main(cfg):
         domainPercent[0],
         domainPercent[1],
         domainPercent[2])
-    if cfg['test_mode'] is False or cfg['console_output'] is False:
+    if cfg['test_mode'] is False or cfg['console_output'] is True:
         input("Press ENTER to continue...")
-    print()
+        print()
 
     #########################################
     ## Unique Expired Local Privileged IDs ##
@@ -124,9 +124,9 @@ def main(cfg):
         localPercent[2],
         len(all_local_count),
         len(set(all_local_unique_count)))
-    if cfg['test_mode'] is False or cfg['console_output'] is False:
+    if cfg['test_mode'] is False or cfg['console_output'] is True:
         input("Press ENTER to continue...")
-    print()
+        print()
 
     #####################################################
     ## Expired Local Admins Total w/ Machine Addresses ##
@@ -135,9 +135,9 @@ def main(cfg):
     localMaxGrouped = Metrics.local_expired_machines(localMaxSorted)
 
     tests.local_expired_machines(localMaxGrouped, len(all_local_count), len(localMaxGrouped)/len(all_local_count))
-    if cfg['test_mode'] is False or cfg['console_output'] is False:
+    if cfg['test_mode'] is False or cfg['console_output'] is True:
         input("Press ENTER to continue...")
-    print()
+        print()
 
     ##############################
     ## Local Abandoned Accounts ##
@@ -147,9 +147,9 @@ def main(cfg):
     abandoned_local_count = db.exec_fromfile("data/sql/LocalAbandonedCount.sql")
 
     tests.local_abandoned(abandoned_local, len(abandoned_local_count))
-    if cfg['test_mode'] is False or cfg['console_output'] is False:
+    if cfg['test_mode'] is False or cfg['console_output'] is True:
         input("Press ENTER to continue...")
-    print()
+        print()
 
     ###############################
     ## Domain Abandoned Accounts ##
@@ -158,9 +158,9 @@ def main(cfg):
     abandoned_domain = db.exec_fromfile("data/sql/DomainAbandonedAccounts.sql")
 
     tests.domain_abandoned(abandoned_domain, len(all_domain_count))
-    if cfg['test_mode'] is False or cfg['console_output'] is False:
+    if cfg['test_mode'] is False or cfg['console_output'] is True:
         input("Press ENTER to continue...")
-    print()
+        print()
 
     #########################################################
     ## Accounts w/ Multiple Machine Access - By %age Tiers ##
@@ -175,9 +175,9 @@ def main(cfg):
         multiMachineAccounts = False
 
     tests.multi_machine_accts(multiMachineAccounts)
-    if cfg['test_mode'] is False or cfg['console_output'] is False:
+    if cfg['test_mode'] is False or cfg['console_output'] is True:
         input("Press ENTER to continue...")
-    print()
+        print()
 
     ##########################
     ## Unique Domain Admins ##
@@ -200,9 +200,9 @@ def main(cfg):
     tests.unique_domain_admins(
         unique_domain_admins, (unique_svcacct_domain_admins+unique_svcacct_domain_admins2),
         set(unique_svcacct_domadm_usernames), set(unique_svcacct_domadm2_usernames))
-    if cfg['test_mode'] is False or cfg['console_output'] is False:
+    if cfg['test_mode'] is False or cfg['console_output'] is True:
         input("Press ENTER to continue...")
-    print()
+        print()
 
     ##########################################
     ## Unique Expired Domain Privileged IDs ##
@@ -229,9 +229,9 @@ def main(cfg):
             uniqueDomainPercent[0],
             uniqueDomainPercent[1],
             uniqueDomainPercent[2])
-        if cfg['test_mode'] is False or cfg['console_output'] is False:
+        if cfg['test_mode'] is False or cfg['console_output'] is True:
             input("Press ENTER to continue...")
-        print()
+            print()
 
     ########################################
     ## Personal Accounts Running Services ##
@@ -241,9 +241,9 @@ def main(cfg):
 
     tests.personal_accts_running_svcs(
         personal_accts_running_svcs)
-    if cfg['test_mode'] is False or cfg['console_output'] is False:
+    if cfg['test_mode'] is False or cfg['console_output'] is True:
         input("Press ENTER to continue...")
-    print()
+        print()
 
     #######################################################
     ## Non-adm Accounts w/ Local Admin Rights on Systems ##
@@ -253,9 +253,9 @@ def main(cfg):
 
     tests.non_admin_with_local_admin(
         non_admin_with_local_admin)
-    if cfg['test_mode'] is False or cfg['console_output'] is False:
+    if cfg['test_mode'] is False or cfg['console_output'] is True:
         input("Press ENTER to continue...")
-    print()
+        print()
 
     #############################
     ## Unique Expired Services ##
@@ -281,9 +281,9 @@ def main(cfg):
         uniqueSvcPercent[0],
         uniqueSvcPercent[1],
         uniqueSvcPercent[2])
-    if cfg['test_mode'] is False or cfg['console_output'] is False:
+    if cfg['test_mode'] is False or cfg['console_output'] is True:
         input("Press ENTER to continue...")
-    print()
+        print()
 
     ####################
     ## Clear Text IDs ##
@@ -299,9 +299,9 @@ def main(cfg):
     tests.clear_text_ids(
         clear_text_ids_count,
         clear_text_ids)
-    if cfg['test_mode'] is False or cfg['console_output'] is False:
+    if cfg['test_mode'] is False or cfg['console_output'] is True:
         input("Press ENTER to continue...")
-    print()
+        print()
 
     ##########################################
     ## Applications w/ Clear Text Passwords ##
@@ -311,9 +311,9 @@ def main(cfg):
 
     tests.apps_clear_text_passwords(
         unique_clear_text_apps)
-    if cfg['test_mode'] is False or cfg['console_output'] is False:
+    if cfg['test_mode'] is False or cfg['console_output'] is True:
         input("Press ENTER to continue...")
-    print()
+        print()
 
     #################################################
     ## Risky Expired Service Principal Names (SPN) ##
@@ -325,9 +325,9 @@ def main(cfg):
     tests.risky_spns(
         risky_spns,
         spns_count[0][0])
-    if cfg['test_mode'] is False or cfg['console_output'] is False:
+    if cfg['test_mode'] is False or cfg['console_output'] is True:
         input("Press ENTER to continue...")
-    print()
+        print()
 
     #######################################
     ## Hashes Found on Multiple Machines ##
@@ -370,9 +370,9 @@ def main(cfg):
         total_hash_wks,
         total_hash_admins_srv,
         total_hash_admins_wks)
-    if cfg['test_mode'] is False or cfg['console_output'] is False:
+    if cfg['test_mode'] is False or cfg['console_output'] is True:
         input("Press ENTER to continue...")
-    print()
+        print()
 
     ##################################################################
     ## Accounts Hashes Exposed on Multiple Machines - By %age Tiers ##
@@ -383,9 +383,9 @@ def main(cfg):
     multiMachineHashes = Metrics.multi_machine_hashes(multi_machine_hashes, all_machines_count[0][0])
 
     tests.multi_machine_hashes(multiMachineHashes)
-    if cfg['test_mode'] is False or cfg['console_output'] is False:
+    if cfg['test_mode'] is False or cfg['console_output'] is True:
         input("Press ENTER to continue...")
-    print()
+        print()
 
 ##########
 ## Main ##
