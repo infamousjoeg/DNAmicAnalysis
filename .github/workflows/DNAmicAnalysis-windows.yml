@@ -40,9 +40,6 @@ jobs:
       - name: Run Application Test - Normal Config
         run: |
           python DNAmicAnalysis.py tests/normal_test_config.yml
-      - name: Check for Excel Output
-        run: |
-          pwsh -c "if (Test-Path ${env:GITHUB_WORKSPACE}\reports\DNAmicAnaylsis_cyberarkdemo.com_* -PathType Leaf) { Write-Output 'Found' } else { throw 'File not found.' }"
 
   domain:
     runs-on: windows-latest
@@ -60,11 +57,6 @@ jobs:
       - name: Run Application Test - Domain Config
         run: |
           python DNAmicAnalysis.py tests/domain_test_config.yml
-      - run: |
-          dir $GITHUB_WORKSPACE
-      - name: Check for Excel Output
-        run: |
-          pwsh -c "if (Test-Path ${env:GITHUB_WORKSPACE}\reports\DNAmicAnaylsis_cyberarkdemo.com_* -PathType Leaf) { Write-Output 'Found' } else { throw 'File not found.' }"
 
   database:
     runs-on: windows-latest
@@ -82,9 +74,6 @@ jobs:
       - name: Run Application Test - Database Config
         run: |
           python DNAmicAnalysis.py tests/database_test_config.yml
-      - name: Check for Excel Output
-        run: |
-          pwsh -c "if (Test-Path ${env:GITHUB_WORKSPACE}\reports\DNAmicAnaylsis_cyberarkdemo.com_* -PathType Leaf) { Write-Output 'Found' } else { throw 'File not found.' }"
 
   noconsole:
     runs-on: windows-latest
@@ -102,6 +91,3 @@ jobs:
       - name: Run Application Test - Database Config
         run: |
           python DNAmicAnalysis.py tests/noconsole_test_config.yml
-      - name: Check for Excel Output
-        run: |
-          pwsh -c "if (Test-Path ${env:GITHUB_WORKSPACE}\reports\DNAmicAnaylsis_cyberarkdemo.com_* -PathType Leaf) { Write-Output 'Found' } else { throw 'File not found.' }"
