@@ -1,3 +1,4 @@
+import ntpath
 import sqlite3
 from datetime import datetime
 from sqlite3 import Error
@@ -17,7 +18,8 @@ class Database(object):
         # Parse scan date & time if no override detected
         if not scan_datetime['override']:
             # Split to arrays
-            dbFileNameSplit = self._dbfile.split("_")
+            dbFileName = ntpath.basename(self._dbfile)
+            dbFileNameSplit = dbFileName.split("_")
             dnaIndex = dbFileNameSplit.index("DNA")
             dIndex = dnaIndex + 1
             tIndex = dIndex + 1
