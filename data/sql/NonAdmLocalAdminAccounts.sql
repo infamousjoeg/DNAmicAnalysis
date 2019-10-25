@@ -9,7 +9,8 @@ FROM Accounts
 WHERE Machines.ProductType = 'Server'
 	AND NOT (Accounts.Name = ''
 		OR Accounts.Name LIKE '%*%'
-		OR Accounts.Name LIKE 'S-%')
+		OR Accounts.Name LIKE 'S-%'
+		OR Accounts.Name LIKE '%admin%')
 	AND NOT ({whereStmt})
 	AND (OSGroupModel.Name = 'Administrators'
 		OR OSGroupModel.Name = 'Power Users')

@@ -1,3 +1,4 @@
+import ntpath
 import sqlite3
 from datetime import datetime
 from sqlite3 import Error
@@ -17,14 +18,18 @@ class Database(object):
         # Parse scan date & time if no override detected
         if not scan_datetime['override']:
             # Split to arrays
-            dbFileNameSplit = self._dbfile.split("_")
-            dbFileTimeSplit = dbFileNameSplit[2].split(".")
+            dbFileName = ntpath.basename(self._dbfile)
+            dbFileNameSplit = dbFileName.split("_")
+            dnaIndex = dbFileNameSplit.index("DNA")
+            dIndex = dnaIndex + 1
+            tIndex = dIndex + 1
+            dbFileTimeSplit = dbFileNameSplit[tIndex].split(".")
             # Format as proper datetime value
             inScanTime = datetime.strptime(dbFileTimeSplit[0].replace("-", " "), "%I %M %S %p")
             # Strip 1900-01-01 placemarker date and format to 24-hour
             scanTime = datetime.strftime(inScanTime, "%H:%M:%S")
             # Combine datetime for SQL query
-            self._scanDateTime = dbFileNameSplit[1] + " " + scanTime
+            self._scanDateTime = dbFileNameSplit[dIndex] + " " + scanTime
             logger.info("Parsed scan datetime from database filename: {}".format(self._scanDateTime))
         else:
             self._scanDateTime = scan_datetime['manual_scan_datetime']

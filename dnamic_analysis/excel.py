@@ -97,7 +97,7 @@ class Excel(object):
         try:
             if not os.path.exists('reports'):
                 os.mkdir('reports')
-            workbook.save('DNAmicAnalysis_' + self._domain + '_' + self._timestamp + '.xls')
+            workbook.save('reports/DNAmicAnalysis_' + self._domain + '_' + self._timestamp + '.xls')
             return True
         except:
             return False
