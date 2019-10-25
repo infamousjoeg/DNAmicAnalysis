@@ -96,8 +96,11 @@ def main(cfg):
         domainPercent[1],
         domainPercent[2])
     if cfg['test_mode'] is False or cfg['console_output'] is True:
-        print("Press ENTER to continue...", input())
-        print()
+        try:
+            print("Press ENTER to continue...", input())
+            print()
+        except EOFError:
+            pass
 
     #########################################
     ## Unique Expired Local Privileged IDs ##
@@ -127,7 +130,7 @@ def main(cfg):
     if cfg['test_mode'] is False or cfg['console_output']:
         try:
             input("Press ENTER to continue...")
-        except SyntaxError:
+        except EOFError:
             pass
         print()
 
@@ -141,7 +144,7 @@ def main(cfg):
     if cfg['test_mode'] is False or cfg['console_output']:
         try:
             input("Press ENTER to continue...")
-        except SyntaxError:
+        except EOFError:
             pass
         print()
 
@@ -156,7 +159,7 @@ def main(cfg):
     if cfg['test_mode'] is False or cfg['console_output']:
         try:
             input("Press ENTER to continue...")
-        except SyntaxError:
+        except EOFError:
             pass
         print()
 
@@ -170,7 +173,7 @@ def main(cfg):
     if cfg['test_mode'] is False or cfg['console_output']:
         try:
             input("Press ENTER to continue...")
-        except SyntaxError:
+        except EOFError:
             pass
         print()
 
@@ -190,7 +193,7 @@ def main(cfg):
     if cfg['test_mode'] is False or cfg['console_output']:
         try:
             input("Press ENTER to continue...")
-        except SyntaxError:
+        except EOFError:
             pass
         print()
 
@@ -218,7 +221,7 @@ def main(cfg):
     if cfg['test_mode'] is False or cfg['console_output']:
         try:
             input("Press ENTER to continue...")
-        except SyntaxError:
+        except EOFError:
             pass
         print()
 
@@ -250,7 +253,7 @@ def main(cfg):
         if cfg['test_mode'] is False or cfg['console_output']:
             try:
                 input("Press ENTER to continue...")
-            except SyntaxError:
+            except EOFError:
                 pass
             print()
 
@@ -265,7 +268,7 @@ def main(cfg):
     if cfg['test_mode'] is False or cfg['console_output']:
         try:
             input("Press ENTER to continue...")
-        except SyntaxError:
+        except EOFError:
             pass
         print()
 
@@ -280,7 +283,7 @@ def main(cfg):
     if cfg['test_mode'] is False or cfg['console_output']:
         try:
             input("Press ENTER to continue...")
-        except SyntaxError:
+        except EOFError:
             pass
         print()
 
@@ -311,7 +314,7 @@ def main(cfg):
     if cfg['test_mode'] is False or cfg['console_output']:
         try:
             input("Press ENTER to continue...")
-        except SyntaxError:
+        except EOFError:
             pass
         print()
 
@@ -332,7 +335,7 @@ def main(cfg):
     if cfg['test_mode'] is False or cfg['console_output']:
         try:
             input("Press ENTER to continue...")
-        except SyntaxError:
+        except EOFError:
             pass
         print()
 
@@ -347,7 +350,7 @@ def main(cfg):
     if cfg['test_mode'] is False or cfg['console_output']:
         try:
             input("Press ENTER to continue...")
-        except SyntaxError:
+        except EOFError:
             pass
         print()
 
@@ -364,7 +367,7 @@ def main(cfg):
     if cfg['test_mode'] is False or cfg['console_output']:
         try:
             input("Press ENTER to continue...")
-        except SyntaxError:
+        except EOFError:
             pass
         print()
 
@@ -412,7 +415,7 @@ def main(cfg):
     if cfg['test_mode'] is False or cfg['console_output']:
         try:
             input("Press ENTER to continue...")
-        except SyntaxError:
+        except EOFError:
             pass
         print()
 
@@ -428,7 +431,7 @@ def main(cfg):
     if cfg['test_mode'] is False or cfg['console_output']:
         try:
             input("Press ENTER to continue...")
-        except SyntaxError:
+        except EOFError:
             pass
         print()
 
