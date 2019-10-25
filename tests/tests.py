@@ -132,17 +132,17 @@ class Tests(object):
     def local_abandoned(self,abandoned_accounts, count_accounts):
         if self._console_output:
             print(Fore.CYAN + "====================================================")
-            print(Fore.RED + "Local Abandoned / Leftover Accounts")
+            print(Fore.RED + "Local Abandoned Accounts")
             print(Fore.CYAN + "----------------------------------------------------")
-            print(Fore.YELLOW + "Total Detected: {} / {}".format(len(abandoned_accounts), count_accounts))
+            print(Fore.YELLOW + "Total Abandoned / Total Overall: {} / {}".format(len(abandoned_accounts), count_accounts))
             print(Fore.CYAN + "====================================================")
             print(Style.RESET_ALL)
             deinit()
 
         # Write bulk data to Excel workbook
-        data = 'Total Detected: {} / {}'.format(len(abandoned_accounts), count_accounts)
+        data = 'Total Abandoned / Total Overall: {} / {}'.format(len(abandoned_accounts), count_accounts)
         self._excel_object.write(self._worksheet, self._col, 0, data, 'row1')
-        self._excel_object.write(self._worksheet, self._col, 1, 'Local Abandoned / Leftover Accounts', 'header')
+        self._excel_object.write(self._worksheet, self._col, 1, 'Local Abandoned Accounts', 'header')
         row = 2
         for username,_,_,_ in abandoned_accounts:
             self._excel_object.write(self._worksheet, self._col, row, username)
@@ -154,17 +154,17 @@ class Tests(object):
     def domain_abandoned(self,abandoned_accounts, count_accounts):
         if self._console_output:
             print(Fore.CYAN + "====================================================")
-            print(Fore.RED + "Domain Abandoned / Leftover Accounts")
+            print(Fore.RED + "Domain Abandoned Accounts")
             print(Fore.CYAN + "----------------------------------------------------")
-            print(Fore.YELLOW + "Total Detected: {} / {}".format(len(abandoned_accounts), count_accounts))
+            print(Fore.YELLOW + "Total Abandoned / Total Overall: {} / {}".format(len(abandoned_accounts), count_accounts))
             print(Fore.CYAN + "====================================================")
             print(Style.RESET_ALL)
             deinit()
 
         # Write bulk data to Excel workbook
-        data = 'Total Detected: {} / {}'.format(len(abandoned_accounts), count_accounts)
+        data = 'Total Abandoned / Total Overall: {} / {}'.format(len(abandoned_accounts), count_accounts)
         self._excel_object.write(self._worksheet, self._col, 0, data, 'row1')
-        self._excel_object.write(self._worksheet, self._col, 1, 'Domain Abandoned / Leftover Accounts', 'header')
+        self._excel_object.write(self._worksheet, self._col, 1, 'Domain Abandoned Accounts', 'header')
         row = 2
         for username,_,_,_ in abandoned_accounts:
             self._excel_object.write(self._worksheet, self._col, row, username)
