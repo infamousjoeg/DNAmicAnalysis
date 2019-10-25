@@ -95,7 +95,7 @@ def main(cfg):
         domainPercent[0],
         domainPercent[1],
         domainPercent[2])
-    if cfg['test_mode'] is False or cfg['console_output']:
+    if cfg['test_mode'] is False or cfg['console_output'] is True:
         try:
             input("Press ENTER to continue...")
         except SyntaxError:
