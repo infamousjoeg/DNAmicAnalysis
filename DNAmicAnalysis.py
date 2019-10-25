@@ -97,10 +97,10 @@ def main(cfg):
         domainPercent[2])
     if cfg['test_mode'] is False or cfg['console_output'] is True:
         try:
-            print("Press ENTER to continue...", input())
-            print()
+            input("Press ENTER to continue...")
         except EOFError:
             pass
+        print()
 
     #########################################
     ## Unique Expired Local Privileged IDs ##
