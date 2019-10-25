@@ -3,34 +3,6 @@ name: DNAmic Analysis MacOS Test
 on: [push]
 
 jobs:
-
-  lint:
-    runs-on: macos-latest
-    steps:
-      - uses: actions/checkout@v1
-      - name: Set up Python 3.7
-        uses: actions/setup-python@v1
-        with:
-          python-version: 3.7
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt
-      - name: Lint with flake8
-        run: |
-          pip install flake8
-          # stop the build if there are Python syntax errors or undefined names
-          flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
-          # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
-          flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
-      - name: Slack Notification
-        uses: rtCamp/action-slack-notify@master
-        if: failure()
-        env:
-          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
-          SLACK_USERNAME: DNAmicAnalysisBot
-          SLACK_COLOR: '#FF0000'
-
   normal:
     runs-on: macos-latest
     needs: lint
@@ -49,14 +21,7 @@ jobs:
           ./DNAmicAnalysis.py tests/normal_test_config.yml
       - name: Check for Excel Output
         run: |
-          [ -n "reports/DNAmicAnalysis_cyberarkdemo.com_"* ] && echo "Found" || 
-      - name: Slack Notification
-        uses: rtCamp/action-slack-notify@master
-        if: failure()
-        env:
-          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
-          SLACK_USERNAME: DNAmicAnalysisBot
-          SLACK_COLOR: '#FF0000'
+          [ -n "reports/DNAmicAnalysis_cyberarkdemo.com_"* ] && echo "Found" || exit 1
 
   domain:
     runs-on: macos-latest
@@ -77,13 +42,6 @@ jobs:
       - name: Check for Excel Output
         run: |
           [ -n "reports/DNAmicAnalysis_demo.com_"* ] && echo "Found" || exit 1
-      - name: Slack Notification
-        uses: rtCamp/action-slack-notify@master
-        if: failure()
-        env:
-          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
-          SLACK_USERNAME: DNAmicAnalysisBot
-          SLACK_COLOR: '#FF0000'
 
   database:
     runs-on: macos-latest
@@ -104,13 +62,6 @@ jobs:
       - name: Check for Excel Output
         run: |
           [ -n "reports/DNAmicAnalysis_cyberarkdemo.com_"* ] && echo "Found" || exit 1
-      - name: Slack Notification
-        uses: rtCamp/action-slack-notify@master
-        if: failure()
-        env:
-          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
-          SLACK_USERNAME: DNAmicAnalysisBot
-          SLACK_COLOR: '#FF0000'
 
   noconsole:
     runs-on: macos-latest
@@ -131,10 +82,3 @@ jobs:
       - name: Check for Excel Output
         run: |
           [ -n "reports/DNAmicAnalysis_cyberarkdemo.com_"* ] && echo "Found" || exit 1
-      - name: Slack Notification
-        uses: rtCamp/action-slack-notify@master
-        if: failure()
-        env:
-          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
-          SLACK_USERNAME: DNAmicAnalysisBot
-          SLACK_COLOR: '#FF0000'
