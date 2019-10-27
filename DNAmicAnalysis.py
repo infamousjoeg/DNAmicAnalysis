@@ -14,7 +14,7 @@ from logzero import logger
 from tests import Tests
 
 __author__ = "Joe Garcia, CISSP"
-__version__ = "0.4.0-beta.3"
+__version__ = "0.5.0-beta.4"
 __license__ = "MIT"
 
 log_timestamp = time.strftime("%Y-%m-%d_%H-%M-%S")
