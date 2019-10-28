@@ -83,9 +83,9 @@ class Database(object):
                 counter = 0
                 for regex in regex_array:
                     if counter == 0:
-                        whereStmt += "Accounts.Name LIKE '%{}%' ".format(regex)
+                        whereStmt += "Accounts.Name LIKE '%{}%' ".format(regex.replace('^','%'))
                     else:
-                        whereStmt += "OR Accounts.Name LIKE '%{}%' ".format(regex)
+                        whereStmt += "OR Accounts.Name LIKE '%{}%' ".format(regex.replace('^','%'))
                     counter += 1
                 c.execute(sqlQueryFinal.replace("{whereStmt}", whereStmt))
                 logger.info("Executed {} on SQLite3 database successfully".format(sqlQueryFinal.replace("{whereStmt}", whereStmt)))

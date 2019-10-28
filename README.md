@@ -157,6 +157,7 @@ The metrics reported in this application are based on SQL queries ran on the DNA
 
 * Copy [config/template_config.yml](config/template_config.yml) and rename it to something like `customer_config.yml`.
 * Update the values within the YAML config file to match those given to you by the customer for the scan analysis.
+* Use `^` as a wildcard when declaring regex in the `account_regex` section.
 
 ```yaml
 ---
@@ -167,11 +168,11 @@ domain: cyberarkdemo.com
 # privileged account patterns to match
 account_regex:
   service_account:
-    - svc
-    - service
+    - svc^
+    - ^service
   admin_account:
-    - adm
-    - admin
+    - adm^
+    - ^admin
 # yes or no: whether to output metrics to console
 console_output: yes
 # yes or no: whether to include disabled accounts in metrics
@@ -206,13 +207,13 @@ The format for the Excel filename is `DNAmicAnalysis_<domain>_<date>_<time>.xls`
 **Windows**
 ```shell
 > python.exe DNAmicAnalysis.py --version
-DNAmicAnalysis (version 0.4.0-beta.3)
+DNAmicAnalysis (version 0.6.0-beta.5)
 ```
 
 **UNIX or MacOS**
 ```shell
 $ ./DNAmicAnalysis --version
-DNAmicAnalysis (version 0.4.0-beta.3)
+DNAmicAnalysis (version 0.6.0-beta.5)
 ```
 
 ## Example Output
