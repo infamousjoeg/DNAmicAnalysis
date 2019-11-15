@@ -1,6 +1,6 @@
 # :bar_chart: DNAmic Analysis <!-- omit in toc -->
 
-[![](https://github.com/infamousjoeg/DNAmicAnalysis/workflows/DNAmic%20Analysis%20Windows%20Test/badge.svg)](https://github.com/infamousjoeg/DNAmicAnalysis/actions?workflow=DNAmic+Analysis+Windows+Test) [![](https://github.com/infamousjoeg/DNAmicAnalysis/workflows/DNAmic%20Analysis%20Ubuntu%20Test/badge.svg)](https://github.com/infamousjoeg/DNAmicAnalysis/actions?workflow=DNAmic+Analysis+Ubuntu+Test) [![](https://github.com/infamousjoeg/DNAmicAnalysis/workflows/DNAmic%20Analysis%20MacOS%20Test/badge.svg)](https://github.com/infamousjoeg/DNAmicAnalysis/actions?workflow=DNAmic+Analysis+MacOS+Test)
+[![](https://github.com/infamousjoeg/DNAmicAnalysis/workflows/DNAmic%20Analysis%20Windows%20Test/badge.svg)](https://github.com/infamousjoeg/DNAmicAnalysis/actions?workflow=DNAmic+Analysis+Windows+Test) [![](https://github.com/infamousjoeg/DNAmicAnalysis/workflows/DNAmic%20Analysis%20Ubuntu%20Test/badge.svg)](https://github.com/infamousjoeg/DNAmicAnalysis/actions?workflow=DNAmic+Analysis+Ubuntu+Test) [![](https://github.com/infamousjoeg/DNAmicAnalysis/workflows/DNAmic%20Analysis%20MacOS%20Test/badge.svg)](https://github.com/infamousjoeg/DNAmicAnalysis/actions?workflow=DNAmic+Analysis+MacOS+Test) [![](https://github.com/infamousjoeg/DNAmicAnalysis/workflows/DNAmic%20Analysis%20Lint%20Test/badge.svg)](https://github.com/infamousjoeg/DNAmicAnalysis/actions?workflow=DNAmic+Analysis+Lint+Test)
 
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/c3c0f19291884a5fb58199644618b420)](https://www.codacy.com/app/infamousjoeg/DNAmicAnalysis?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=infamousjoeg/DNAmicAnalysis&amp;utm_campaign=Badge_Grade) [![Codacy Badge](https://api.codacy.com/project/badge/Coverage/c3c0f19291884a5fb58199644618b420)](https://www.codacy.com/app/infamousjoeg/DNAmicAnalysis?utm_source=github.com&utm_medium=referral&utm_content=infamousjoeg/DNAmicAnalysis&utm_campaign=Badge_Coverage) [![GitHub issues](https://img.shields.io/github/issues/infamousjoeg/DNAmicAnalysis)](https://github.com/infamousjoeg/DNAmicAnalysis/issues) [![GitHub license](https://img.shields.io/github/license/infamousjoeg/DNAmicAnalysis)](https://github.com/infamousjoeg/DNAmicAnalysis/blob/master/LICENSE)
 
@@ -65,29 +65,25 @@ The metrics reported in this application are based on SQL queries ran on the DNA
    
    `$ sudo yum install python36 -y`
 
-3. Install PIP for Python 3.6.
+3. Upgrade PIP to latest version.
    
-   `$ sudo python36 -m ensurepip`
-
-4. Upgrade PIP to latest version.
+   `$ sudo python3 -m pip install --upgrade pip`
    
-   `$ python36 -m pip install --upgrade pip`
-   
-5. Clone GitHub repository for DNAmic Analysis.
+4. Clone GitHub repository for DNAmic Analysis.
    
    `$ git clone https://github.com/infamousjoeg/DNAmicAnalysis.git`
    
-6. Change directory to newly cloned GitHub repo directory.
+5. Change directory to newly cloned GitHub repo directory.
    
    `$ cd DNAmicAnalysis/`
    
-7. Install requirements.txt dependencies. 
+6. Install requirements.txt dependencies. 
    
-   `$ python36 -m pip install -r requirements.txt`
+   `$ sudo python3 -m pip install -r requirements.txt`
 
-8. Run DNAmicAnalysis with proper arguments as outlined in the [Usage](#usage) section below.
+7. Run DNAmicAnalysis with proper arguments as outlined in the [Usage](#usage) section below.
    
-   `$ python36 DNAmicAnalysis data/test/DNA_time_date.sql -d domain.com -s "svc, service" -a "adm, admin"`
+   `$ python3 DNAmicAnalysis.py template_config.yml`
 
 #### Ubuntu/Debian
 
@@ -117,7 +113,7 @@ The metrics reported in this application are based on SQL queries ran on the DNA
 
 7. Run DNAmicAnalysis with proper arguments as outlined in the [Usage](#usage) section below.
    
-   `$ python36 DNAmicAnalysis data/test/DNA_time_date.sql -d domain.com -s "svc, service" -a "adm, admin"`
+   `$ python36 DNAmicAnalysis.py template_config.yml`
 
 ### MacOS
 
@@ -129,17 +125,17 @@ The metrics reported in this application are based on SQL queries ran on the DNA
    
    `$ git clone https://github.com/infamousjoeg/DNAmicAnalysis.git`
    
-5. Change directory to newly cloned GitHub repo directory.
+3. Change directory to newly cloned GitHub repo directory.
    
    `$ cd DNAmicAnalysis/`
    
-6. Install requirements.txt dependencies. 
+4. Install requirements.txt dependencies. 
    
    `$ pip install -r requirements.txt`
 
-7. Run DNAmicAnalysis with proper arguments as outlined in the [Usage](#usage) section below.
+5. Run DNAmicAnalysis with proper arguments as outlined in the [Usage](#usage) section below.
    
-   `$ ./DNAmicAnalysis data/test/DNA_time_date.sql -d domain.com -s "svc, service" -a "adm, admin"`
+   `$ ./DNAmicAnalysis.py template_config.yml`
 
 ## Pre-Requisites
 
@@ -206,13 +202,13 @@ The format for the Excel filename is `DNAmicAnalysis_<domain>_<date>_<time>.xls`
 **Windows**
 ```shell
 > python.exe DNAmicAnalysis.py --version
-DNAmicAnalysis (version 0.4.0-beta.3)
+DNAmicAnalysis (version 0.5.1-beta.4.0.1)
 ```
 
 **UNIX or MacOS**
 ```shell
 $ ./DNAmicAnalysis --version
-DNAmicAnalysis (version 0.4.0-beta.3)
+DNAmicAnalysis (version 0.5.1-beta.4.0.1)
 ```
 
 ## Example Output
