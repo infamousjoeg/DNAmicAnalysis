@@ -1,6 +1,6 @@
 # :bar_chart: DNAmic Analysis <!-- omit in toc -->
 
-[![](https://github.com/infamousjoeg/DNAmicAnalysis/workflows/DNAmic%20Analysis%20Windows%20Test/badge.svg)](https://github.com/infamousjoeg/DNAmicAnalysis/actions?workflow=DNAmic+Analysis+Windows+Test) [![](https://github.com/infamousjoeg/DNAmicAnalysis/workflows/DNAmic%20Analysis%20Ubuntu%20Test/badge.svg)](https://github.com/infamousjoeg/DNAmicAnalysis/actions?workflow=DNAmic+Analysis+Ubuntu+Test) [![](https://github.com/infamousjoeg/DNAmicAnalysis/workflows/DNAmic%20Analysis%20MacOS%20Test/badge.svg)](https://github.com/infamousjoeg/DNAmicAnalysis/actions?workflow=DNAmic+Analysis+MacOS+Test) [![](https://github.com/infamousjoeg/DNAmicAnalysis/workflows/DNAmic%20Analysis%20Lint%20Test/badge.svg)](https://github.com/infamousjoeg/DNAmicAnalysis/actions?workflow=DNAmic+Analysis+Lint+Test)
+[![](https://github.com/infamousjoeg/DNAmicAnalysis/workflows/DNAmic%20Analysis%20Windows%20Test/badge.svg)](https://github.com/infamousjoeg/DNAmicAnalysis/actions?workflow=DNAmic+Analysis+Windows+Test) [![](https://github.com/infamousjoeg/DNAmicAnalysis/workflows/DNAmic%20Analysis%20Ubuntu%20Test/badge.svg)](https://github.com/infamousjoeg/DNAmicAnalysis/actions?workflow=DNAmic+Analysis+Ubuntu+Test) [![](https://github.com/infamousjoeg/DNAmicAnalysis/workflows/DNAmic%20Analysis%20MacOS%20Test/badge.svg)](https://github.com/infamousjoeg/DNAmicAnalysis/actions?workflow=DNAmic+Analysis+MacOS+Test)
 
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/c3c0f19291884a5fb58199644618b420)](https://www.codacy.com/app/infamousjoeg/DNAmicAnalysis?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=infamousjoeg/DNAmicAnalysis&amp;utm_campaign=Badge_Grade) [![Codacy Badge](https://api.codacy.com/project/badge/Coverage/c3c0f19291884a5fb58199644618b420)](https://www.codacy.com/app/infamousjoeg/DNAmicAnalysis?utm_source=github.com&utm_medium=referral&utm_content=infamousjoeg/DNAmicAnalysis&utm_campaign=Badge_Coverage) [![GitHub issues](https://img.shields.io/github/issues/infamousjoeg/DNAmicAnalysis)](https://github.com/infamousjoeg/DNAmicAnalysis/issues) [![GitHub license](https://img.shields.io/github/license/infamousjoeg/DNAmicAnalysis)](https://github.com/infamousjoeg/DNAmicAnalysis/blob/master/LICENSE)
 
@@ -153,6 +153,7 @@ The metrics reported in this application are based on SQL queries ran on the DNA
 
 * Copy [config/template_config.yml](config/template_config.yml) and rename it to something like `customer_config.yml`.
 * Update the values within the YAML config file to match those given to you by the customer for the scan analysis.
+* Use `^` as a wildcard when declaring regex in the `account_regex` section.
 
 ```yaml
 ---
@@ -163,11 +164,11 @@ domain: cyberarkdemo.com
 # privileged account patterns to match
 account_regex:
   service_account:
-    - svc
-    - service
+    - svc^
+    - ^service
   admin_account:
-    - adm
-    - admin
+    - adm^
+    - ^admin
 # yes or no: whether to output metrics to console
 console_output: yes
 # yes or no: whether to include disabled accounts in metrics
@@ -202,13 +203,13 @@ The format for the Excel filename is `DNAmicAnalysis_<domain>_<date>_<time>.xls`
 **Windows**
 ```shell
 > python.exe DNAmicAnalysis.py --version
-DNAmicAnalysis (version 0.5.1-beta.4.0.1)
+DNAmicAnalysis (version 0.6.0-beta.5)
 ```
 
 **UNIX or MacOS**
 ```shell
 $ ./DNAmicAnalysis --version
-DNAmicAnalysis (version 0.5.1-beta.4.0.1)
+DNAmicAnalysis (version 0.6.0-beta.5)
 ```
 
 ## Example Output

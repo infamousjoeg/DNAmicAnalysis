@@ -4,13 +4,15 @@ database_file: data/test/DNA_2019-05-21_08-57-43-PM.db
 # domain name of one scanned domain that can be detected
 domain: demo.com
 # privileged account patterns to match
+# to include a wildcard, use ^
+# e.g. - adm^ (this will include all usernames STARTING with adm)
 account_regex:
   service_account:
-    - svc
-    - service
+    - ^svc^
+    - ^service^
   admin_account:
-    - adm
-    - admin
+    - ^adm^
+    - ^admin^
 # yes or no: whether to output metrics to console
 console_output: yes
 # yes or no: whether to include disabled accounts in metrics
