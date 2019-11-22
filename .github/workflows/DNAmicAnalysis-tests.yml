@@ -1,9 +1,6 @@
 name: DNAmic Analysis Lint & OS Tests
 
-on:
-  pull_request:
-    branches:
-      - master
+on: [push, pull_request]
 
 jobs:
   lint:
@@ -152,8 +149,9 @@ jobs:
         run: |
           python DNAmicAnalysis.py tests/noconsole_test_config.yml
 
-   mergepal-merge:
+  mergepal-merge:
     runs-on: ubuntu-latest
+    if: github.event.pull_request.opened
     needs:
       - lint
       - ubuntu
