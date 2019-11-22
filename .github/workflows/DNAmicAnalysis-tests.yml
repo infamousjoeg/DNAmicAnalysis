@@ -75,7 +75,6 @@ jobs:
     runs-on: macos-latest
     needs:
       - lint
-      - ubuntu
     steps:
       - uses: actions/checkout@v1
       - name: Set up Python 3.7
@@ -124,8 +123,6 @@ jobs:
     runs-on: windows-latest
     needs:
       - lint
-      - ubuntu
-      - macos
     steps:
       - uses: actions/checkout@v1
       - name: Set up Python 3.7
