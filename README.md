@@ -65,29 +65,25 @@ The metrics reported in this application are based on SQL queries ran on the DNA
    
    `$ sudo yum install python36 -y`
 
-3. Install PIP for Python 3.6.
+3. Upgrade PIP to latest version.
    
-   `$ sudo python36 -m ensurepip`
-
-4. Upgrade PIP to latest version.
+   `$ sudo python3 -m pip install --upgrade pip`
    
-   `$ python36 -m pip install --upgrade pip`
-   
-5. Clone GitHub repository for DNAmic Analysis.
+4. Clone GitHub repository for DNAmic Analysis.
    
    `$ git clone https://github.com/infamousjoeg/DNAmicAnalysis.git`
    
-6. Change directory to newly cloned GitHub repo directory.
+5. Change directory to newly cloned GitHub repo directory.
    
    `$ cd DNAmicAnalysis/`
    
-7. Install requirements.txt dependencies. 
+6. Install requirements.txt dependencies. 
    
-   `$ python36 -m pip install -r requirements.txt`
+   `$ sudo python3 -m pip install -r requirements.txt`
 
-8. Run DNAmicAnalysis with proper arguments as outlined in the [Usage](#usage) section below.
+7. Run DNAmicAnalysis with proper arguments as outlined in the [Usage](#usage) section below.
    
-   `$ python36 DNAmicAnalysis data/test/DNA_time_date.sql -d domain.com -s "svc, service" -a "adm, admin"`
+   `$ python3 DNAmicAnalysis.py template_config.yml`
 
 #### Ubuntu/Debian
 
@@ -117,7 +113,7 @@ The metrics reported in this application are based on SQL queries ran on the DNA
 
 7. Run DNAmicAnalysis with proper arguments as outlined in the [Usage](#usage) section below.
    
-   `$ python36 DNAmicAnalysis data/test/DNA_time_date.sql -d domain.com -s "svc, service" -a "adm, admin"`
+   `$ python36 DNAmicAnalysis.py template_config.yml`
 
 ### MacOS
 
@@ -129,17 +125,17 @@ The metrics reported in this application are based on SQL queries ran on the DNA
    
    `$ git clone https://github.com/infamousjoeg/DNAmicAnalysis.git`
    
-5. Change directory to newly cloned GitHub repo directory.
+3. Change directory to newly cloned GitHub repo directory.
    
    `$ cd DNAmicAnalysis/`
    
-6. Install requirements.txt dependencies. 
+4. Install requirements.txt dependencies. 
    
    `$ pip install -r requirements.txt`
 
-7. Run DNAmicAnalysis with proper arguments as outlined in the [Usage](#usage) section below.
+5. Run DNAmicAnalysis with proper arguments as outlined in the [Usage](#usage) section below.
    
-   `$ ./DNAmicAnalysis data/test/DNA_time_date.sql -d domain.com -s "svc, service" -a "adm, admin"`
+   `$ ./DNAmicAnalysis.py template_config.yml`
 
 ## Pre-Requisites
 
