@@ -13,8 +13,6 @@ account_regex:
   admin_account:
     - ^adm^
     - ^admin^
-# yes or no: whether to output metrics to console
-console_output: yes
 # yes or no: whether to include disabled accounts in metrics
 include_disabled_accts: no
 # yes or no: activate test mode... do not adjust unless you
