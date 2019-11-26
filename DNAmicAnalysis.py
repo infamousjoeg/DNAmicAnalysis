@@ -9,9 +9,8 @@ import time
 import yaml
 
 import logzero
-from dnamic_analysis import Database, DomainCheck, Excel, Metrics
+from dnamic_analysis import Database, DomainCheck, Excel, Metrics, Output
 from logzero import logger
-from tests import Tests
 
 __author__ = "Joe Garcia, CISSP"
 __version__ = "0.6.0-beta.5"
@@ -56,7 +55,7 @@ def main(cfg):
     worksheet = excel.add(workbook, cfg['domain'].lower())
 
     # Tests class init
-    tests = Tests(excel, workbook, worksheet, cfg['console_output'])
+    output = Output(excel, workbook, worksheet)
 
     # Declare svc, adm, and both arrays properly
     svc_array = cfg['account_regex']['service_account']
@@ -87,7 +86,7 @@ def main(cfg):
     domainAverage = Metrics.domain_avg(expired_domain)
     domainPercent = Metrics.domain_percent(expired_domain, all_domain_count, domainMaxSorted)
 
-    tests.domain_expired(
+    output.domain_expired(
         domainMaxSorted,
         domainAverage[0],
         domainAverage[1],
@@ -95,12 +94,6 @@ def main(cfg):
         domainPercent[0],
         domainPercent[1],
         domainPercent[2])
-    if cfg['test_mode'] is False or cfg['console_output'] is True:
-        try:
-            input("Press ENTER to continue...")
-        except EOFError:
-            pass
-        print()
 
     #########################################
     ## Unique Expired Local Privileged IDs ##
@@ -117,7 +110,7 @@ def main(cfg):
     localAverage = Metrics.local_avg(expired_local)
     localPercent = Metrics.local_percent(expired_local, all_local_count, localMaxSorted)
 
-    tests.local_expired(
+    output.local_expired(
         localMaxSorted,
         localAverage[0],
         localAverage[1],
@@ -127,12 +120,6 @@ def main(cfg):
         localPercent[2],
         len(all_local_count),
         len(set(all_local_unique_count)))
-    if cfg['test_mode'] is False or cfg['console_output']:
-        try:
-            input("Press ENTER to continue...")
-        except EOFError:
-            pass
-        print()
 
     #####################################################
     ## Expired Local Admins Total w/ Machine Addresses ##
@@ -140,13 +127,7 @@ def main(cfg):
 
     localMaxGrouped = Metrics.local_expired_machines(localMaxSorted)
 
-    tests.local_expired_machines(localMaxGrouped, len(all_local_count), len(localMaxGrouped)/len(all_local_count))
-    if cfg['test_mode'] is False or cfg['console_output']:
-        try:
-            input("Press ENTER to continue...")
-        except EOFError:
-            pass
-        print()
+    output.local_expired_machines(localMaxGrouped, len(all_local_count), len(localMaxGrouped)/len(all_local_count))
 
     ##############################
     ## Local Abandoned Accounts ##
@@ -155,13 +136,7 @@ def main(cfg):
     abandoned_local = db.exec_fromfile("data/sql/LocalAbandonedAccounts.sql")
     abandoned_local_count = db.exec_fromfile("data/sql/LocalAbandonedCount.sql")
 
-    tests.local_abandoned(abandoned_local, len(abandoned_local_count))
-    if cfg['test_mode'] is False or cfg['console_output']:
-        try:
-            input("Press ENTER to continue...")
-        except EOFError:
-            pass
-        print()
+    output.local_abandoned(abandoned_local, len(abandoned_local_count))
 
     ###############################
     ## Domain Abandoned Accounts ##
@@ -169,13 +144,7 @@ def main(cfg):
 
     abandoned_domain = db.exec_fromfile("data/sql/DomainAbandonedAccounts.sql")
 
-    tests.domain_abandoned(abandoned_domain, len(all_domain_count))
-    if cfg['test_mode'] is False or cfg['console_output']:
-        try:
-            input("Press ENTER to continue...")
-        except EOFError:
-            pass
-        print()
+    output.domain_abandoned(abandoned_domain, len(all_domain_count))
 
     #########################################################
     ## Accounts w/ Multiple Machine Access - By %age Tiers ##
@@ -189,13 +158,7 @@ def main(cfg):
     else:
         multiMachineAccounts = False
 
-    tests.multi_machine_accts(multiMachineAccounts)
-    if cfg['test_mode'] is False or cfg['console_output']:
-        try:
-            input("Press ENTER to continue...")
-        except EOFError:
-            pass
-        print()
+    output.multi_machine_accts(multiMachineAccounts)
 
     ##########################
     ## Unique Domain Admins ##
@@ -215,15 +178,9 @@ def main(cfg):
         for username in unique_svcacct_domain_admins2:
             unique_svcacct_domadm2_usernames.append(username[0])
 
-    tests.unique_domain_admins(
+    output.unique_domain_admins(
         unique_domain_admins, (unique_svcacct_domain_admins+unique_svcacct_domain_admins2),
         set(unique_svcacct_domadm_usernames), set(unique_svcacct_domadm2_usernames))
-    if cfg['test_mode'] is False or cfg['console_output']:
-        try:
-            input("Press ENTER to continue...")
-        except EOFError:
-            pass
-        print()
 
     ##########################################
     ## Unique Expired Domain Privileged IDs ##
@@ -240,9 +197,9 @@ def main(cfg):
         null_check = True
 
     if null_check is True:
-        tests.unique_domain_expired_null()
+        output.unique_domain_expired_null()
     else:
-        tests.unique_domain_expired(
+        output.unique_domain_expired(
             uniqueDomainMaxSorted,
             uniqueDomainAverage[0],
             uniqueDomainAverage[1],
@@ -250,12 +207,6 @@ def main(cfg):
             uniqueDomainPercent[0],
             uniqueDomainPercent[1],
             uniqueDomainPercent[2])
-        if cfg['test_mode'] is False or cfg['console_output']:
-            try:
-                input("Press ENTER to continue...")
-            except EOFError:
-                pass
-            print()
 
     ########################################
     ## Personal Accounts Running Services ##
@@ -263,14 +214,8 @@ def main(cfg):
 
     personal_accts_running_svcs = db.exec_fromfile("data/sql/PersonalAccountsRunningSvcs.sql", True, svc_array)
 
-    tests.personal_accts_running_svcs(
+    output.personal_accts_running_svcs(
         personal_accts_running_svcs)
-    if cfg['test_mode'] is False or cfg['console_output']:
-        try:
-            input("Press ENTER to continue...")
-        except EOFError:
-            pass
-        print()
 
     #######################################################
     ## Non-adm Accounts w/ Local Admin Rights on Systems ##
@@ -278,14 +223,8 @@ def main(cfg):
 
     non_admin_with_local_admin = db.exec_fromfile("data/sql/NonAdmLocalAdminAccounts.sql", True, regex_array)
 
-    tests.non_admin_with_local_admin(
+    output.non_admin_with_local_admin(
         non_admin_with_local_admin)
-    if cfg['test_mode'] is False or cfg['console_output']:
-        try:
-            input("Press ENTER to continue...")
-        except EOFError:
-            pass
-        print()
 
     #############################
     ## Unique Expired Services ##
@@ -303,7 +242,7 @@ def main(cfg):
         uniqueSvcAverage = [0, 0, 0]
         uniqueSvcPercent = [0, 0, 0]
 
-    tests.unique_expired_svcs(
+    output.unique_expired_svcs(
         uniqueSvcMaxSorted,
         uniqueSvcAverage[0],
         uniqueSvcAverage[1],
@@ -311,12 +250,6 @@ def main(cfg):
         uniqueSvcPercent[0],
         uniqueSvcPercent[1],
         uniqueSvcPercent[2])
-    if cfg['test_mode'] is False or cfg['console_output']:
-        try:
-            input("Press ENTER to continue...")
-        except EOFError:
-            pass
-        print()
 
     ####################
     ## Clear Text IDs ##
@@ -329,15 +262,9 @@ def main(cfg):
         for x in range(len(clear_text_ids)):
             clear_text_ids_count += clear_text_ids[x][1]
 
-    tests.clear_text_ids(
+    output.clear_text_ids(
         clear_text_ids_count,
         clear_text_ids)
-    if cfg['test_mode'] is False or cfg['console_output']:
-        try:
-            input("Press ENTER to continue...")
-        except EOFError:
-            pass
-        print()
 
     ##########################################
     ## Applications w/ Clear Text Passwords ##
@@ -345,14 +272,8 @@ def main(cfg):
 
     unique_clear_text_apps = db.exec_fromfile("data/sql/UniqueClearTextApps.sql")
 
-    tests.apps_clear_text_passwords(
+    output.apps_clear_text_passwords(
         unique_clear_text_apps)
-    if cfg['test_mode'] is False or cfg['console_output']:
-        try:
-            input("Press ENTER to continue...")
-        except EOFError:
-            pass
-        print()
 
     #################################################
     ## Risky Expired Service Principal Names (SPN) ##
@@ -361,15 +282,9 @@ def main(cfg):
     risky_spns = db.exec_fromfile("data/sql/UniqueExpiredSPNAccounts.sql")
     spns_count = db.exec_fromfile("data/sql/TotalSPNs.sql")
 
-    tests.risky_spns(
+    output.risky_spns(
         risky_spns,
         spns_count[0][0])
-    if cfg['test_mode'] is False or cfg['console_output']:
-        try:
-            input("Press ENTER to continue...")
-        except EOFError:
-            pass
-        print()
 
     #######################################
     ## Hashes Found on Multiple Machines ##
@@ -405,19 +320,13 @@ def main(cfg):
 
         #admin_hash_sorted = sorted(admin_hash_found, key=str.lower)
 
-    tests.hashes_found_on_multiple(
+    output.hashes_found_on_multiple(
         len(unique_hash_name),
         sorted(admin_hash_found, key=str.lower),
         total_hash_srv,
         total_hash_wks,
         total_hash_admins_srv,
         total_hash_admins_wks)
-    if cfg['test_mode'] is False or cfg['console_output']:
-        try:
-            input("Press ENTER to continue...")
-        except EOFError:
-            pass
-        print()
 
     ##################################################################
     ## Accounts Hashes Exposed on Multiple Machines - By %age Tiers ##
@@ -427,13 +336,7 @@ def main(cfg):
 
     multiMachineHashes = Metrics.multi_machine_hashes(multi_machine_hashes, all_machines_count[0][0])
 
-    tests.multi_machine_hashes(multiMachineHashes)
-    if cfg['test_mode'] is False or cfg['console_output']:
-        try:
-            input("Press ENTER to continue...")
-        except EOFError:
-            pass
-        print()
+    output.multi_machine_hashes(multiMachineHashes)
 
 ##########
 ## Main ##
