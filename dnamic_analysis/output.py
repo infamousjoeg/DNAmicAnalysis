@@ -117,106 +117,20 @@ class Output(object):
     #########################################################
     def multi_machine_accts(self,multi_machine_accts):
         if multi_machine_accts is not False:
+            tiers = ['> 95% Access','90-95% Access','80-90% Access','70-80% Access','60-70% Access',
+                '50-60% Access','40-50% Access','30-40% Access','20-30% Access','10-20% Access',
+                '< 10% Access']
+
             self._excel_object.write(self._worksheet, 5, 1, 'Accounts with Multiple Machine Access', 'header')
 
-            # > 95%
-            if len(multi_machine_accts[0]) != 0:
-                self._excel_object.write(self._worksheet, self._col, 2, '> 95% Access', 'subheader')
-                row = 3
-                for username in multi_machine_accts[0]:
-                    self._excel_object.write(self._worksheet, self._col, row, username)
-                    row += 1
-                self._col += 1
-
-            # 90-95%
-            if len(multi_machine_accts[1]) != 0:
-                self._excel_object.write(self._worksheet, self._col, 2, '90-95% Access', 'subheader')
-                row = 3
-                for username in multi_machine_accts[1]:
-                    self._excel_object.write(self._worksheet, self._col, row, username)
-                    row += 1
-                self._col += 1
-
-            # 80-90%
-            if len(multi_machine_accts[2]) != 0:
-                self._excel_object.write(self._worksheet, self._col, 2, '80-90% Access', 'subheader')
-                row = 3
-                for username in multi_machine_accts[2]:
-                    self._excel_object.write(self._worksheet, self._col, row, username)
-                    row += 1
-                self._col += 1
-
-            # 70-80%
-            if len(multi_machine_accts[3]) != 0:
-                self._excel_object.write(self._worksheet, self._col, 2, '70-80% Access', 'subheader')
-                row = 3
-                for username in multi_machine_accts[3]:
-                    self._excel_object.write(self._worksheet, self._col, row, username)
-                    row += 1
-                self._col += 1
-
-            # 60-70%
-            if len(multi_machine_accts[4]) != 0:
-                self._excel_object.write(self._worksheet, self._col, 2, '60-70% Access', 'subheader')
-                row = 3
-                for username in multi_machine_accts[4]:
-                    self._excel_object.write(self._worksheet, self._col, row, username)
-                    row += 1
-                self._col += 1
-
-            # 50-60%
-            if len(multi_machine_accts[5]) != 0:
-                self._excel_object.write(self._worksheet, self._col, 2, '50-60% Access', 'subheader')
-                row = 3
-                for username in multi_machine_accts[5]:
-                    self._excel_object.write(self._worksheet, self._col, row, username)
-                    row += 1
-                self._col += 1
-
-            # 40-50%
-            if len(multi_machine_accts[6]) != 0:
-                self._excel_object.write(self._worksheet, self._col, 2, '40-50% Access', 'subheader')
-                row = 3
-                for username in multi_machine_accts[6]:
-                    self._excel_object.write(self._worksheet, self._col, row, username)
-                    row += 1
-                self._col += 1
-
-            # 30-40%
-            if len(multi_machine_accts[7]) != 0:
-                self._excel_object.write(self._worksheet, self._col, 2, '30-40% Access', 'subheader')
-                row = 3
-                for username in multi_machine_accts[7]:
-                    self._excel_object.write(self._worksheet, self._col, row, username)
-                    row += 1
-                self._col += 1
-
-            # 20-30%
-            if len(multi_machine_accts[8]) != 0:
-                self._excel_object.write(self._worksheet, self._col, 2, '20-30% Access', 'subheader')
-                row = 3
-                for username in multi_machine_accts[8]:
-                    self._excel_object.write(self._worksheet, self._col, row, username)
-                    row += 1
-                self._col += 1
-
-            # 10-20%
-            if len(multi_machine_accts[9]) != 0:
-                self._excel_object.write(self._worksheet, self._col, 2, '10-20% Access', 'subheader')
-                row = 3
-                for username in multi_machine_accts[9]:
-                    self._excel_object.write(self._worksheet, self._col, row, username)
-                    row += 1
-                self._col += 1
-
-            # < 10%
-            if len(multi_machine_accts[10]) != 0:
-                self._excel_object.write(self._worksheet, self._col, 2, '< 10% Access', 'subheader')
-                row = 3
-                for username in multi_machine_accts[10]:
-                    self._excel_object.write(self._worksheet, self._col, row, username)
-                    row += 1
-                self._col += 1
+            for i in range(len(multi_machine_accts)):
+                if len(multi_machine_accts[i]) != 0:
+                    self._excel_object.write(self._worksheet, self._col, 2, tiers[i], 'subheader')
+                    row = 3
+                    for username in multi_machine_accts[i]:
+                        self._excel_object.write(self._worksheet, self._col, row, username)
+                        row += 1
+                    self._col += 1
 
         self._excel_object.save(self._workbook)
 
@@ -391,104 +305,19 @@ class Output(object):
     ## Accounts Hashes Exposed on Multiple Machines - By %age Tiers ##
     ##################################################################
     def multi_machine_hashes(self,multi_machine_hashes):
+        tiers = ['> 95% Access','90-95% Access','80-90% Access','70-80% Access','60-70% Access',
+                '50-60% Access','40-50% Access','30-40% Access','20-30% Access','10-20% Access',
+                '< 10% Access']
+
         self._excel_object.write(self._worksheet, self._col, 1, 'Accounts Hashes Exposed on Multiple Machines', 'header')
-        # > 95%
-        if len(multi_machine_hashes[0]) != 0:
-            self._excel_object.write(self._worksheet, self._col, 2, '> 95% Access', 'subheader')
-            row = 3
-            for username in multi_machine_hashes[0]:
-                self._excel_object.write(self._worksheet, self._col, row, username)
-                row += 1
-            self._col += 1
 
-        # 90-95%
-        if len(multi_machine_hashes[1]) != 0:
-            self._excel_object.write(self._worksheet, self._col, 2, '90-95% Access', 'subheader')
-            row = 3
-            for username in multi_machine_hashes[1]:
-                self._excel_object.write(self._worksheet, self._col, row, username)
-                row += 1
-            self._col += 1
-
-        # 80-90%
-        if len(multi_machine_hashes[2]) != 0:
-            self._excel_object.write(self._worksheet, self._col, 2, '80-90% Access', 'subheader')
-            row = 3
-            for username in multi_machine_hashes[2]:
-                self._excel_object.write(self._worksheet, self._col, row, username)
-                row += 1
-            self._col += 1
-
-        # 70-80%
-        if len(multi_machine_hashes[3]) != 0:
-            self._excel_object.write(self._worksheet, self._col, 2, '70-80% Access', 'subheader')
-            row = 3
-            for username in multi_machine_hashes[3]:
-                self._excel_object.write(self._worksheet, self._col, row, username)
-                row += 1
-            self._col += 1
-
-        # 60-70%
-        if len(multi_machine_hashes[4]) != 0:
-            self._excel_object.write(self._worksheet, self._col, 2, '60-70% Access', 'subheader')
-            row = 3
-            for username in multi_machine_hashes[4]:
-                self._excel_object.write(self._worksheet, self._col, row, username)
-                row += 1
-            self._col += 1
-
-        # 50-60%
-        if len(multi_machine_hashes[5]) != 0:
-            self._excel_object.write(self._worksheet, self._col, 2, '50-60% Access', 'subheader')
-            row = 3
-            for username in multi_machine_hashes[5]:
-                self._excel_object.write(self._worksheet, self._col, row, username)
-                row += 1
-            self._col += 1
-
-        # 40-50%
-        if len(multi_machine_hashes[6]) != 0:
-            self._excel_object.write(self._worksheet, self._col, 2, '40-50% Access', 'subheader')
-            row = 3
-            for username in multi_machine_hashes[6]:
-                self._excel_object.write(self._worksheet, self._col, row, username)
-                row += 1
-            self._col += 1
-
-        # 30-40%
-        if len(multi_machine_hashes[7]) != 0:
-            self._excel_object.write(self._worksheet, self._col, 2, '30-40% Access', 'subheader')
-            row = 3
-            for username in multi_machine_hashes[7]:
-                self._excel_object.write(self._worksheet, self._col, row, username)
-                row += 1
-            self._col += 1
-
-        # 20-30%
-        if len(multi_machine_hashes[8]) != 0:
-            self._excel_object.write(self._worksheet, self._col, 2, '20-30% Access', 'subheader')
-            row = 3
-            for username in multi_machine_hashes[8]:
-                self._excel_object.write(self._worksheet, self._col, row, username)
-                row += 1
-            self._col += 1
-
-        # 10-20%
-        if len(multi_machine_hashes[9]) != 0:
-            self._excel_object.write(self._worksheet, self._col, 2, '10-20% Access', 'subheader')
-            row = 3
-            for username in multi_machine_hashes[9]:
-                self._excel_object.write(self._worksheet, self._col, row, username)
-                row += 1
-            self._col += 1
-
-        # < 10%
-        if len(multi_machine_hashes[10]) != 0:
-            self._excel_object.write(self._worksheet, self._col, 2, '< 10% Access', 'subheader')
-            row = 3
-            for username in multi_machine_hashes[10]:
-                self._excel_object.write(self._worksheet, self._col, row, username)
-                row += 1
-            self._col += 1
+        for i in range(len(multi_machine_hashes)):
+                if len(multi_machine_hashes[i]) != 0:
+                    self._excel_object.write(self._worksheet, self._col, 2, tiers[i], 'subheader')
+                    row = 3
+                    for username in multi_machine_hashes[i]:
+                        self._excel_object.write(self._worksheet, self._col, row, username)
+                        row += 1
+                    self._col += 1
 
         self._excel_object.save(self._workbook)
