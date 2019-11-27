@@ -1,6 +1,7 @@
 import ntpath
 import sqlite3
 from datetime import datetime
+from pathlib import Path
 from sqlite3 import Error
 
 from logzero import logger
@@ -10,7 +11,7 @@ class Database(object):
 
     def __init__(self, dbfile, disabled, scan_datetime):
 
-        self._dbfile = dbfile
+        self._dbfile = Path(dbfile)
         self._disabledSqlQuery = ""
         if disabled is False:
             self._disabledSqlQuery = "AND Enabled = 1"
