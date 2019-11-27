@@ -1,5 +1,6 @@
 ---
 # path to where the DNA database file is located
+# use ONLY forward slashes - the application will correct for Windows
 database_file: data/test/DNA_2019-05-21_08-57-43-PM.db
 # domain name of one scanned domain that can be detected
 domain: cyberarkdemo.com
