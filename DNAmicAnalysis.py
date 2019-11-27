@@ -82,9 +82,14 @@ def main(cfg):
     expired_domain = db.exec_fromfile("data/sql/ExpiredDomainPrivID.sql")
     all_domain_count = db.exec_fromfile("data/sql/DomainAdminsPUCount.sql")
 
-    domainMaxSorted = Metrics.domain_max(expired_domain)
-    domainAverage = Metrics.domain_avg(expired_domain)
-    domainPercent = Metrics.domain_percent(expired_domain, all_domain_count, domainMaxSorted)
+    if expired_domain and all_domain_count:
+        domainMaxSorted = Metrics.domain_max(expired_domain)
+        domainAverage = Metrics.domain_avg(expired_domain)
+        domainPercent = Metrics.domain_percent(expired_domain, all_domain_count, domainMaxSorted)
+    else:
+        domainMaxSorted = False
+        domainAverage = [0, 0, 0]
+        domainPercent = [0, 0, 0]
 
     output.domain_expired(
         domainMaxSorted,
@@ -102,13 +107,18 @@ def main(cfg):
     expired_local = db.exec_fromfile("data/sql/UniqueExpiredLocalPrivID.sql")
     all_local_count = db.exec_fromfile("data/sql/LocalAdministratorsCount.sql")
 
-    all_local_unique_count = []
-    for username in all_local_count:
-        all_local_unique_count.append(username)
+    if expired_local and all_local_count:
+        all_local_unique_count = []
+        for username in all_local_count:
+            all_local_unique_count.append(username)
 
-    localMaxSorted = Metrics.local_max(expired_local)
-    localAverage = Metrics.local_avg(expired_local)
-    localPercent = Metrics.local_percent(expired_local, all_local_count, localMaxSorted)
+        localMaxSorted = Metrics.local_max(expired_local)
+        localAverage = Metrics.local_avg(expired_local)
+        localPercent = Metrics.local_percent(expired_local, all_local_count, localMaxSorted)
+    else:
+        localMaxSorted = False
+        localAverage = [0, 0, 0]
+        localPercent = [0, 0, 0]
 
     output.local_expired(
         localMaxSorted,
@@ -127,7 +137,13 @@ def main(cfg):
 
     localMaxGrouped = Metrics.local_expired_machines(localMaxSorted)
 
-    output.local_expired_machines(localMaxGrouped, len(all_local_count), len(localMaxGrouped)/len(all_local_count))
+    if not localMaxGrouped:
+        localMaxGrouped = False
+
+    output.local_expired_machines(
+        localMaxGrouped,
+        len(all_local_count),
+        len(localMaxGrouped)/len(all_local_count))
 
     ##############################
     ## Local Abandoned Accounts ##
@@ -136,7 +152,13 @@ def main(cfg):
     abandoned_local = db.exec_fromfile("data/sql/LocalAbandonedAccounts.sql")
     abandoned_local_count = db.exec_fromfile("data/sql/LocalAbandonedCount.sql")
 
-    output.local_abandoned(abandoned_local, len(abandoned_local_count))
+    if not abandoned_local and not abandoned_local_count:
+        abandoned_local = False
+        abandoned_local_count = []
+
+    output.local_abandoned(
+        abandoned_local,
+        len(abandoned_local_count))
 
     ###############################
     ## Domain Abandoned Accounts ##
@@ -144,7 +166,12 @@ def main(cfg):
 
     abandoned_domain = db.exec_fromfile("data/sql/DomainAbandonedAccounts.sql")
 
-    output.domain_abandoned(abandoned_domain, len(all_domain_count))
+    if not abandoned_domain:
+        abandoned_domain = False
+
+    output.domain_abandoned(
+        abandoned_domain,
+        len(all_domain_count))
 
     #########################################################
     ## Accounts w/ Multiple Machine Access - By %age Tiers ##
@@ -168,51 +195,61 @@ def main(cfg):
     unique_svcacct_domain_admins = db.exec_fromfile("data/sql/UniqueSvcDomainAdmins.sql", True, svc_array)
     unique_svcacct_domain_admins2 = db.exec_fromfile("data/sql/UniqueSvcDomainAdmins2.sql", True, svc_array)
 
-    unique_svcacct_domadm_usernames = []
-    if unique_svcacct_domain_admins:
-        for username in unique_svcacct_domain_admins:
-            unique_svcacct_domadm_usernames.append(username[0])
+    if unique_domain_admins and unique_svcacct_domain_admins and unique_svcacct_domain_admins2:
+        unique_svcacct_domadm_usernames = []
+        if unique_svcacct_domain_admins:
+            for username in unique_svcacct_domain_admins:
+                unique_svcacct_domadm_usernames.append(username[0])
 
-    unique_svcacct_domadm2_usernames = []
-    if unique_svcacct_domain_admins2:
-        for username in unique_svcacct_domain_admins2:
-            unique_svcacct_domadm2_usernames.append(username[0])
+        unique_svcacct_domadm2_usernames = []
+        if unique_svcacct_domain_admins2:
+            for username in unique_svcacct_domain_admins2:
+                unique_svcacct_domadm2_usernames.append(username[0])
+    else:
+        unique_domain_admins = False
+        unique_svcacct_domain_admins = []
+        unique_svcacct_domadm2_admins = []
+        unique_svcacct_domadm_usernames = []
+        unique_svcacct_domadm2_usernames = []
 
     output.unique_domain_admins(
-        unique_domain_admins, (unique_svcacct_domain_admins+unique_svcacct_domain_admins2),
-        set(unique_svcacct_domadm_usernames), set(unique_svcacct_domadm2_usernames))
+        unique_domain_admins,
+        (unique_svcacct_domain_admins+unique_svcacct_domain_admins2),
+        set(unique_svcacct_domadm_usernames),
+        set(unique_svcacct_domadm2_usernames))
 
     ##########################################
     ## Unique Expired Domain Privileged IDs ##
     ##########################################
 
     unique_expired_domain = db.exec_fromfile("data/sql/UniqueExpiredDomainPrivID.sql")
-    null_check = False
 
     if unique_expired_domain:
         uniqueDomainMaxSorted = Metrics.unique_domain_max(unique_expired_domain)
         uniqueDomainAverage = Metrics.unique_domain_avg(unique_expired_domain)
         uniqueDomainPercent = Metrics.unique_domain_percent(unique_expired_domain, len(unique_domain_admins), uniqueDomainMaxSorted)
     else:
-        null_check = True
+        uniqueDomainMaxSorted = False
+        uniqueDomainAverage = [0, 0, 0]
+        uniqueDomainPercent = [0, 0, 0]
 
-    if null_check is True:
-        output.unique_domain_expired_null()
-    else:
-        output.unique_domain_expired(
-            uniqueDomainMaxSorted,
-            uniqueDomainAverage[0],
-            uniqueDomainAverage[1],
-            uniqueDomainAverage[2],
-            uniqueDomainPercent[0],
-            uniqueDomainPercent[1],
-            uniqueDomainPercent[2])
+    output.unique_domain_expired(
+        uniqueDomainMaxSorted,
+        uniqueDomainAverage[0],
+        uniqueDomainAverage[1],
+        uniqueDomainAverage[2],
+        uniqueDomainPercent[0],
+        uniqueDomainPercent[1],
+        uniqueDomainPercent[2])
 
     ########################################
     ## Personal Accounts Running Services ##
     ########################################
 
     personal_accts_running_svcs = db.exec_fromfile("data/sql/PersonalAccountsRunningSvcs.sql", True, svc_array)
+
+    if not personal_accts_running_svcs:
+        personal_accts_running_svcs = False
 
     output.personal_accts_running_svcs(
         personal_accts_running_svcs)
@@ -222,6 +259,9 @@ def main(cfg):
     #######################################################
 
     non_admin_with_local_admin = db.exec_fromfile("data/sql/NonAdmLocalAdminAccounts.sql", True, regex_array)
+
+    if not non_admin_with_local_admin:
+        non_admin_with_local_admin = False
 
     output.non_admin_with_local_admin(
         non_admin_with_local_admin)
@@ -238,7 +278,7 @@ def main(cfg):
         uniqueSvcAverage = Metrics.unique_svc_avg(unique_expired_svcs)
         uniqueSvcPercent = Metrics.unique_svc_percent(unique_expired_svcs, len(svc_accts_count), len(uniqueSvcMaxSorted))
     else:
-        uniqueSvcMaxSorted = 'No services found.'
+        uniqueSvcMaxSorted = False
         uniqueSvcAverage = [0, 0, 0]
         uniqueSvcPercent = [0, 0, 0]
 
@@ -257,10 +297,14 @@ def main(cfg):
 
     clear_text_ids = db.exec_fromfile("data/sql/ClearTextIDs.sql")
 
-    clear_text_ids_count = 0
     if clear_text_ids:
-        for x in range(len(clear_text_ids)):
-            clear_text_ids_count += clear_text_ids[x][1]
+        clear_text_ids_count = 0
+        if clear_text_ids:
+            for x in range(len(clear_text_ids)):
+                clear_text_ids_count += clear_text_ids[x][1]
+    else:
+        clear_text_ids_count = False
+        clear_text_ids = []
 
     output.clear_text_ids(
         clear_text_ids_count,
@@ -272,6 +316,9 @@ def main(cfg):
 
     unique_clear_text_apps = db.exec_fromfile("data/sql/UniqueClearTextApps.sql")
 
+    if not unique_clear_text_apps:
+        unique_clear_text_apps = False
+
     output.apps_clear_text_passwords(
         unique_clear_text_apps)
 
@@ -281,6 +328,10 @@ def main(cfg):
 
     risky_spns = db.exec_fromfile("data/sql/UniqueExpiredSPNAccounts.sql")
     spns_count = db.exec_fromfile("data/sql/TotalSPNs.sql")
+
+    if not risky_spns and not spns_count:
+        risky_spns = False
+        spns_count[0][0] = None
 
     output.risky_spns(
         risky_spns,
@@ -293,13 +344,14 @@ def main(cfg):
     hashes_found_on_multiple = db.exec_fromfile("data/sql/HashesFoundOnMultiple.sql")
     hashes_found_on_multiple_admins = db.exec_fromfile("data/sql/HashesFoundOnMultipleAdmins.sql")
     total_privileged_ids = db.exec_fromfile("data/sql/TotalPrivilegedIDs.sql")
-    total_hash_srv = 0
-    total_hash_wks = 0
-    total_hash_name = []
-    total_hash_admins_srv = 0
-    total_hash_admins_wks = 0
 
-    if hashes_found_on_multiple:
+    if hashes_found_on_multiple and hashes_found_on_multiple_admins and total_privileged_ids:
+        total_hash_srv = 0
+        total_hash_wks = 0
+        total_hash_name = []
+        total_hash_admins_srv = 0
+        total_hash_admins_wks = 0
+
         for x in range(len(hashes_found_on_multiple)):
             total_hash_srv += hashes_found_on_multiple[x][4]
             total_hash_wks += hashes_found_on_multiple[x][3]
@@ -312,13 +364,17 @@ def main(cfg):
                 if hash_name == total_privileged_ids[x][0]:
                     admin_hash_found.append(hash_name)
 
-    # This is looking for hashes returned that are in the Domain Group "Domain Admins"
-        if hashes_found_on_multiple_admins:
-            for x in range(len(hashes_found_on_multiple_admins)):
-                total_hash_admins_srv += hashes_found_on_multiple_admins[x][4]
-                total_hash_admins_wks += hashes_found_on_multiple_admins[x][3]
-
-        #admin_hash_sorted = sorted(admin_hash_found, key=str.lower)
+        # This is looking for hashes returned that are in the Domain Group "Domain Admins"
+        for x in range(len(hashes_found_on_multiple_admins)):
+            total_hash_admins_srv += hashes_found_on_multiple_admins[x][4]
+            total_hash_admins_wks += hashes_found_on_multiple_admins[x][3]
+    else:
+        unique_hash_name = []
+        admin_hash_found = []
+        total_hash_srv = False
+        total_hash_wks = 0
+        total_hash_admins_srv = 0
+        total_hash_admins_wks = 0
 
     output.hashes_found_on_multiple(
         len(unique_hash_name),
@@ -334,7 +390,10 @@ def main(cfg):
 
     multi_machine_hashes = db.exec_fromfile("data/sql/MultipleMachineHashes.sql")
 
-    multiMachineHashes = Metrics.multi_machine_hashes(multi_machine_hashes, all_machines_count[0][0])
+    if multi_machine_hashes:
+        multiMachineHashes = Metrics.multi_machine_hashes(multi_machine_hashes, all_machines_count[0][0])
+    else:
+        multiMachineHashes = False
 
     output.multi_machine_hashes(multiMachineHashes)
 
