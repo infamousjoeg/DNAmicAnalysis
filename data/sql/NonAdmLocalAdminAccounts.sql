@@ -12,6 +12,7 @@ WHERE Machines.ProductType = 'Server'
 		OR Accounts.Name LIKE 'S-%'
 		OR Accounts.Name LIKE '%admin%')
 	AND NOT ({whereStmt})
+	AND NOT OSAccounts.Description LIKE 'Built-in account for administering the computer/domain'
 	AND (OSGroupModel.Name = 'Administrators'
 		OR OSGroupModel.Name = 'Power Users')
 	{disabled}
