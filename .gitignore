@@ -108,3 +108,5 @@ img/*.mov
 templates/
 .vagrant/
 *.xls
+data/test_private
+config/test_private

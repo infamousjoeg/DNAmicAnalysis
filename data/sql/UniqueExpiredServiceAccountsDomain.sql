@@ -10,6 +10,7 @@ WHERE OSAccounts.LastPasswordSet <= datetime('{scanDateTime}', '-90 days')
 	AND NOT (Accounts.Name LIKE '%*%'
 		OR Accounts.Name LIKE ''
 		OR Accounts.Name LIKE 'S-%')
+	AND Services.AccountType = 'Domain'
 	{disabled}
 GROUP BY LOWER(Accounts.Name)
 ORDER BY PasswordAge DESC
