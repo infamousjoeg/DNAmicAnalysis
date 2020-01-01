@@ -270,10 +270,12 @@ def main(cfg):
     ## Unique Expired Services ##
     #############################
 
-    unique_expired_svcs = db.exec_fromfile("data/sql/UniqueExpiredServiceAccounts.sql")
+    unique_expired_svcs_domain = db.exec_fromfile("data/sql/UniqueExpiredServiceAccountsDomain.sql")
+    unique_expired_svcs_local = db.exec_fromfile("data/sql/UniqueExpiredServiceAccountsLocal.sql")
     svc_accts_count = db.exec_fromfile("data/sql/ServiceAccountsCount.sql")
 
-    if unique_expired_svcs and svc_accts_count:
+    if (unique_expired_svcs_domain or unique_expired_svcs_local) and svc_accts_count:
+        unique_expired_svcs = unique_expired_svcs_domain + unique_expired_svcs_local
         uniqueSvcMaxSorted = Metrics.unique_svc_max(unique_expired_svcs)
         uniqueSvcAverage = Metrics.unique_svc_avg(unique_expired_svcs)
         uniqueSvcPercent = Metrics.unique_svc_percent(unique_expired_svcs, len(svc_accts_count), len(uniqueSvcMaxSorted))
