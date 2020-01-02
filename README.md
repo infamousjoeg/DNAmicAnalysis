@@ -44,11 +44,7 @@ The metrics reported in this application are based on SQL queries ran on the DNA
    **Note:** _Holding `Shift` while right-clicking will bring up a context menu with the option "Open Command Prompt here"._
 4. `pip install -r requirements.txt`
 
-   ![](img/windows-pipinstall.png)
-
 5. Run the application with valid arguments as outlined in the [Usage](#usage) section below. 
-
-   ![](img/windows-runpy.png)
 
 ### Linux
 
@@ -198,11 +194,11 @@ The format for the Excel filename is `DNAmicAnalysis_<domain>_<date>_<time>.xls`
 **Windows**
 ```shell
 > python.exe DNAmicAnalysis.py --version
-DNAmicAnalysis (version 0.6.0-beta.5)
+DNAmicAnalysis (version 1.0.0)
 ```
 
 **UNIX or MacOS**
 ```shell
 $ ./DNAmicAnalysis --version
-DNAmicAnalysis (version 0.6.0-beta.5)
+DNAmicAnalysis (version 1.0.0)
 ```
