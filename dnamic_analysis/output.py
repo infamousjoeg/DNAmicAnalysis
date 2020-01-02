@@ -236,9 +236,16 @@ class Output(object):
                                                                             all_len,percent_overall)
                 self._excel_object.write(self._worksheet, self._col, 0, data, 'row1')
                 self._excel_object.write(self._worksheet, self._col, 1, 'Unique Expired Services', 'header')
-                row = 2
-                for username,_,_ in max_sorted:
+                self._excel_object.write(self._worksheet, self._col, 2, 'Username', 'subheader')
+                row = 3
+                for username,_,_,_ in max_sorted:
                     self._excel_object.write(self._worksheet, self._col, row, username)
+                    row += 1
+                self._col += 1
+                self._excel_object.write(self._worksheet, self._col, 2, 'Address', 'subheader')
+                row = 3
+                for _,_,_,address in max_sorted:
+                    self._excel_object.write(self._worksheet, self._col, row, address)
                     row += 1
                 self._col += 1
                 self._excel_object.save(self._workbook)

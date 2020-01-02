@@ -1,5 +1,6 @@
 SELECT Accounts.Name, OSAccounts.LastPasswordSet,
-	MAX(Cast ((JulianDay(datetime('{scanDateTime}')) - JulianDay(OSAccounts.LastPasswordSet)) As Integer)) as PasswordAge
+	MAX(Cast ((JulianDay(datetime('{scanDateTime}')) - JulianDay(OSAccounts.LastPasswordSet)) As Integer)) as PasswordAge,
+	Services.Address
 FROM Services
 	LEFT OUTER JOIN Accounts
 		ON Services.AccountName = Accounts.Name

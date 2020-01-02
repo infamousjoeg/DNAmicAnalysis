@@ -9,5 +9,5 @@ WHERE NOT (Services.AccountName LIKE '%*%'
 		OR Services.AccountName LIKE ''
 		OR Services.AccountName LIKE 'S-%')
 	{disabled}
-GROUP BY LOWER(Services.AccountName)
+GROUP BY LOWER(Services.AccountName), LOWER(Services.Address)
 ORDER BY LOWER(Services.AccountName) ASC

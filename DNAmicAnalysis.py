@@ -281,8 +281,8 @@ def main(cfg):
         uniqueSvcPercent = Metrics.unique_svc_percent(unique_expired_svcs, len(svc_accts_count), len(uniqueSvcMaxSorted))
     else:
         uniqueSvcMaxSorted = False
-        uniqueSvcAverage = [0, 0, 0]
-        uniqueSvcPercent = [0, 0, 0]
+        uniqueSvcAverage = [0, 0, 0, 0]
+        uniqueSvcPercent = [0, 0, 0, 0]
 
     output.unique_expired_svcs(
         uniqueSvcMaxSorted,
