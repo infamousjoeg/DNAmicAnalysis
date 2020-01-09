@@ -224,7 +224,7 @@ def main(cfg):
 
     unique_expired_domain = db.exec_fromfile("data/sql/UniqueExpiredDomainPrivID.sql")
 
-    if unique_expired_domain:
+    if unique_expired_domain and unique_domain_admins is not False:
         uniqueDomainMaxSorted = Metrics.unique_domain_max(unique_expired_domain)
         uniqueDomainAverage = Metrics.unique_domain_avg(unique_expired_domain)
         uniqueDomainPercent = Metrics.unique_domain_percent(unique_expired_domain, len(unique_domain_admins), uniqueDomainMaxSorted)
