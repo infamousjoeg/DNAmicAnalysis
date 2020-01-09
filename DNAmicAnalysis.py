@@ -13,7 +13,7 @@ from dnamic_analysis import Database, DomainCheck, Excel, Metrics, Output
 from logzero import logger
 
 __author__ = "Joe Garcia, CISSP"
-__version__ = "1.0.0"
+__version__ = "1.0.1"
 __license__ = "MIT"
 
 log_timestamp = time.strftime("%Y-%m-%d_%H-%M-%S")
