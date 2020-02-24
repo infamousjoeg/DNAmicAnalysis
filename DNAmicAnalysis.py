@@ -142,7 +142,7 @@ def main(cfg):
         localMaxGrouped = Metrics.local_expired_machines(localMaxSorted)
 
     if not localMaxGrouped or len(all_local_count) == 0:
-        localMaxGrouped = False
+        localMaxGrouped = []
 
 
     output.local_expired_machines(

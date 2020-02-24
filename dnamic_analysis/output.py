@@ -65,7 +65,7 @@ class Output(object):
     ## Expired Local Admins Total w/ Machine Addresses ##
     #####################################################
     def local_expired_machines(self,max_grouped,count_accounts,percent_accounts):
-        if max_grouped is not False:
+        if len(max_grouped) != 0:
             self._excel_object.write(self._worksheet, self._col, 1, 'Expired Local Admins Total w/ Machine Addresses', 'header')
             count = 0
             row = 2
