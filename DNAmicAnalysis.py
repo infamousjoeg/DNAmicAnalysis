@@ -137,7 +137,8 @@ def main(cfg):
     ## Expired Local Admins Total w/ Machine Addresses ##
     #####################################################
 
-    localMaxGrouped = Metrics.local_expired_machines(localMaxSorted)
+    if localMaxSorted is not False:
+        localMaxGrouped = Metrics.local_expired_machines(localMaxSorted)
 
     if not localMaxGrouped or len(all_local_count) == 0:
         localMaxGrouped = False
