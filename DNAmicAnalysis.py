@@ -141,14 +141,11 @@ def main(cfg):
     if localMaxSorted is not False:
         localMaxGrouped = Metrics.local_expired_machines(localMaxSorted)
 
-    if not localMaxGrouped or len(all_local_count) == 0:
-        localMaxGrouped = []
-
-
-    output.local_expired_machines(
-        localMaxGrouped,
-        len(all_local_count),
-        len(localMaxGrouped)/len(all_local_count))
+    if localMaxGrouped and len(all_local_count) != 0:
+        output.local_expired_machines(
+            localMaxGrouped,
+            len(all_local_count),
+            len(localMaxGrouped)/len(all_local_count))
 
     ##############################
     ## Local Abandoned Accounts ##

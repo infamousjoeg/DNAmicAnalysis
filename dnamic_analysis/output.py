@@ -65,24 +65,23 @@ class Output(object):
     ## Expired Local Admins Total w/ Machine Addresses ##
     #####################################################
     def local_expired_machines(self,max_grouped,count_accounts,percent_accounts):
-        if len(max_grouped) != 0:
-            self._excel_object.write(self._worksheet, self._col, 1, 'Expired Local Admins Total w/ Machine Addresses', 'header')
-            count = 0
-            row = 2
-            for value in max_grouped.items():
-                for key in value:
-                    if not isinstance(key, str):
-                        if isinstance(key, list):
-                            for machine in key:
-                                self._excel_object.write(self._worksheet, self._col, row, machine)
-                                count = len(key)
-                                row += 1
-                    else:
-                        self._excel_object.write(self._worksheet, self._col, row, key, 'subheader')
-                        row += 1
+        self._excel_object.write(self._worksheet, self._col, 1, 'Expired Local Admins Total w/ Machine Addresses', 'header')
+        count = 0
+        row = 2
+        for value in max_grouped.items():
+            for key in value:
+                if not isinstance(key, str):
+                    if isinstance(key, list):
+                        for machine in key:
+                            self._excel_object.write(self._worksheet, self._col, row, machine)
+                            count = len(key)
+                            row += 1
+                else:
+                    self._excel_object.write(self._worksheet, self._col, row, key, 'subheader')
+                    row += 1
 
-            self._col += 1
-            self._excel_object.save(self._workbook)
+        self._col += 1
+        self._excel_object.save(self._workbook)
 
     ##############################
     ## Local Abandoned Accounts ##
