@@ -13,7 +13,7 @@ from dnamic_analysis import Database, DomainCheck, Excel, Metrics, Output
 from logzero import logger
 
 __author__ = "Joe Garcia, CISSP"
-__version__ = "1.0.1"
+__version__ = "1.0.2"
 __license__ = "MIT"
 
 log_timestamp = time.strftime("%Y-%m-%d_%H-%M-%S")
@@ -119,6 +119,8 @@ def main(cfg):
         localMaxSorted = False
         localAverage = [0, 0, 0]
         localPercent = [0, 0, 0]
+        all_local_count = []
+        all_local_unique_count = []
 
     output.local_expired(
         localMaxSorted,
@@ -135,15 +137,15 @@ def main(cfg):
     ## Expired Local Admins Total w/ Machine Addresses ##
     #####################################################
 
-    localMaxGrouped = Metrics.local_expired_machines(localMaxSorted)
+    localMaxGrouped = None
+    if localMaxSorted is not False:
+        localMaxGrouped = Metrics.local_expired_machines(localMaxSorted)
 
-    if not localMaxGrouped:
-        localMaxGrouped = False
-
-    output.local_expired_machines(
-        localMaxGrouped,
-        len(all_local_count),
-        len(localMaxGrouped)/len(all_local_count))
+    if localMaxGrouped and len(all_local_count) != 0:
+        output.local_expired_machines(
+            localMaxGrouped,
+            len(all_local_count),
+            len(localMaxGrouped)/len(all_local_count))
 
     ##############################
     ## Local Abandoned Accounts ##
@@ -166,7 +168,7 @@ def main(cfg):
 
     abandoned_domain = db.exec_fromfile("data/sql/DomainAbandonedAccounts.sql")
 
-    if not abandoned_domain:
+    if not abandoned_domain or not all_domain_count:
         abandoned_domain = False
 
     output.domain_abandoned(
@@ -208,6 +210,7 @@ def main(cfg):
     else:
         unique_domain_admins = False
         unique_svcacct_domain_admins = []
+        unique_svcacct_domain_admins2 = []
         unique_svcacct_domadm2_admins = []
         unique_svcacct_domadm_usernames = []
         unique_svcacct_domadm2_usernames = []

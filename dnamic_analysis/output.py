@@ -38,7 +38,7 @@ class Output(object):
     ## Unique Expired Local Privileged IDs ##
     #########################################
     def local_expired(self,max_sorted,avg_sum,avg_len,avg_overall,percent_len,all_len,percent_overall,sqlcount,unique_count):
-        if max_sorted is not False:
+        if max_sorted is not False and sqlcount != 0 and unique_count != 0:
             # Write bulk data to Excel workbook
             data = 'Oldest Non-Compliant Username: {}\n' \
                     'Max Password Age: {} days ({:.1f} years)\n' \
@@ -65,30 +65,29 @@ class Output(object):
     ## Expired Local Admins Total w/ Machine Addresses ##
     #####################################################
     def local_expired_machines(self,max_grouped,count_accounts,percent_accounts):
-        if max_grouped is not False:
-            self._excel_object.write(self._worksheet, self._col, 1, 'Expired Local Admins Total w/ Machine Addresses', 'header')
-            count = 0
-            row = 2
-            for value in max_grouped.items():
-                for key in value:
-                    if not isinstance(key, str):
-                        if isinstance(key, list):
-                            for machine in key:
-                                self._excel_object.write(self._worksheet, self._col, row, machine)
-                                count = len(key)
-                                row += 1
-                    else:
-                        self._excel_object.write(self._worksheet, self._col, row, key, 'subheader')
-                        row += 1
+        self._excel_object.write(self._worksheet, self._col, 1, 'Expired Local Admins Total w/ Machine Addresses', 'header')
+        count = 0
+        row = 2
+        for value in max_grouped.items():
+            for key in value:
+                if not isinstance(key, str):
+                    if isinstance(key, list):
+                        for machine in key:
+                            self._excel_object.write(self._worksheet, self._col, row, machine)
+                            count = len(key)
+                            row += 1
+                else:
+                    self._excel_object.write(self._worksheet, self._col, row, key, 'subheader')
+                    row += 1
 
-            self._col += 1
-            self._excel_object.save(self._workbook)
+        self._col += 1
+        self._excel_object.save(self._workbook)
 
     ##############################
     ## Local Abandoned Accounts ##
     ##############################
     def local_abandoned(self,abandoned_accounts, count_accounts):
-        if abandoned_accounts is not False:
+        if abandoned_accounts is not False and count_accounts != 0:
             # Write bulk data to Excel workbook
             data = 'Total Abandoned / Total Overall: {} / {}'.format(len(abandoned_accounts), count_accounts)
             self._excel_object.write(self._worksheet, self._col, 0, data, 'row1')
