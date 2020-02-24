@@ -38,7 +38,7 @@ class Output(object):
     ## Unique Expired Local Privileged IDs ##
     #########################################
     def local_expired(self,max_sorted,avg_sum,avg_len,avg_overall,percent_len,all_len,percent_overall,sqlcount,unique_count):
-        if max_sorted is not False:
+        if max_sorted is not False and sqlcount != 0 and unique_count != 0:
             # Write bulk data to Excel workbook
             data = 'Oldest Non-Compliant Username: {}\n' \
                     'Max Password Age: {} days ({:.1f} years)\n' \
@@ -88,7 +88,7 @@ class Output(object):
     ## Local Abandoned Accounts ##
     ##############################
     def local_abandoned(self,abandoned_accounts, count_accounts):
-        if abandoned_accounts is not False:
+        if abandoned_accounts is not False and count_accounts != 0:
             # Write bulk data to Excel workbook
             data = 'Total Abandoned / Total Overall: {} / {}'.format(len(abandoned_accounts), count_accounts)
             self._excel_object.write(self._worksheet, self._col, 0, data, 'row1')

@@ -110,3 +110,4 @@ templates/
 *.xls
 data/test_private
 config/test_private
+docs/~$*
