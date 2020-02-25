@@ -8,7 +8,7 @@ __pycache__/
 
 # Distribution / packaging
 .Python
-build/
+build/DNAmicAnalysis
 develop-eggs/
 dist/
 downloads/
@@ -111,3 +111,9 @@ templates/
 data/test_private
 config/test_private
 docs/~$*
+
+# Packer assets
+build/packer/ubuntu/ubuntu-18.04.4/iso
+build/packer/ubuntu/ubuntu-18.04.4/output
+build/packer/ubuntu/ubuntu-18.04.4/packer-cache
+build/packer/ubuntu/ubuntu-18.04.4/*.zip
