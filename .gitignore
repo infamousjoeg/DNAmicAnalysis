@@ -115,5 +115,5 @@ docs/~$*
 # Packer assets
 build/packer/ubuntu/ubuntu-18.04.4/iso
 build/packer/ubuntu/ubuntu-18.04.4/output
-build/packer/ubuntu/ubuntu-18.04.4/packer-cache
+build/packer/ubuntu/ubuntu-18.04.4/packer_cache
 build/packer/ubuntu/ubuntu-18.04.4/*.zip

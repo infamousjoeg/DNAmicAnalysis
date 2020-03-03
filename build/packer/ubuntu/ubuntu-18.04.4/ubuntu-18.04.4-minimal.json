@@ -139,16 +139,13 @@
         "scripts": [
           "../provisioners/update_mirror.sh",
           "../provisioners/base.sh",
-          "../provisioners/vagrant.sh",
-          "../provisioners/dnamicanalysis.sh"
+          "../provisioners/vagrant.sh"
         ],
         "execute_command": "echo 'vagrant' | {{.Vars}} sudo -E -S sh -ex '{{.Path}}'",
         "environment_vars": [
           "VAGRANT_USERNAME={{user `vagrant_username`}}",
           "VIRTUALBOX_VERSION={{user `virtualbox_version`}}",
-          "ARCHIVE_MIRROR={{user `archive_mirror`}}",
-          "GITHUB_USERNAME={{user `github_username`}}",
-          "GITHUB_TOKEN={{user `github_token`}}"
+          "ARCHIVE_MIRROR={{user `archive_mirror`}}"
         ]
       },
       {
@@ -173,38 +170,53 @@
       },
       {
         "type": "shell",
-        "only": [
-          "virtualbox-iso",
-          "vmware-iso"
+        "scripts": [
+          "../provisioners/dnamicanalysis.sh"
         ],
-        "script": "../provisioners/disk_cleanup.sh",
-        "execute_command": "echo 'vagrant' | {{.Vars}} sudo -E -S sh -ex '{{.Path}}'"
+        "environment_vars": [
+          "GITHUB_USERNAME={{user `github_username`}}",
+          "GITHUB_TOKEN={{user `github_token`}}"
+        ]
       },
       {
         "type": "shell",
-        "script": "../provisioners/cleanup.sh",
-        "execute_command": "echo 'vagrant' | {{.Vars}} sudo -E -S sh -ex '{{.Path}}'",
-        "environment_vars": [
-          "VAGRANT_USERNAME={{user `vagrant_username`}}"
-        ]
+        "script": "../provisioners/disk_cleanup.sh",
+        "execute_command": "echo 'vagrant' | {{.Vars}} sudo -E -S sh -ex '{{.Path}}'"
       }
     ],
     "post-processors": [
-      {
-        "type": "compress",
-        "compression_level": 9,
-        "output": "./{{user `vm_name`}}-v{{user `box_version`}}-{{ .BuilderType }}.zip"
-      },
-      {
-        "type": "shell-local",
-        "script": "../post-processors/",
-        "environment_vars": [
-          "FTP_USERNAME={{user `ftp_username`}}",
-          "FTP_PASSWORD={{user `ftp_password`}}",
-          "FTP_HOSTNAME={{user `ftp_hostname`}}",
-          "FILE_NAME={{user `vm_name`}}-v{{user `box_version`}}-{{ .BuilderType }}.zip"
-        ]
-      }
+      [
+        {
+          "type": "compress",
+          "only": [ "virtualbox-iso" ],
+          "compression_level": 9,
+          "output": "./{{user `vm_name`}}-v{{user `box_version`}}-virtualbox-iso.zip"
+        },
+        {
+          "type": "shell-local",
+          "only": [ "virtualbox-iso" ],
+          "script": "../post-processors/cp.sh",
+          "environment_vars": [
+            "FILE_NAME={{user `vm_name`}}-v{{user `box_version`}}-virtualbox-iso.zip",
+            "LOCAL_COPY=/Users/joegarcia/OneDrive/CyberArk/Shared/"
+          ]
+        },
+        {
+          "type": "compress",
+          "only": [ "vmware-iso" ],
+          "compression_level": 9,
+          "output": "./{{user `vm_name`}}-v{{user `box_version`}}-vmware-iso.zip"
+        },
+        {
+          "type": "shell-local",
+          "only": [ "vmware-iso" ],
+          "script": "../post-processors/cp.sh",
+          "environment_vars": [
+            "FILE_NAME={{user `vm_name`}}-v{{user `box_version`}}-vmware-iso.zip",
+            "LOCAL_COPY=/Users/joegarcia/OneDrive/CyberArk/Shared/"
+          ]
+        }
+      ]
     ]
   }
   

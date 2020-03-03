@@ -1,0 +1,1 @@
+cp $FILE_NAME $LOCAL_COPY
