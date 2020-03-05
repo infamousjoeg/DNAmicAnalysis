@@ -12,8 +12,8 @@ import logzero
 from dnamic_analysis import Database, DomainCheck, Excel, Metrics, Output
 from logzero import logger
 
-__author__ = "Joe Garcia, CISSP"
-__version__ = "1.0.2"
+__author__ = "Joe Garcia"
+__version__ = "1.0.3"
 __license__ = "MIT"
 
 log_timestamp = time.strftime("%Y-%m-%d_%H-%M-%S")
@@ -182,7 +182,7 @@ def main(cfg):
     multi_machine_accts = db.exec_fromfile("data/sql/MultipleMachineAccounts.sql")
     all_machines_count = db.exec_fromfile("data/sql/TotalMachinesCount.sql")
 
-    if multi_machine_accts:
+    if multi_machine_accts and all_machines_count:
         multiMachineAccounts = Metrics.multi_machine_accts(multi_machine_accts, all_machines_count[0][0])
     else:
         multiMachineAccounts = False
@@ -395,7 +395,7 @@ def main(cfg):
 
     multi_machine_hashes = db.exec_fromfile("data/sql/MultipleMachineHashes.sql")
 
-    if multi_machine_hashes:
+    if multi_machine_hashes and all_machines_count:
         multiMachineHashes = Metrics.multi_machine_hashes(multi_machine_hashes, all_machines_count[0][0])
     else:
         multiMachineHashes = False
