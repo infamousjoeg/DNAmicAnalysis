@@ -21,8 +21,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag_name: ${{ github.ref }}
-          release_name: ${{ github.ref }}
+          release_name: DNAmicAnalysis_${{ github.ref }}
           body: |
             Changes listed in relevant [release project](https://github.com/infamousjoeg/DNAmicAnalysis/projects?query=is%3Aclosed)
-          draft: false
-          prerelease: true
+          draft: true
+          prerelease: false
