@@ -117,15 +117,15 @@ class Output(object):
 
 
     #########################################################
-    ## Accounts w/ Multiple Machine Access - By %age Tiers ##
+    ## Accounts w/ Multiple Machine Exposure - By %age Tiers ##
     #########################################################
     def multi_machine_accts(self,multi_machine_accts):
         if multi_machine_accts is not False:
-            tiers = ['> 95% Access','90-95% Access','80-90% Access','70-80% Access','60-70% Access',
-                '50-60% Access','40-50% Access','30-40% Access','20-30% Access','10-20% Access',
-                '< 10% Access']
+            tiers = ['> 95% Exposure','90-95% Exposure','80-90% Exposure','70-80% Exposure','60-70% Exposure',
+                '50-60% Exposure','40-50% Exposure','30-40% Exposure','20-30% Exposure','10-20% Exposure',
+                '< 10% Exposure']
 
-            self._excel_object.write(self._worksheet, 5, 1, 'Accounts with Multiple Machine Access', 'header')
+            self._excel_object.write(self._worksheet, 5, 1, 'Accounts with Multiple Machine Exposure', 'header')
 
             for i in range(len(multi_machine_accts)):
                 if len(multi_machine_accts[i]) != 0:
@@ -167,7 +167,7 @@ class Output(object):
 
 
     ##########################################
-    ## Unique Expired Domain Privileged IDs ##
+    ## Expired Domain Privileged IDs ##
     ##########################################
     def unique_domain_expired(self,max_sorted,avg_sum,avg_len,avg_overall,percent_len,all_len,percent_overall):
         if max_sorted is not False:
@@ -178,7 +178,7 @@ class Output(object):
                                                                         avg_sum,avg_len,avg_overall,avg_overall/365,percent_len,
                                                                         all_len,percent_overall)
             self._excel_object.write(self._worksheet, self._col, 0, data, 'row1')
-            self._excel_object.write(self._worksheet, self._col, 1, 'Unique Expired Domain Admins', 'header')
+            self._excel_object.write(self._worksheet, self._col, 1, 'Expired Domain Admins', 'header')
             row = 2
             for username,_,_,_,_ in max_sorted:
                 self._excel_object.write(self._worksheet, self._col, row, username)
@@ -221,9 +221,9 @@ class Output(object):
             self._excel_object.save(self._workbook)
 
 
-    #############################
-    ## Unique Expired Services ##
-    #############################
+    #####################################
+    ## Unique Expired Service Accounts ##
+    #####################################
     def unique_expired_svcs(self,max_sorted,avg_sum,avg_len,avg_overall,percent_len,all_len,percent_overall):
             if max_sorted is not False:
                 # Write bulk data to Excel workbook
@@ -234,7 +234,7 @@ class Output(object):
                                                                             avg_sum,avg_len,avg_overall,avg_overall/365,percent_len,
                                                                             all_len,percent_overall)
                 self._excel_object.write(self._worksheet, self._col, 0, data, 'row1')
-                self._excel_object.write(self._worksheet, self._col, 1, 'Unique Expired Services', 'header')
+                self._excel_object.write(self._worksheet, self._col, 1, 'Unique Expired Service Accounts', 'header')
                 self._excel_object.write(self._worksheet, self._col, 2, 'Username', 'subheader')
                 row = 3
                 for username,_,_,_ in max_sorted:
@@ -322,15 +322,15 @@ class Output(object):
 
 
     ##################################################################
-    ## Accounts Hashes Exposed on Multiple Machines - By %age Tiers ##
+    ## Account Hashes that Expose Multiple Machines - By %age Tiers ##
     ##################################################################
     def multi_machine_hashes(self,multi_machine_hashes):
         if multi_machine_hashes is not False:
-            tiers = ['> 95% Access','90-95% Access','80-90% Access','70-80% Access','60-70% Access',
-                    '50-60% Access','40-50% Access','30-40% Access','20-30% Access','10-20% Access',
-                    '< 10% Access']
+            tiers = ['> 95% Exposure','90-95% Exposure','80-90% Exposure','70-80% Exposure','60-70% Exposure',
+                    '50-60% Exposure','40-50% Exposure','30-40% Exposure','20-30% Exposure','10-20% Exposure',
+                    '< 10% Exposure']
 
-            self._excel_object.write(self._worksheet, self._col, 1, 'Accounts Hashes Exposed on Multiple Machines', 'header')
+            self._excel_object.write(self._worksheet, self._col, 1, 'Account Hashes that Expose Multiple Machines', 'header')
 
             for i in range(len(multi_machine_hashes)):
                     if len(multi_machine_hashes[i]) != 0:
