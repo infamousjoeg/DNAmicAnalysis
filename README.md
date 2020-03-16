@@ -194,11 +194,11 @@ The format for the Excel filename is `DNAmicAnalysis_<domain>_<date>_<time>.xls`
 **Windows**
 ```shell
 > python.exe DNAmicAnalysis.py --version
-DNAmicAnalysis (version 1.0.3)
+DNAmicAnalysis (version 1.0.4)
 ```
 
 **UNIX or MacOS**
 ```shell
 $ ./DNAmicAnalysis --version
-DNAmicAnalysis (version 1.0.3)
+DNAmicAnalysis (version 1.0.4)
 ```
