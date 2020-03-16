@@ -12,6 +12,7 @@ logzero = "*"
 coverage = "*"
 xlwt = "*"
 pyyaml = "*"
+alive-progress = "*"
 
 [requires]
 python_version = "3.8"
