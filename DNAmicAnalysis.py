@@ -5,6 +5,7 @@
 import argparse
 import logging
 import os
+import platform
 import time
 
 import yaml
@@ -68,11 +69,19 @@ def main(cfg):
     adm_array = cfg['account_regex']['admin_account']
     regex_array = svc_array + adm_array
 
-    # Declare status message pre and post formatting
+    # Declare status message formatting
     status_pre = '\r\n' + Fore.YELLOW + Style.BRIGHT + '==>' + Style.NORMAL + ' '
     status_post = Fore.WHITE + '\r\n'
+    if $(platform.uname().system == 'Windows'):
+        status_start = ''
+        status_step = ''
+        status_finish = ''
+    else:
+        status_start = '🧪'
+        status_step = '✅'
+        status_finish = '🏁'
 
-    print(status_pre + '🧪' + Fore.CYAN + ' Starting analysis' + status_post)
+    print(status_pre + status_start + Fore.CYAN + ' Starting analysis' + status_post)
 
     #####################################
     ## LEGAL - Domain Compliance Check ##
@@ -118,7 +127,7 @@ def main(cfg):
             domainPercent[1],
             domainPercent[2])
         
-    print(status_pre + '✅' + Fore.GREEN + ' Completed Expired Domain Privileged IDs' + status_post)
+    print(status_pre + status_step + Fore.GREEN + ' Completed Expired Domain Privileged IDs' + status_post)
 
     #########################################
     ## Unique Expired Local Privileged IDs ##
@@ -157,7 +166,7 @@ def main(cfg):
             len(all_local_count),
             len(set(all_local_unique_count)))
 
-    print(status_pre + '✅' + Fore.GREEN + ' Completed Unique Expired Local Privileged IDs' + status_post)
+    print(status_pre + status_step + Fore.GREEN + ' Completed Unique Expired Local Privileged IDs' + status_post)
 
     #####################################################
     ## Expired Local Admins Total w/ Machine Addresses ##
@@ -176,7 +185,7 @@ def main(cfg):
                 len(all_local_count),
                 len(localMaxGrouped)/len(all_local_count))
 
-    print(status_pre + '✅' + Fore.GREEN + ' Completed Expired Local Admins Total w/ Machine Addresses' + status_post)
+    print(status_pre + status_step + Fore.GREEN + ' Completed Expired Local Admins Total w/ Machine Addresses' + status_post)
 
     ##############################
     ## Local Abandoned Accounts ##
@@ -197,7 +206,7 @@ def main(cfg):
             abandoned_local,
             len(abandoned_local_count))
         
-    print(status_pre + '✅' + Fore.GREEN + ' Completed Local Abandoned Accounts' + status_post)
+    print(status_pre + status_step + Fore.GREEN + ' Completed Local Abandoned Accounts' + status_post)
 
     ###############################
     ## Domain Abandoned Accounts ##
@@ -216,7 +225,7 @@ def main(cfg):
             abandoned_domain,
             len(all_domain_count))
 
-    print(status_pre + '✅' + Fore.GREEN + ' Completed Domain Abandoned Accounts' + status_post)
+    print(status_pre + status_step + Fore.GREEN + ' Completed Domain Abandoned Accounts' + status_post)
 
     #########################################################
     ## Accounts w/ Multiple Machine Access - By %age Tiers ##
@@ -236,7 +245,7 @@ def main(cfg):
         bar('Output to Excel spreadsheet...')
         output.multi_machine_accts(multiMachineAccounts)
 
-    print(status_pre + '✅' + Fore.GREEN + ' Completed Accounts w/ Multiple Machine Access - By Percentage Tiers' + status_post)
+    print(status_pre + status_step + Fore.GREEN + ' Completed Accounts w/ Multiple Machine Access - By Percentage Tiers' + status_post)
 
     ##########################
     ## Unique Domain Admins ##
@@ -274,7 +283,7 @@ def main(cfg):
             set(unique_svcacct_domadm_usernames),
             set(unique_svcacct_domadm2_usernames))
 
-    print(status_pre + '✅' + Fore.GREEN + ' Completed Unique Domain Admins' + status_post)
+    print(status_pre + status_step + Fore.GREEN + ' Completed Unique Domain Admins' + status_post)
 
     ##########################################
     ## Unique Expired Domain Privileged IDs ##
@@ -304,7 +313,7 @@ def main(cfg):
             uniqueDomainPercent[1],
             uniqueDomainPercent[2])
 
-    print(status_pre + '✅' + Fore.GREEN + ' Completed Expired Domain Privileged IDs' + status_post)
+    print(status_pre + status_step + Fore.GREEN + ' Completed Expired Domain Privileged IDs' + status_post)
 
     ########################################
     ## Personal Accounts Running Services ##
@@ -322,7 +331,7 @@ def main(cfg):
         output.personal_accts_running_svcs(
             personal_accts_running_svcs)
         
-    print(status_pre + '✅' + Fore.GREEN + ' Completed Personal Accounts Running Services' + status_post)
+    print(status_pre + status_step + Fore.GREEN + ' Completed Personal Accounts Running Services' + status_post)
 
     #######################################################
     ## Non-adm Accounts w/ Local Admin Rights on Systems ##
@@ -340,7 +349,7 @@ def main(cfg):
         output.non_admin_with_local_admin(
             non_admin_with_local_admin)
 
-    print(status_pre + '✅' + Fore.GREEN + ' Completed Non-adm Accounts w/ Local Admin Rights on Systems' + status_post)
+    print(status_pre + status_step + Fore.GREEN + ' Completed Non-adm Accounts w/ Local Admin Rights on Systems' + status_post)
 
     #####################################
     ## Unique Expired Service Accounts ##
@@ -373,7 +382,7 @@ def main(cfg):
             uniqueSvcPercent[1],
             uniqueSvcPercent[2])
 
-    print(status_pre + '✅' + Fore.GREEN + ' Completed Unique Expired Service Accounts' + status_post)
+    print(status_pre + status_step + Fore.GREEN + ' Completed Unique Expired Service Accounts' + status_post)
 
     ####################
     ## Clear Text IDs ##
@@ -398,7 +407,7 @@ def main(cfg):
             clear_text_ids_count,
             clear_text_ids)
         
-    print(status_pre + '✅' + Fore.GREEN + ' Completed Clear Text IDs' + status_post)
+    print(status_pre + status_step + Fore.GREEN + ' Completed Clear Text IDs' + status_post)
 
     ##########################################
     ## Applications w/ Clear Text Passwords ##
@@ -416,7 +425,7 @@ def main(cfg):
         output.apps_clear_text_passwords(
             unique_clear_text_apps)
         
-    print(status_pre + '✅' + Fore.GREEN + ' Completed Applications w/ Clear Text Passwords' + status_post)
+    print(status_pre + status_step + Fore.GREEN + ' Completed Applications w/ Clear Text Passwords' + status_post)
 
     #################################################
     ## Risky Expired Service Principal Names (SPN) ##
@@ -437,7 +446,7 @@ def main(cfg):
             risky_spns,
             spns_count[0][0])
         
-    print(status_pre + '✅' + Fore.GREEN + ' Completed Risky Expired Service Principal Names' + status_post)
+    print(status_pre + status_step + Fore.GREEN + ' Completed Risky Expired Service Principal Names' + status_post)
 
     #######################################
     ## Hashes Found on Multiple Machines ##
@@ -490,7 +499,7 @@ def main(cfg):
             total_hash_admins_srv,
             total_hash_admins_wks)
 
-    print(status_pre + '✅' + Fore.GREEN + ' Completed Hashes Found on Multiple Machines' + status_post)
+    print(status_pre + status_step + Fore.GREEN + ' Completed Hashes Found on Multiple Machines' + status_post)
 
     ##################################################################
     ## Account Hashes that Expose Multiple Machines - By %age Tiers ##
@@ -509,9 +518,9 @@ def main(cfg):
         bar('Output to Excel spreadsheet...')
         output.multi_machine_hashes(multiMachineHashes)
 
-    print(status_pre + '✅' + Fore.GREEN + ' Completed Account Hashes that Expose Multiple Machines' + status_post)
+    print(status_pre + status_step + Fore.GREEN + ' Completed Account Hashes that Expose Multiple Machines' + status_post)
 
-    print('\r\n' + status_pre + '🏁' + Fore.CYAN + ' DNAmic Analysis has completed!' + status_post)
+    print('\r\n' + status_pre + status_finish + Fore.CYAN + ' DNAmic Analysis has completed!' + status_post)
 
 ##########
 ## Main ##
