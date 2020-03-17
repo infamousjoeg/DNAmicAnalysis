@@ -72,7 +72,7 @@ def main(cfg):
     # Declare status message formatting
     status_pre = '\r\n' + Fore.YELLOW + Style.BRIGHT + '==>' + Style.NORMAL + ' '
     status_post = Fore.WHITE + '\r\n'
-    if $(platform.uname().system == 'Windows'):
+    if platform.uname().system == 'Windows':
         status_start = ''
         status_step = ''
         status_finish = ''
