@@ -80,8 +80,6 @@ def main(cfg):
         status_step = '✅'
         status_finish = '🏁'
 
-    print(print_chars())
-
     print(status_pre + status_start + Fore.CYAN + ' Starting analysis' + status_post)
 
     #####################################

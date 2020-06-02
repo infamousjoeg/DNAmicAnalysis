@@ -56,11 +56,11 @@ Vagrant.configure("2") do |config|
   # Enable provisioning with a shell script. Additional provisioners such as
   # Puppet, Chef, Ansible, Salt, and Docker are also available. Please see the
   # documentation for more information about their specific syntax and use.
-  config.vm.provision "shell", inline: <<-SHELL
-    sudo apt update
-    sudo apt upgrade -y
-    sudo apt install python3-pip -y
-    pip3 install -r /vagrant/requirements.txt
-    sudo reboot
-  SHELL
+  # config.vm.provision "shell", inline: <<-SHELL
+  #   sudo apt update
+  #   sudo apt upgrade -y
+  #   sudo apt install python3-pip -y
+  #   pip3 install -r /vagrant/requirements.txt
+  #   sudo reboot
+  # SHELL
 end
