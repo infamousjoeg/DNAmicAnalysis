@@ -103,23 +103,9 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
-      - name: Run Application Test - Normal Config
-        run: |
-          python DNAmicAnalysis.py tests/normal_test_config.yml
-      - name: Run Application Test - Database Config
-        run: |
-          python DNAmicAnalysis.py tests/database_test_config.yml
-
-  mergepal-merge:
-    runs-on: ubuntu-latest
-    if: github.event.pull_request.opened
-    needs:
-      - lint
-      - ubuntu
-      - macos
-      - windows
-    steps:
-      - uses: actions/checkout@v1
-      - uses: maxkomarychev/merge-pal-action@vX.Y.Z
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+      # - name: Run Application Test - Normal Config
+      #   run: |
+      #     python DNAmicAnalysis.py tests/normal_test_config.yml
+      # - name: Run Application Test - Database Config
+      #   run: |
+      #     python DNAmicAnalysis.py tests/database_test_config.yml

@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 ## Automation for CyberArk's Discovery & Audit (DNA) reports. ##
 
 import argparse
@@ -7,13 +8,13 @@ import os
 import platform
 import time
 
-import yaml
-from colorama import Fore, Style
-
 import logzero
+import yaml
 from alive_progress import alive_bar, config_handler, print_chars
-from dnamic_analysis import Database, DomainCheck, Excel, Metrics, Output
+from colorama import Fore, Style
 from logzero import logger
+
+from dnamic_analysis import Database, DomainCheck, Excel, Metrics, Output
 
 __author__ = "Joe Garcia"
 __version__ = "1.0.4"
