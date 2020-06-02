@@ -11,7 +11,7 @@ import yaml
 from colorama import Fore, Style
 
 import logzero
-from alive_progress import alive_bar, config_handler
+from alive_progress import alive_bar, config_handler, print_chars
 from dnamic_analysis import Database, DomainCheck, Excel, Metrics, Output
 from logzero import logger
 
@@ -25,7 +25,7 @@ if not os.path.exists('logs'):
 LOGFILE = 'logs/DNAmicAnalysis_{}.log'.format(log_timestamp)
 
 # Set alive_progress bar theme
-config_handler.set_global(theme="smooth")
+config_handler.set_global(theme="smooth", enrich_print=False)
 
 def config_logger(logfile):
     ## Configures logging of this application ##
@@ -79,6 +79,8 @@ def main(cfg):
         status_start = '🧪'
         status_step = '✅'
         status_finish = '🏁'
+
+    print(print_chars())
 
     print(status_pre + status_start + Fore.CYAN + ' Starting analysis' + status_post)
 
