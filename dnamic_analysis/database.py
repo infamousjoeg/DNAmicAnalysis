@@ -14,7 +14,7 @@ class Database(object):
         self._dbfile = Path(dbfile)
         self._disabledSqlQuery = ""
         if disabled is False:
-            self._disabledSqlQuery = "AND Enabled = 1"
+            self._disabledSqlQuery = "AND OSAccounts.Enabled = 1"
         
         # Parse scan date & time if no override detected
         if not scan_datetime['override']:
