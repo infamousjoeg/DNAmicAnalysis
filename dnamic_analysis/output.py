@@ -287,7 +287,7 @@ class Output(object):
     ## Risky Expired Service Principal Names (SPN) ##
     #################################################
     def risky_spns(self,risky_spns, sqlcount):
-        if risky_spns is not False:
+        if risky_spns is not False or sqlcount is None:
             # Write bulk data to Excel workbook
             data = 'Total Unique Expired over Total Overall: {} / {}'.format(len(risky_spns), sqlcount)
             self._excel_object.write(self._worksheet, self._col, 0, data, 'row1')
