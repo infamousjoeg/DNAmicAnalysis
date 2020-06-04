@@ -8,6 +8,6 @@ FROM Services
 WHERE NOT (Services.AccountName LIKE '%*%'
 		OR Services.AccountName LIKE ''
 		OR Services.AccountName LIKE 'S-%')
-	{disabled}
+	AND OSAccounts.Enabled = {disabled}
 GROUP BY LOWER(Services.AccountName), LOWER(Services.Address)
 ORDER BY LOWER(Services.AccountName) ASC

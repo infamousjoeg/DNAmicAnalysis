@@ -9,6 +9,6 @@ WHERE Accounts.AccountType = 'Local'
 		OR OSGroupModel.Name = 'Power Users')
 	AND NOT (Accounts.Name LIKE '%*%'
 		OR Accounts.Name LIKE '')
-	{disabled}
+	AND OSAccounts.Enabled = {disabled}
 GROUP BY Accounts.Id
 ORDER BY Accounts.Name ASC

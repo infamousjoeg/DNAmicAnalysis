@@ -11,7 +11,7 @@ WHERE NOT (Accounts.Name LIKE '%*%'
 	AND (OSGroupModel.Name LIKE 'Administrators'
 		OR OSGroupModel.Name LIKE 'Power Users')
 	AND Accounts.AccountType != 'Local'
-	{disabled}
+	AND OSAccounts.Enabled = {disabled}
 GROUP BY LOWER(Accounts.Name)
 HAVING TotalFound > 1
 ORDER BY TotalFound DESC

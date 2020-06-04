@@ -11,5 +11,5 @@ WHERE Accounts.AccountType = 'Local'
 		OR Accounts.Name = 'Administrator')
 	AND (OSGroupModel.Name LIKE 'Administrators'
 		OR OSGroupModel.Name LIKE 'Power Users')
-	{disabled}
+	AND OSAccounts.Enabled = {disabled}
 GROUP BY LOWER(Accounts.Name)

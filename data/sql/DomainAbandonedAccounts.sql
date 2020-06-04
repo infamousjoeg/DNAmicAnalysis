@@ -14,5 +14,5 @@ WHERE OSAccounts.LastPasswordSet <= datetime('{scanDateTime}', '-90 days')
 		OR Accounts.Name LIKE '')
 	AND (OSGroupModel.Name LIKE 'Administrators'
 		OR OSGroupModel.Name LIKE 'Power Users')
-	{disabled}
+	AND OSAccounts.Enabled = {disabled}
 GROUP BY LOWER(Accounts.Name)
