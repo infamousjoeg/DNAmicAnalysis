@@ -218,7 +218,7 @@ def main(cfg):
     unique_svcacct_domain_admins = db.exec_fromfile("data/sql/UniqueSvcDomainAdmins.sql", True, svc_array)
     unique_svcacct_domain_admins2 = db.exec_fromfile("data/sql/UniqueSvcDomainAdmins2.sql", True, svc_array)
 
-    if unique_domain_admins and unique_svcacct_domain_admins and unique_svcacct_domain_admins2:
+    if unique_domain_admins or unique_svcacct_domain_admins or unique_svcacct_domain_admins2:
         unique_svcacct_domadm_usernames = []
         if unique_svcacct_domain_admins:
             for username in unique_svcacct_domain_admins:
