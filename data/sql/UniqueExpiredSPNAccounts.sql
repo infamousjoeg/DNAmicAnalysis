@@ -5,6 +5,6 @@ WHERE LastPasswordSet <= datetime('{scanDateTime}', '-90 days')
 	AND NOT (Name LIKE '%*%'
 		OR Name LIKE ''
 		OR Name LIKE 'S-%')
-	{disabled}
+	AND Enabled = {disabled}
 GROUP BY LOWER(Name)
 ORDER BY LOWER(Name) ASC

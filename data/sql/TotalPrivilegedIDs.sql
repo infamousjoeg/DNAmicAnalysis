@@ -7,6 +7,6 @@ FROM Accounts
 WHERE (OSGroupModel.Name = 'Administrators'
 	OR OSGroupModel.Name = 'Power Users')
 	AND NOT Accounts.Name LIKE 'S-%'
-	{disabled}
+	AND OSAccounts.Enabled = {disabled}
 GROUP BY LOWER(Accounts.Name)
 ORDER BY LOWER(Accounts.Name) ASC

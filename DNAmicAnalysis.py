@@ -369,7 +369,7 @@ def main(cfg):
     risky_spns = db.exec_fromfile("data/sql/UniqueExpiredSPNAccounts.sql")
     spns_count = db.exec_fromfile("data/sql/TotalSPNs.sql")
 
-    if not risky_spns or not spns_count:
+    if not risky_spns and not spns_count:
         risky_spns = False
         spns_count[0][0] = None
 

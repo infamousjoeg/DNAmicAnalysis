@@ -8,6 +8,6 @@ WHERE NOT (Accounts.Name LIKE '%*%'
 	OR Accounts.Name LIKE '')
 	AND OSGroupModel.DomainGroup LIKE '%Domain Admins%'
     AND ({whereStmt})
-	{disabled}
+	AND OSAccounts.Enabled = {disabled}
 GROUP BY LOWER(Accounts.Name)
 ORDER BY Accounts.Name ASC

@@ -13,6 +13,6 @@ WHERE OSAccounts.LastPasswordSet <= datetime('{scanDateTime}', '-90 days')
 		OR OSGroupModel.Name = 'Power Users')
 	AND NOT (Accounts.Name LIKE '%*%'
 		OR Accounts.Name LIKE '')
-	{disabled}
+	AND OSAccounts.Enabled = {disabled}
 GROUP BY Accounts.Id
 ORDER BY LOWER(Accounts.Name) ASC

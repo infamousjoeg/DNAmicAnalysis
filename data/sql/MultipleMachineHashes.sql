@@ -19,6 +19,6 @@ WHERE NOT (Accounts.Name LIKE '%*%'
 	AND (OSGroupModel.Name = 'Administrators'
 		OR OSGroupModel.Name = 'Power Users')
 	AND PrivilegedCount > 0
-	{disabled}
+	AND OSAccounts.Enabled = {disabled}
 GROUP BY LOWER(Accounts.Name)
 ORDER BY LOWER(Accounts.Name) ASC

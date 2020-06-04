@@ -12,9 +12,9 @@ class Database(object):
     def __init__(self, dbfile, disabled, scan_datetime):
 
         self._dbfile = Path(dbfile)
-        self._disabledSqlQuery = ""
+        self._disabledSqlQuery = "0"
         if disabled is False:
-            self._disabledSqlQuery = "AND OSAccounts.Enabled = 1"
+            self._disabledSqlQuery = "1"
         
         # Parse scan date & time if no override detected
         if not scan_datetime['override']:
