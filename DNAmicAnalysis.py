@@ -16,7 +16,7 @@ from logzero import logger
 from dnamic_analysis import Database, DomainCheck, Excel, Metrics, Output
 
 __author__ = "Joe Garcia"
-__version__ = "1.0.4"
+__version__ = "2.0.0"
 __license__ = "MIT"
 
 log_timestamp = time.strftime("%Y-%m-%d_%H-%M-%S")
@@ -50,7 +50,7 @@ def main(cfg):
         raise e
         
     # Database class init
-    db = Database(cfg['database_file'], cfg['include_disabled_accts'], cfg['scan_datetime'])
+    db = Database(cfg['database_file'], cfg['include_disabled_accts'], cfg['scan_datetime'], cfg['expiration_days'])
 
     # Excel class init
     excel = Excel(cfg['domain'].lower())

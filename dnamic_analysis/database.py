@@ -9,9 +9,10 @@ from logzero import logger
 
 class Database(object):
 
-    def __init__(self, dbfile, disabled, scan_datetime):
+    def __init__(self, dbfile, disabled, scan_datetime, expiration_days):
 
         self._dbfile = Path(dbfile)
+        self._expiration_days = expiration_days
         self._disabledSqlQuery = "0"
         if disabled is False:
             self._disabledSqlQuery = "1"
@@ -72,12 +73,14 @@ class Database(object):
         try:
             # Make replacement in SQL query
             sqlQueryDT = sqlQuery.replace("{scanDateTime}", self._scanDateTime)
+            sqlQueryExpire = sqlQueryDT.replace("{expirationDays}", self._expirationDays)
             # Replace disabled section of SQL query
-            sqlQueryFinal = sqlQueryDT.replace("{disabled}", self._disabledSqlQuery)
+            sqlQueryFinal = sqlQueryExpire.replace("{disabled}", self._disabledSqlQuery)
         except Exception as e:
             logger.exception(e)
 
         # Execute the SQL query
+        logger.info("Starting query execution and analysis.")
         if regex_flag:
             try:
                 whereStmt = ""
