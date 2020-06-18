@@ -12,7 +12,7 @@ class Database(object):
     def __init__(self, dbfile, disabled, scan_datetime, expiration_days):
 
         self._dbfile = Path(dbfile)
-        self._expiration_days = expiration_days
+        self._expirationDays = str(expiration_days)
         self._disabledSqlQuery = "0"
         if disabled is False:
             self._disabledSqlQuery = "1"
