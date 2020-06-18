@@ -8,7 +8,7 @@ FROM Accounts
 		ON Accounts.Id = OSGroupModel.OSAccount_id
 	LEFT OUTER JOIN Machines
 		ON Accounts.Machine_id = Machines.Id
-WHERE OSAccounts.LastPasswordSet <= datetime('{scanDateTime}', '-90 days')
+WHERE OSAccounts.LastPasswordSet <= datetime('{scanDateTime}', '-{executionDays} days')
 	AND Accounts.AccountType = 'Domain'
 	AND NOT (Accounts.Name LIKE '%*%'
 		OR Accounts.Name LIKE '')

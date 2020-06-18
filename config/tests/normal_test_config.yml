@@ -13,6 +13,8 @@ account_regex:
   admin_account:
     - ^adm^
     - ^admin^
+# account expiration period in days to calculate compliance
+expiration_days: 90
 # yes or no: whether to include disabled accounts in metrics
 include_disabled_accts: no
 # yes or no: activate test mode... do not adjust unless you

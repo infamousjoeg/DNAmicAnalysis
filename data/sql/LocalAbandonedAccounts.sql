@@ -7,7 +7,7 @@ FROM Accounts
 		ON Accounts.Id = OSGroupModel.OSAccount_id
 	LEFT OUTER JOIN Machines
 		ON Accounts.Machine_id = Machines.Id
-WHERE OSAccounts.LastPasswordSet <= datetime('{scanDateTime}', '-90 days')
+WHERE OSAccounts.LastPasswordSet <= datetime('{scanDateTime}', '-{executionDays} days')
 	AND OSAccounts.LastLogon <= datetime('{scanDateTime}', '-1 year')
 	AND Accounts.AccountType = 'Local'
 	AND NOT (OSAccounts.Description LIKE 'Built-in account for administering the computer/domain'

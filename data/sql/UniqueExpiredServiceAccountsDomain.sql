@@ -7,7 +7,7 @@ FROM Services
 		COLLATE nocase
 	LEFT OUTER JOIN OSAccounts
 		ON Accounts.Id = OSAccounts.accountbase_id
-WHERE OSAccounts.LastPasswordSet <= datetime('{scanDateTime}', '-90 days')
+WHERE OSAccounts.LastPasswordSet <= datetime('{scanDateTime}', '-{executionDays} days')
 	AND NOT (Accounts.Name LIKE '%*%'
 		OR Accounts.Name LIKE ''
 		OR Accounts.Name LIKE 'S-%')
