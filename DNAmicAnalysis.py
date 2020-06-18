@@ -6,6 +6,8 @@ import argparse
 import logging
 import os
 import platform
+import sys
+import threading
 import time
 
 import logzero
@@ -36,6 +38,14 @@ def config_logger(logfile):
     # Set a custom formatter
     formatter = logging.Formatter('DNAmicAnalysis - %(asctime)-15s - %(levelname)s: %(message)s');
     logzero.formatter(formatter)
+
+# Define your animated characters function
+def animated_processing():
+    chars = "/-\|"
+    for char in chars:
+        sys.stdout.write('\r'+Fore.RED+'Processing... '+char)
+        time.sleep(.1)
+        sys.stdout.flush()
 
 
 def main(cfg):
@@ -88,6 +98,10 @@ def main(cfg):
     ## Expired Domain Privileged IDs ##
     ###################################
 
+    metric_name = 'Expired Domain Privileged IDs'
+
+    print(status_pre + Fore.YELLOW + ' Starting ' + metric_name + status_post)
+
     expired_domain = db.exec_fromfile("data/sql/ExpiredDomainPrivID.sql")
     all_domain_count = db.exec_fromfile("data/sql/DomainAdminsPUCount.sql")
 
@@ -100,20 +114,42 @@ def main(cfg):
         domainAverage = [0, 0, 0]
         domainPercent = [0, 0, 0]
 
-    output.domain_expired(
-        domainMaxSorted,
-        domainAverage[0],
-        domainAverage[1],
-        domainAverage[2],
-        domainPercent[0],
-        domainPercent[1],
-        domainPercent[2])
+    process_domain_expired = threading.Thread(
+        target=output.domain_expired,
+        args=(
+            domainMaxSorted,
+            domainAverage[0],
+            domainAverage[1],
+            domainAverage[2],
+            domainPercent[0],
+            domainPercent[1],
+            domainPercent[2],
+        )
+    )
+
+    process_domain_expired.daemon = True
+    process_domain_expired.start()
+
+    while process_domain_expired.is_alive():
+        animated_processing()
+    # output.domain_expired(
+    #     domainMaxSorted,
+    #     domainAverage[0],
+    #     domainAverage[1],
+    #     domainAverage[2],
+    #     domainPercent[0],
+    #     domainPercent[1],
+    #     domainPercent[2])
         
-    print(status_pre + Fore.GREEN + ' Completed Expired Domain Privileged IDs' + status_post)
+    print('\r\n' + status_pre + Fore.GREEN + ' Completed ' + metric_name + status_post)
 
     #########################################
     ## Unique Expired Local Privileged IDs ##
     #########################################
+
+    metric_name = 'Unique Expired Local Privileged IDs'
+
+    print(status_pre + Fore.YELLOW + ' Starting ' + metric_name + status_post)
 
     expired_local = db.exec_fromfile("data/sql/UniqueExpiredLocalPrivID.sql")
     all_local_count = db.exec_fromfile("data/sql/LocalAdministratorsCount.sql")
@@ -133,38 +169,80 @@ def main(cfg):
         all_local_count = []
         all_local_unique_count = []
 
-    output.local_expired(
-        localMaxSorted,
-        localAverage[0],
-        localAverage[1],
-        localAverage[2],
-        localPercent[0],
-        localPercent[1],
-        localPercent[2],
-        len(all_local_count),
-        len(set(all_local_unique_count)))
+    process_local_expired = threading.Thread(
+        target=output.local_expired,
+        args=(
+            localMaxSorted,
+            localAverage[0],
+            localAverage[1],
+            localAverage[2],
+            localPercent[0],
+            localPercent[1],
+            localPercent[2],
+            len(all_local_count),
+            len(set(all_local_unique_count)),
+        )
+    )
 
-    print(status_pre + Fore.GREEN + ' Completed Unique Expired Local Privileged IDs' + status_post)
+    process_local_expired.daemon = True
+    process_local_expired.start()
+
+    while process_local_expired.is_alive():
+        animated_processing()
+    # output.local_expired(
+    #     localMaxSorted,
+    #     localAverage[0],
+    #     localAverage[1],
+    #     localAverage[2],
+    #     localPercent[0],
+    #     localPercent[1],
+    #     localPercent[2],
+    #     len(all_local_count),
+    #     len(set(all_local_unique_count)))
+
+    print('\r\n' + status_pre + Fore.GREEN + ' Completed ' + metric_name + status_post)
 
     #####################################################
     ## Expired Local Admins Total w/ Machine Addresses ##
     #####################################################
+
+    metric_name = 'Expired Local Admins Total w/ Machine Addresses'
+
+    print(status_pre + Fore.YELLOW + ' Starting ' + metric_name + status_post)
 
     localMaxGrouped = None
     if localMaxSorted is not False:
         localMaxGrouped = Metrics.local_expired_machines(localMaxSorted)
 
     if localMaxGrouped and len(all_local_count) != 0:
-        output.local_expired_machines(
-            localMaxGrouped,
-            len(all_local_count),
-            len(localMaxGrouped)/len(all_local_count))
+        process_local_expired_machines = threading.Thread(
+            target=output.local_expired_machines,
+            args=(
+                localMaxGrouped,
+                len(all_local_count),
+                len(localMaxGrouped)/len(all_local_count),
+            )
+        )
 
-    print(status_pre + Fore.GREEN + ' Completed Expired Local Admins Total w/ Machine Addresses' + status_post)
+        process_local_expired_machines.daemon = True
+        process_local_expired_machines.start()
+
+        while process_local_expired_machines.is_alive():
+            animated_processing()
+        # output.local_expired_machines(
+        #     localMaxGrouped,
+        #     len(all_local_count),
+        #     len(localMaxGrouped)/len(all_local_count))
+
+    print('\r\n' + status_pre + Fore.GREEN + ' Completed ' + metric_name + status_post)
 
     ##############################
     ## Local Abandoned Accounts ##
     ##############################
+
+    metric_name = 'Local Abandoned Accounts'
+
+    print(status_pre + Fore.YELLOW + ' Starting ' + metric_name + status_post)
 
     abandoned_local = db.exec_fromfile("data/sql/LocalAbandonedAccounts.sql")
     abandoned_local_count = db.exec_fromfile("data/sql/LocalAbandonedCount.sql")
@@ -173,30 +251,64 @@ def main(cfg):
         abandoned_local = False
         abandoned_local_count = []
 
-    output.local_abandoned(
-        abandoned_local,
-        len(abandoned_local_count))
+    process_abandoned_local = threading.Thread(
+        target=output.local_abandoned,
+        args=(
+            abandoned_local,
+            len(abandoned_local_count),
+        )
+    )
+
+    process_abandoned_local.daemon = True
+    process_abandoned_local.start()
+
+    while process_abandoned_local.is_alive():
+        animated_processing()
+    # output.local_abandoned(
+    #     abandoned_local,
+    #     len(abandoned_local_count))
         
-    print(status_pre  + Fore.GREEN + ' Completed Local Abandoned Accounts' + status_post)
+    print('\r\n' + status_pre + Fore.GREEN + ' Completed ' + metric_name + status_post)
 
     ###############################
     ## Domain Abandoned Accounts ##
     ###############################
+
+    metric_name = 'Domain Abandoned Accounts'
+
+    print(status_pre + Fore.YELLOW + ' Starting ' + metric_name + status_post)
 
     abandoned_domain = db.exec_fromfile("data/sql/DomainAbandonedAccounts.sql")
 
     if not abandoned_domain or not all_domain_count:
         abandoned_domain = False
 
-    output.domain_abandoned(
-        abandoned_domain,
-        len(all_domain_count))
+    process_abandoned_domain = threading.Thread(
+        target=output.domain_abandoned,
+        args=(
+            abandoned_domain,
+            len(all_domain_count),
+        )
+    )
 
-    print(status_pre + Fore.GREEN + ' Completed Domain Abandoned Accounts' + status_post)
+    process_abandoned_domain.daemon = True
+    process_abandoned_domain.start()
+
+    while process_abandoned_domain.is_alive():
+        animated_processing()
+    # output.domain_abandoned(
+    #     abandoned_domain,
+    #     len(all_domain_count))
+
+    print('\r\n' + status_pre + Fore.GREEN + ' Completed ' + metric_name + status_post)
 
     #########################################################
     ## Accounts w/ Multiple Machine Access - By %age Tiers ##
     #########################################################
+
+    metric_name = 'Accounts w/ Multiple Machine Access - By Percentage Tiers'
+
+    print(status_pre + Fore.YELLOW + ' Starting ' + metric_name + status_post)
 
     multi_machine_accts = db.exec_fromfile("data/sql/MultipleMachineAccounts.sql")
     all_machines_count = db.exec_fromfile("data/sql/TotalMachinesCount.sql")
@@ -206,13 +318,27 @@ def main(cfg):
     else:
         multiMachineAccounts = False
 
-    output.multi_machine_accts(multiMachineAccounts)
+    process_multi_machine_accts = threading.Thread(
+        target=output.multi_machine_accts,
+        args=(multiMachineAccounts,)
+    )
 
-    print(status_pre + Fore.GREEN + ' Completed Accounts w/ Multiple Machine Access - By Percentage Tiers' + status_post)
+    process_multi_machine_accts.daemon = True
+    process_multi_machine_accts.start()
+
+    while process_multi_machine_accts.is_alive():
+        animated_processing()
+    # output.multi_machine_accts(multiMachineAccounts)
+
+    print('\r\n' + status_pre + Fore.GREEN + ' Completed ' + metric_name + status_post)
 
     ##########################
     ## Unique Domain Admins ##
     ##########################
+
+    metric_name = 'Unique Domain Admins'
+
+    print(status_pre + Fore.YELLOW + ' Starting ' + metric_name + status_post)
 
     unique_domain_admins = db.exec_fromfile("data/sql/UniqueDomainAdmins.sql")
     unique_svcacct_domain_admins = db.exec_fromfile("data/sql/UniqueSvcDomainAdmins.sql", True, svc_array)
@@ -236,17 +362,36 @@ def main(cfg):
         unique_svcacct_domadm_usernames = []
         unique_svcacct_domadm2_usernames = []
 
-    output.unique_domain_admins(
-        unique_domain_admins,
-        (unique_svcacct_domain_admins+unique_svcacct_domain_admins2),
-        set(unique_svcacct_domadm_usernames),
-        set(unique_svcacct_domadm2_usernames))
+    process_unique_domain_admins = threading.Thread(
+        target=output.unique_domain_admins,
+        args=(
+            unique_domain_admins,
+            (unique_svcacct_domain_admins+unique_svcacct_domain_admins2),
+            set(unique_svcacct_domadm_usernames),
+            set(unique_svcacct_domadm2_usernames),
+        )
+    )
 
-    print(status_pre + Fore.GREEN + ' Completed Unique Domain Admins' + status_post)
+    process_unique_domain_admins.daemon = True
+    process_unique_domain_admins.start()
+
+    while process_unique_domain_admins.is_alive():
+        animated_processing()
+    # output.unique_domain_admins(
+    #     unique_domain_admins,
+    #     (unique_svcacct_domain_admins+unique_svcacct_domain_admins2),
+    #     set(unique_svcacct_domadm_usernames),
+    #     set(unique_svcacct_domadm2_usernames))
+
+    print('\r\n' + status_pre + Fore.GREEN + ' Completed ' + metric_name + status_post)
 
     ##########################################
     ## Unique Expired Domain Privileged IDs ##
     ##########################################
+
+    metric_name = 'Unique Expired Domain Privileged IDs'
+
+    print(status_pre + Fore.YELLOW + ' Starting ' + metric_name + status_post)
 
     unique_expired_domain = db.exec_fromfile("data/sql/UniqueExpiredDomainPrivID.sql")
 
@@ -259,14 +404,31 @@ def main(cfg):
         uniqueDomainAverage = [0, 0, 0]
         uniqueDomainPercent = [0, 0, 0]
 
-    output.unique_domain_expired(
-        uniqueDomainMaxSorted,
-        uniqueDomainAverage[0],
-        uniqueDomainAverage[1],
-        uniqueDomainAverage[2],
-        uniqueDomainPercent[0],
-        uniqueDomainPercent[1],
-        uniqueDomainPercent[2])
+    process_unique_expired_domain = threading.Thread(
+        target=output.unique_domain_expired,
+        args=(uniqueDomainMaxSorted,
+            uniqueDomainAverage[0],
+            uniqueDomainAverage[1],
+            uniqueDomainAverage[2],
+            uniqueDomainPercent[0],
+            uniqueDomainPercent[1],
+            uniqueDomainPercent[2],
+        )
+    )
+
+    process_unique_expired_domain.daemon = True
+    process_unique_expired_domain.start()
+
+    while process_unique_expired_domain.is_alive():
+        animated_processing()
+    # output.unique_domain_expired(
+    #     uniqueDomainMaxSorted,
+    #     uniqueDomainAverage[0],
+    #     uniqueDomainAverage[1],
+    #     uniqueDomainAverage[2],
+    #     uniqueDomainPercent[0],
+    #     uniqueDomainPercent[1],
+    #     uniqueDomainPercent[2])
 
     print(status_pre + Fore.GREEN + ' Completed Expired Domain Privileged IDs' + status_post)
 
@@ -274,33 +436,65 @@ def main(cfg):
     ## Personal Accounts Running Services ##
     ########################################
 
+    metric_name = 'Personal Accounts Running Services'
+
+    print(status_pre + Fore.YELLOW + ' Starting ' + metric_name + status_post)
+
     personal_accts_running_svcs = db.exec_fromfile("data/sql/PersonalAccountsRunningSvcs.sql", True, svc_array)
 
     if not personal_accts_running_svcs:
         personal_accts_running_svcs = False
 
-    output.personal_accts_running_svcs(
-        personal_accts_running_svcs)
+    process_personal_accts_running_svcs = threading.Thread(
+        target=output.personal_accts_running_svcs,
+        args=(personal_accts_running_svcs,)
+    )
+
+    process_personal_accts_running_svcs.daemon = True
+    process_personal_accts_running_svcs.start()
+
+    while process_personal_accts_running_svcs.is_alive():
+        animated_processing()
+    # output.personal_accts_running_svcs(
+    #     personal_accts_running_svcs)
         
-    print(status_pre + Fore.GREEN + ' Completed Personal Accounts Running Services' + status_post)
+    print('\r\n' + status_pre + Fore.GREEN + ' Completed ' + metric_name + status_post)
 
     #######################################################
     ## Non-adm Accounts w/ Local Admin Rights on Systems ##
     #######################################################
+
+    metric_name = 'Non-adm Accounts w/ Local Admin Rights on Systems'
+
+    print(status_pre + Fore.YELLOW + ' Starting ' + metric_name + status_post)
 
     non_admin_with_local_admin = db.exec_fromfile("data/sql/NonAdmLocalAdminAccounts.sql", True, regex_array)
 
     if not non_admin_with_local_admin:
         non_admin_with_local_admin = False
 
-    output.non_admin_with_local_admin(
-        non_admin_with_local_admin)
+    process_non_admin_with_local_admin = threading.Thread(
+        target=output.non_admin_with_local_admin,
+        args=(non_admin_with_local_admin,)
+    )
 
-    print(status_pre + Fore.GREEN + ' Completed Non-adm Accounts w/ Local Admin Rights on Systems' + status_post)
+    process_non_admin_with_local_admin.daemon = True
+    process_non_admin_with_local_admin.start()
+
+    while process_non_admin_with_local_admin.is_alive():
+        animated_processing()
+    # output.non_admin_with_local_admin(
+    #     non_admin_with_local_admin)
+
+    print('\r\n' + status_pre + Fore.GREEN + ' Completed ' + metric_name + status_post)
 
     #####################################
     ## Unique Expired Service Accounts ##
     #####################################
+
+    metric_name = 'Unique Expired Service Accounts'
+
+    print(status_pre + Fore.YELLOW + ' Starting ' + metric_name + status_post)
 
     unique_expired_svcs_domain = db.exec_fromfile("data/sql/UniqueExpiredServiceAccountsDomain.sql")
     unique_expired_svcs_local = db.exec_fromfile("data/sql/UniqueExpiredServiceAccountsLocal.sql")
@@ -316,20 +510,42 @@ def main(cfg):
         uniqueSvcAverage = [0, 0, 0, 0]
         uniqueSvcPercent = [0, 0, 0, 0]
 
-    output.unique_expired_svcs(
-        uniqueSvcMaxSorted,
-        uniqueSvcAverage[0],
-        uniqueSvcAverage[1],
-        uniqueSvcAverage[2],
-        uniqueSvcPercent[0],
-        uniqueSvcPercent[1],
-        uniqueSvcPercent[2])
+    process_unique_expired_svc_acct = threading.Thread(
+        target=output.unique_expired_svcs,
+        args=(
+            uniqueSvcMaxSorted,
+            uniqueSvcAverage[0],
+            uniqueSvcAverage[1],
+            uniqueSvcAverage[2],
+            uniqueSvcPercent[0],
+            uniqueSvcPercent[1],
+            uniqueSvcPercent[2],
+        )
+    )
 
-    print(status_pre + Fore.GREEN + ' Completed Unique Expired Service Accounts' + status_post)
+    process_unique_expired_svc_acct.daemon = True
+    process_unique_expired_svc_acct.start()
+
+    while process_unique_expired_svc_acct.is_alive():
+        animated_processing()
+    # output.unique_expired_svcs(
+    #     uniqueSvcMaxSorted,
+    #     uniqueSvcAverage[0],
+    #     uniqueSvcAverage[1],
+    #     uniqueSvcAverage[2],
+    #     uniqueSvcPercent[0],
+    #     uniqueSvcPercent[1],
+    #     uniqueSvcPercent[2])
+
+    print('\r\n' + status_pre + Fore.GREEN + ' Completed ' + metric_name + status_post)
 
     ####################
     ## Clear Text IDs ##
     ####################
+
+    metric_name = 'Clear Text IDs'
+
+    print(status_pre + Fore.YELLOW + ' Starting ' + metric_name + status_post)
 
     clear_text_ids = db.exec_fromfile("data/sql/ClearTextIDs.sql")
 
@@ -342,29 +558,60 @@ def main(cfg):
         clear_text_ids_count = False
         clear_text_ids = []
 
-    output.clear_text_ids(
-        clear_text_ids_count,
-        clear_text_ids)
+    process_clear_text_ids = threading.Thread(
+        target=output.clear_text_ids,
+        args=(
+            clear_text_ids_count,
+            clear_text_ids,
+        )
+    )
+
+    process_clear_text_ids.daemon = True
+    process_clear_text_ids.start()
+
+    while process_clear_text_ids.is_alive():
+        animated_processing()
+    # output.clear_text_ids(
+    #     clear_text_ids_count,
+    #     clear_text_ids)
         
-    print(status_pre + Fore.GREEN + ' Completed Clear Text IDs' + status_post)
+    print('\r\n' + status_pre + Fore.GREEN + ' Completed ' + metric_name + status_post)
 
     ##########################################
     ## Applications w/ Clear Text Passwords ##
     ##########################################
+
+    metric_name = 'Applications w/ Clear Text Passwords'
+
+    print(status_pre + Fore.YELLOW + ' Starting ' + metric_name + status_post)
 
     unique_clear_text_apps = db.exec_fromfile("data/sql/UniqueClearTextApps.sql")
 
     if not unique_clear_text_apps:
         unique_clear_text_apps = False
 
-    output.apps_clear_text_passwords(
-        unique_clear_text_apps)
+    process_unique_clear_test_apps = threading.Thread(
+        target=output.apps_clear_text_passwords,
+        args=(unique_clear_text_apps,)
+    )
+
+    process_unique_clear_test_apps.daemon = True
+    process_unique_clear_test_apps.start()
+
+    while process_unique_clear_test_apps.is_alive():
+        animated_processing()
+    # output.apps_clear_text_passwords(
+    #     unique_clear_text_apps)
         
-    print(status_pre + Fore.GREEN + ' Completed Applications w/ Clear Text Passwords' + status_post)
+    print('\r\n' + status_pre + Fore.GREEN + ' Completed ' + metric_name + status_post)
 
     #################################################
     ## Risky Expired Service Principal Names (SPN) ##
     #################################################
+
+    metric_name = 'Risky Expired Service Principal Names'
+
+    print(status_pre + Fore.YELLOW + ' Starting ' + metric_name + status_post)
 
     risky_spns = db.exec_fromfile("data/sql/UniqueExpiredSPNAccounts.sql")
     spns_count = db.exec_fromfile("data/sql/TotalSPNs.sql")
@@ -373,15 +620,29 @@ def main(cfg):
         risky_spns = False
         spns_count[0][0] = None
 
-    output.risky_spns(
-        risky_spns,
-        spns_count[0][0])
+    process_risky_spns = threading.Thread(
+        target=output.risky_spns,
+        args=(risky_spns,spns_count[0][0],)
+    )
+
+    process_risky_spns.daemon = True
+    process_risky_spns.start()
+
+    while process_risky_spns.is_alive():
+        animated_processing()
+    # output.risky_spns(
+    #     risky_spns,
+    #     spns_count[0][0])
         
-    print(status_pre + Fore.GREEN + ' Completed Risky Expired Service Principal Names' + status_post)
+    print('\r\n' + status_pre + Fore.GREEN + ' Completed ' + metric_name + status_post)
 
     #######################################
     ## Hashes Found on Multiple Machines ##
     #######################################
+
+    metric_name = 'Hashes Found on Multiple Machines'
+
+    print(status_pre + Fore.YELLOW + ' Starting ' + metric_name + status_post)
 
     hashes_found_on_multiple = db.exec_fromfile("data/sql/HashesFoundOnMultiple.sql")
     hashes_found_on_multiple_admins = db.exec_fromfile("data/sql/HashesFoundOnMultipleAdmins.sql")
@@ -418,19 +679,40 @@ def main(cfg):
         total_hash_admins_srv = 0
         total_hash_admins_wks = 0
 
-    output.hashes_found_on_multiple(
-        len(unique_hash_name),
-        sorted(admin_hash_found, key=str.lower),
-        total_hash_srv,
-        total_hash_wks,
-        total_hash_admins_srv,
-        total_hash_admins_wks)
+    process_hashes_found_on_multiple = threading.Thread(
+        target=output.hashes_found_on_multiple,
+        args=(
+            len(unique_hash_name),
+            sorted(admin_hash_found, key=str.lower),
+            total_hash_srv,
+            total_hash_wks,
+            total_hash_admins_srv,
+            total_hash_admins_wks,
+        )
+    )
 
-    print(status_pre + Fore.GREEN + ' Completed Hashes Found on Multiple Machines' + status_post)
+    process_hashes_found_on_multiple.daemon = True
+    process_hashes_found_on_multiple.start()
+
+    while process_hashes_found_on_multiple.is_alive():
+        animated_processing()
+    # output.hashes_found_on_multiple(
+    #     len(unique_hash_name),
+    #     sorted(admin_hash_found, key=str.lower),
+    #     total_hash_srv,
+    #     total_hash_wks,
+    #     total_hash_admins_srv,
+    #     total_hash_admins_wks)
+
+    print('\r\n' + status_pre + Fore.GREEN + ' Completed ' + metric_name + status_post)
 
     ##################################################################
     ## Account Hashes that Expose Multiple Machines - By %age Tiers ##
     ##################################################################
+
+    metric_name = 'Account Hashes that Expose Multiple Machines'
+
+    print(status_pre + Fore.YELLOW + ' Starting ' + metric_name + status_post)
 
     multi_machine_hashes = db.exec_fromfile("data/sql/MultipleMachineHashes.sql")
 
@@ -439,9 +721,20 @@ def main(cfg):
     else:
         multiMachineHashes = False
 
-    output.multi_machine_hashes(multiMachineHashes)
+    process_multiple_machine_hashes = threading.Thread(
+        target=output.multi_machine_hashes,
+        args=(multiMachineHashes,)
+    )
 
-    print(status_pre + Fore.GREEN + ' Completed Account Hashes that Expose Multiple Machines' + status_post)
+    process_multiple_machine_hashes.daemon = True
+    process_multiple_machine_hashes.start()
+
+    while process_multiple_machine_hashes.is_alive():
+        animated_processing()
+
+    # output.multi_machine_hashes(multiMachineHashes)
+
+    print('\r\n' + status_pre + Fore.GREEN + ' Completed ' + metric_name + status_post)
 
     print('\r\n' + status_pre + Fore.CYAN + ' DNAmic Analysis has completed!' + status_post)
 
