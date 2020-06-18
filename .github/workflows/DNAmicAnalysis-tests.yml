@@ -1,6 +1,16 @@
 name: DNAmic Analysis Lint & OS Tests
 
-on: [push, pull_request]
+on:
+  push:
+    branches-ignore:
+      - master
+      - v1*
+      - v2*
+  pull_request:
+    branches:
+      - master
+      - v1*
+      - v2*
 
 jobs:
   lint:
