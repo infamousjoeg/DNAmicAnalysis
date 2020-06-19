@@ -10,4 +10,4 @@ else
 fi
 echo "vagrant ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers.d/$VAGRANT_USERNAME
 chmod 0440 /etc/sudoers.d/$VAGRANT_USERNAME
-apt-get install python-apt -y
+ln -s /usr/lib/python3/dist-packages/apt_pkg.cpython-36m-x86_64-linux-gnu.so /usr/lib/python3/dist-packages/apt_pkg.so
