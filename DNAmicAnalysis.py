@@ -430,7 +430,7 @@ def main(cfg):
     #     uniqueDomainPercent[1],
     #     uniqueDomainPercent[2])
 
-    print(status_pre + Fore.GREEN + ' Completed Expired Domain Privileged IDs' + status_post)
+    print('\r\n' + status_pre + Fore.GREEN + ' Completed Expired Domain Privileged IDs' + status_post)
 
     ########################################
     ## Personal Accounts Running Services ##
