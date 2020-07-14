@@ -37,24 +37,32 @@ class Output(object):
             self._excel_object.write(self._worksheet, self._col, 0, data, 'row1')
             self._excel_object.write(self._worksheet, self._col, 1, 'Expired Domain Privileged IDs', 'header')
             self._excel_object.write(self._worksheet, self._col, 2, 'Usernames', 'subheader')
+            self._excel_object.write(self._worksheet, self._col+1, 2, 'Avg Password Age', 'subheader')
             row = 3
             for username,_,_ in max_sorted:
                 self._excel_object.write(self._worksheet, self._col, row, username)
+                self._excel_object.write(self._worksheet, self._col+1, row, password_age[username])
                 row += 1
-            self._col += 1
-            self._excel_object.write(self._worksheet, self._col, 2, 'Avg Password Age', 'subheader')
-            row = 3
-            for username,_,_ in max_sorted:
-                self._excel_object.write(self._worksheet, self._col, row, password_age[username])
-                row += 1
-            self._col += 1
+            self._col += 2
             self._excel_object.save(self._workbook)
 
 
     #########################################
     ## Unique Expired Local Privileged IDs ##
     #########################################
-    def local_expired(self,max_sorted,avg_sum,avg_len,avg_overall,percent_len,all_len,percent_overall,sqlcount,unique_count):
+    def local_expired(
+        self,
+        max_sorted,
+        avg_sum,
+        avg_len,
+        avg_overall,
+        percent_len,
+        all_len,
+        percent_overall,
+        sqlcount,
+        unique_count,
+        password_age
+    ):
         if max_sorted is not False and sqlcount != 0 and unique_count != 0:
             # Write bulk data to Excel workbook
             data = 'Oldest Non-Compliant Username: {}\n' \
@@ -67,14 +75,17 @@ class Output(object):
                                                                     all_len,percent_overall,sqlcount,unique_count)
             self._excel_object.write(self._worksheet, self._col, 0, data, 'row1')
             self._excel_object.write(self._worksheet, self._col, 1, 'Unique Expired Local Privileged IDs', 'header')
-            row = 2
+            self._excel_object.write(self._worksheet, self._col, 2, 'Usernames', 'subheader')
+            self._excel_object.write(self._worksheet, self._col+1, 2, 'Avg Password Age', 'subheader')
+            row = 3
             used_usernames = []
             for username,_,_,_ in max_sorted:
                 if username not in used_usernames:
                     self._excel_object.write(self._worksheet, self._col, row, username)
+                    self._excel_object.write(self._worksheet, self._col+1, row, password_age[username])
                     used_usernames.append(username)
                     row += 1
-            self._col += 1
+            self._col += 2
             self._excel_object.save(self._workbook)
 
 

@@ -104,7 +104,6 @@ def main(cfg):
 
     expired_domain = db.exec_fromfile("data/sql/ExpiredDomainPrivID.sql")
     all_domain_count = db.exec_fromfile("data/sql/DomainAdminsPUCount.sql")
-    print(expired_domain)
 
     if expired_domain and all_domain_count:
         domainMaxSorted = Metrics.domain_max(expired_domain)
@@ -157,6 +156,8 @@ def main(cfg):
     expired_local = db.exec_fromfile("data/sql/UniqueExpiredLocalPrivID.sql")
     all_local_count = db.exec_fromfile("data/sql/LocalAdministratorsCount.sql")
 
+    print(expired_local)
+
     if expired_local and all_local_count:
         all_local_unique_count = []
         for username in all_local_count:
@@ -165,10 +166,12 @@ def main(cfg):
         localMaxSorted = Metrics.local_max(expired_local)
         localAverage = Metrics.local_avg(expired_local)
         localPercent = Metrics.local_percent(expired_local, all_local_count, localMaxSorted)
+        localPasswordAge = Metrics.local_password_age(expired_local)
     else:
         localMaxSorted = False
         localAverage = [0, 0, 0]
         localPercent = [0, 0, 0]
+        localPasswordAge = {}
         all_local_count = []
         all_local_unique_count = []
 
@@ -184,6 +187,7 @@ def main(cfg):
             localPercent[2],
             len(all_local_count),
             len(set(all_local_unique_count)),
+            localPasswordAge
         )
     )
 
