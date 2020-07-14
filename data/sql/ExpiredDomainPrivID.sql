@@ -5,7 +5,7 @@ FROM Accounts
 		ON Accounts.Id = OSAccounts.AccountBase_id
 	LEFT OUTER JOIN OSGroupModel
 		ON Accounts.Id = OSGroupModel.OSAccount_id
-WHERE OSAccounts.LastPasswordSet <= datetime('{scanDateTime}', '-{executionDays} days')
+WHERE OSAccounts.LastPasswordSet <= datetime('{scanDateTime}', '-{expirationDays} days')
 	AND Accounts.AccountType != 'Local'
 	AND (OSGroupModel.Name = 'Administrators'
 		OR OSGroupModel.Name = 'Power Users')

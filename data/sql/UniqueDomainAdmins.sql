@@ -1,4 +1,5 @@
-SELECT DISTINCT Accounts.Name
+SELECT DISTINCT Accounts.Name,
+	MAX(Cast ((JulianDay(datetime('{scanDateTime}')) - JulianDay(OSAccounts.LastPasswordSet)) As Integer)) as PasswordAge
 FROM Accounts
 	LEFT OUTER JOIN OSGroupModel
 		ON Accounts.Id = OSGroupModel.OSAccount_id

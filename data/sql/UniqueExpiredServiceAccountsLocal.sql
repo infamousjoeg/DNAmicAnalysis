@@ -7,11 +7,12 @@ FROM Services
 		COLLATE nocase
 	LEFT OUTER JOIN OSAccounts
 		ON Accounts.Id = OSAccounts.accountbase_id
-WHERE OSAccounts.LastPasswordSet <= datetime('{scanDateTime}', '-{executionDays} days')
+WHERE OSAccounts.LastPasswordSet <= datetime('{scanDateTime}', '-{expirationDays} days')
 	AND NOT (Accounts.Name LIKE '%*%'
 		OR Accounts.Name LIKE ''
 		OR Accounts.Name LIKE 'S-%')
-	AND NOT Accounts.AccountType = 'Domain'
+	AND NOT (Accounts.AccountType = 'Domain'
+		OR Services.AccountType = 'Domain')
 	AND OSAccounts.Enabled = {disabled}
 GROUP BY LOWER(Accounts.Name), LOWER(Services.Address)
 ORDER BY PasswordAge DESC
