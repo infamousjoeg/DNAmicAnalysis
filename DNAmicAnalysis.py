@@ -109,7 +109,7 @@ def main(cfg):
         domainMaxSorted = Metrics.domain_max(expired_domain)
         domainAverage = Metrics.domain_avg(expired_domain)
         domainPercent = Metrics.domain_percent(expired_domain, all_domain_count, domainMaxSorted)
-        domainPasswordAge = Metrics.domain_password_age(expired_domain)
+        domainPasswordAge = Metrics.password_age(expired_domain)
     else:
         domainMaxSorted = False
         domainAverage = [0, 0, 0]
@@ -166,7 +166,7 @@ def main(cfg):
         localMaxSorted = Metrics.local_max(expired_local)
         localAverage = Metrics.local_avg(expired_local)
         localPercent = Metrics.local_percent(expired_local, all_local_count, localMaxSorted)
-        localPasswordAge = Metrics.local_password_age(expired_local)
+        localPasswordAge = Metrics.password_age(expired_local)
     else:
         localMaxSorted = False
         localAverage = [0, 0, 0]
