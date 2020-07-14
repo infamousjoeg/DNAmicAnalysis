@@ -104,16 +104,18 @@ def main(cfg):
 
     expired_domain = db.exec_fromfile("data/sql/ExpiredDomainPrivID.sql")
     all_domain_count = db.exec_fromfile("data/sql/DomainAdminsPUCount.sql")
+    print(expired_domain)
 
     if expired_domain and all_domain_count:
         domainMaxSorted = Metrics.domain_max(expired_domain)
         domainAverage = Metrics.domain_avg(expired_domain)
         domainPercent = Metrics.domain_percent(expired_domain, all_domain_count, domainMaxSorted)
+        domainPasswordAge = Metrics.domain_password_age(expired_domain)
     else:
         domainMaxSorted = False
         domainAverage = [0, 0, 0]
         domainPercent = [0, 0, 0]
-
+    
     process_domain_expired = threading.Thread(
         target=output.domain_expired,
         args=(
@@ -124,6 +126,7 @@ def main(cfg):
             domainPercent[0],
             domainPercent[1],
             domainPercent[2],
+            domainPasswordAge
         )
     )
 

@@ -16,7 +16,17 @@ class Output(object):
     ###################################
     ## Expired Domain Privileged IDs ##
     ###################################
-    def domain_expired(self,max_sorted,avg_sum,avg_len,avg_overall,percent_len,all_len,percent_overall):
+    def domain_expired(
+        self,
+        max_sorted,
+        avg_sum,
+        avg_len,
+        avg_overall,
+        percent_len,
+        all_len,
+        percent_overall,
+        password_age
+    ):
         if max_sorted is not False:
             # Write bulk data to Excel workbook
             data = 'Oldest Non-Compliant Username: {}\n' \
@@ -26,9 +36,16 @@ class Output(object):
                                                                         avg_sum,avg_len,avg_overall,avg_overall/365,percent_len,all_len,percent_overall)
             self._excel_object.write(self._worksheet, self._col, 0, data, 'row1')
             self._excel_object.write(self._worksheet, self._col, 1, 'Expired Domain Privileged IDs', 'header')
-            row = 2
+            self._excel_object.write(self._worksheet, self._col, 2, 'Usernames', 'subheader')
+            row = 3
             for username,_,_ in max_sorted:
                 self._excel_object.write(self._worksheet, self._col, row, username)
+                row += 1
+            self._col += 1
+            self._excel_object.write(self._worksheet, self._col, 2, 'Avg Password Age', 'subheader')
+            row = 3
+            for username,_,_ in max_sorted:
+                self._excel_object.write(self._worksheet, self._col, row, password_age[username])
                 row += 1
             self._col += 1
             self._excel_object.save(self._workbook)
@@ -214,7 +231,7 @@ class Output(object):
             self._excel_object.write(self._worksheet, self._col, 0, data, 'row1')
             self._excel_object.write(self._worksheet, self._col, 1, 'Non-Admin Accounts w/ Local Admin to Systems', 'header')
             row = 2
-            for username,_ in sqlresults:
+            for username,_,_ in sqlresults:
                 self._excel_object.write(self._worksheet, self._col, row, username)
                 row += 1
             self._col += 1
