@@ -36,7 +36,7 @@ def config_logger(logfile):
     logzero.logfile(logfile, disableStderrLogger=True)
 
     # Set a custom formatter
-    formatter = logging.Formatter('DNAmicAnalysis - %(asctime)-15s - %(levelname)s: %(message)s');
+    formatter = logging.Formatter('DNAmicAnalysis - %(asctime)-15s - %(levelname)s: %(message)s')
     logzero.formatter(formatter)
 
 # Define your animated characters function
@@ -156,8 +156,6 @@ def main(cfg):
     expired_local = db.exec_fromfile("data/sql/UniqueExpiredLocalPrivID.sql")
     all_local_count = db.exec_fromfile("data/sql/LocalAdministratorsCount.sql")
 
-    print(expired_local)
-
     if expired_local and all_local_count:
         all_local_unique_count = []
         for username in all_local_count:
@@ -254,15 +252,19 @@ def main(cfg):
     abandoned_local = db.exec_fromfile("data/sql/LocalAbandonedAccounts.sql")
     abandoned_local_count = db.exec_fromfile("data/sql/LocalAbandonedCount.sql")
 
-    if not abandoned_local and not abandoned_local_count:
+    if not abandoned_local:
         abandoned_local = False
         abandoned_local_count = []
+        abandoned_local_passwordage = None
+    else:
+        abandoned_local_passwordage = Metrics.password_age(abandoned_local)
 
     process_abandoned_local = threading.Thread(
         target=output.local_abandoned,
         args=(
             abandoned_local,
             len(abandoned_local_count),
+            abandoned_local_passwordage
         )
     )
 
@@ -289,12 +291,16 @@ def main(cfg):
 
     if not abandoned_domain or not all_domain_count:
         abandoned_domain = False
+        abandoned_domain_passwordage = None
+    else:
+        abandoned_domain_passwordage = Metrics.password_age(abandoned_domain)
 
     process_abandoned_domain = threading.Thread(
         target=output.domain_abandoned,
         args=(
             abandoned_domain,
             len(all_domain_count),
+            abandoned_domain_passwordage
         )
     )
 
@@ -322,12 +328,16 @@ def main(cfg):
 
     if multi_machine_accts and all_machines_count:
         multiMachineAccounts = Metrics.multi_machine_accts(multi_machine_accts, all_machines_count[0][0])
+        multiMachinePasswordAge = Metrics.password_age(multi_machine_accts)
     else:
         multiMachineAccounts = False
 
     process_multi_machine_accts = threading.Thread(
         target=output.multi_machine_accts,
-        args=(multiMachineAccounts,)
+        args=(
+            multiMachineAccounts,
+            multiMachinePasswordAge
+        )
     )
 
     process_multi_machine_accts.daemon = True
@@ -361,6 +371,16 @@ def main(cfg):
         if unique_svcacct_domain_admins2:
             for username in unique_svcacct_domain_admins2:
                 unique_svcacct_domadm2_usernames.append(username[0])
+        
+        unique_domain_combined = []
+        if unique_domain_admins:
+            unique_domain_combined += unique_domain_admins
+        elif unique_svcacct_domain_admins:
+            unique_domain_combined += unique_svcacct_domain_admins
+        elif unique_svcacct_domain_admins2:
+            unique_domain_combined += unique_svcacct_domain_admins2
+        unique_domain_passwordage = Metrics.password_age(unique_domain_combined)
+        
     else:
         unique_domain_admins = False
         unique_svcacct_domain_admins = []
@@ -368,6 +388,7 @@ def main(cfg):
         unique_svcacct_domadm2_admins = []
         unique_svcacct_domadm_usernames = []
         unique_svcacct_domadm2_usernames = []
+        unique_domain_passwordage = None
 
     process_unique_domain_admins = threading.Thread(
         target=output.unique_domain_admins,
@@ -376,6 +397,7 @@ def main(cfg):
             (unique_svcacct_domain_admins+unique_svcacct_domain_admins2),
             set(unique_svcacct_domadm_usernames),
             set(unique_svcacct_domadm2_usernames),
+            unique_domain_passwordage
         )
     )
 
@@ -406,10 +428,12 @@ def main(cfg):
         uniqueDomainMaxSorted = Metrics.unique_domain_max(unique_expired_domain)
         uniqueDomainAverage = Metrics.unique_domain_avg(unique_expired_domain)
         uniqueDomainPercent = Metrics.unique_domain_percent(unique_expired_domain, len(unique_domain_admins), uniqueDomainMaxSorted)
+        uniqueDomainPasswordAge = Metrics.password_age(unique_expired_domain)
     else:
         uniqueDomainMaxSorted = False
         uniqueDomainAverage = [0, 0, 0]
         uniqueDomainPercent = [0, 0, 0]
+        uniqueDomainPasswordAge = None
 
     process_unique_expired_domain = threading.Thread(
         target=output.unique_domain_expired,
@@ -420,6 +444,7 @@ def main(cfg):
             uniqueDomainPercent[0],
             uniqueDomainPercent[1],
             uniqueDomainPercent[2],
+            uniqueDomainPasswordAge
         )
     )
 
@@ -437,7 +462,7 @@ def main(cfg):
     #     uniqueDomainPercent[1],
     #     uniqueDomainPercent[2])
 
-    print(status_pre + Fore.GREEN + ' Completed Expired Domain Privileged IDs' + status_post)
+    print('\r\n' + status_pre + Fore.GREEN + ' Completed Expired Domain Privileged IDs' + status_post)
 
     ########################################
     ## Personal Accounts Running Services ##
@@ -451,10 +476,16 @@ def main(cfg):
 
     if not personal_accts_running_svcs:
         personal_accts_running_svcs = False
+        personal_accts_passwordage = None
+    else:
+        personal_accts_passwordage = Metrics.password_age(personal_accts_running_svcs)
 
     process_personal_accts_running_svcs = threading.Thread(
         target=output.personal_accts_running_svcs,
-        args=(personal_accts_running_svcs,)
+        args=(
+            personal_accts_running_svcs,
+            personal_accts_passwordage
+        )
     )
 
     process_personal_accts_running_svcs.daemon = True
@@ -479,10 +510,16 @@ def main(cfg):
 
     if not non_admin_with_local_admin:
         non_admin_with_local_admin = False
+        non_admin_passwordage = None
+    else:
+        non_admin_passwordage = Metrics.password_age(non_admin_with_local_admin)
 
     process_non_admin_with_local_admin = threading.Thread(
         target=output.non_admin_with_local_admin,
-        args=(non_admin_with_local_admin,)
+        args=(
+            non_admin_with_local_admin,
+            non_admin_passwordage
+        )
     )
 
     process_non_admin_with_local_admin.daemon = True
@@ -512,10 +549,18 @@ def main(cfg):
         uniqueSvcMaxSorted = Metrics.unique_svc_max(unique_expired_svcs)
         uniqueSvcAverage = Metrics.unique_svc_avg(unique_expired_svcs)
         uniqueSvcPercent = Metrics.unique_svc_percent(unique_expired_svcs, len(svc_accts_count), len(uniqueSvcMaxSorted))
+        
+        uniqueSvcCombined = []
+        if unique_expired_svcs_domain:
+            uniqueSvcCombined += unique_expired_svcs_domain
+        elif unique_expired_svcs_local:
+            uniqueSvcCombined += unique_expired_svcs_local
+        uniqueSvcPasswordAge = Metrics.password_age(uniqueSvcCombined)
     else:
         uniqueSvcMaxSorted = False
         uniqueSvcAverage = [0, 0, 0, 0]
         uniqueSvcPercent = [0, 0, 0, 0]
+        uniqueSvcPasswordAge = None
 
     process_unique_expired_svc_acct = threading.Thread(
         target=output.unique_expired_svcs,
@@ -527,6 +572,7 @@ def main(cfg):
             uniqueSvcPercent[0],
             uniqueSvcPercent[1],
             uniqueSvcPercent[2],
+            uniqueSvcPasswordAge
         )
     )
 
@@ -626,10 +672,16 @@ def main(cfg):
     if not risky_spns and not spns_count:
         risky_spns = False
         spns_count[0][0] = None
+        spns_passwordage = None
+    else:
+        spns_passwordage = Metrics.password_age(risky_spns)
 
     process_risky_spns = threading.Thread(
         target=output.risky_spns,
-        args=(risky_spns,spns_count[0][0],)
+        args=(
+            risky_spns,
+            spns_count[0][0],
+            spns_passwordage)
     )
 
     process_risky_spns.daemon = True
@@ -661,6 +713,7 @@ def main(cfg):
         total_hash_name = []
         total_hash_admins_srv = 0
         total_hash_admins_wks = 0
+        total_hash_combined = hashes_found_on_multiple + hashes_found_on_multiple_admins
 
         for x in range(len(hashes_found_on_multiple)):
             total_hash_srv += hashes_found_on_multiple[x][4]
@@ -678,6 +731,8 @@ def main(cfg):
         for x in range(len(hashes_found_on_multiple_admins)):
             total_hash_admins_srv += hashes_found_on_multiple_admins[x][4]
             total_hash_admins_wks += hashes_found_on_multiple_admins[x][3]
+
+        total_hash_passwordage = Metrics.password_age(total_hash_combined)
     else:
         unique_hash_name = []
         admin_hash_found = []
@@ -685,6 +740,7 @@ def main(cfg):
         total_hash_wks = 0
         total_hash_admins_srv = 0
         total_hash_admins_wks = 0
+        total_hash_passwordage = None
 
     process_hashes_found_on_multiple = threading.Thread(
         target=output.hashes_found_on_multiple,
@@ -695,6 +751,7 @@ def main(cfg):
             total_hash_wks,
             total_hash_admins_srv,
             total_hash_admins_wks,
+            total_hash_passwordage
         )
     )
 
@@ -725,12 +782,17 @@ def main(cfg):
 
     if multi_machine_hashes and all_machines_count:
         multiMachineHashes = Metrics.multi_machine_hashes(multi_machine_hashes, all_machines_count[0][0])
+        multiMachinePasswordAge = Metrics.password_age(multi_machine_hashes)
     else:
         multiMachineHashes = False
+        multiMachinePasswordAge = None
 
     process_multiple_machine_hashes = threading.Thread(
         target=output.multi_machine_hashes,
-        args=(multiMachineHashes,)
+        args=(
+            multiMachineHashes,
+            multiMachinePasswordAge
+        )
     )
 
     process_multiple_machine_hashes.daemon = True

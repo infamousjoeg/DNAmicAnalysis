@@ -30,34 +30,6 @@ class Metrics(object):
                 len(sqlcount)))
         return len(domain_max_sorted), len(sqlcount), domain_percent_overall
 
-    
-    # def domain_password_age(sqlresults):
-    #     # Declare variables
-    #     avgPassword = 0
-    #     count = 0
-    #     lastItem = None
-    #     output = {}
-    #     return_dict = {}
-
-    #     # Create a dictionary with a key of account and list of values of every password age
-    #     for account,_,passwordage in sqlresults:
-    #         if account in output:
-    #                 output[account].append((passwordage))
-    #         else:
-    #                 output[account] = [(passwordage)]
-
-    #     # Loop through created dict and average password age
-    #     for account in output:
-    #         for result in output[account]:
-    #             avgPassword += result
-    #             count += 1
-    #             lastItem = account
-    #         return_dict[account] = avgPassword/len(output[account])
-    #         avgPassword = 0
-    #         count = 0
-        
-    #     return return_dict
-
 
     def local_max(sqlresults):
         local_max_sorted = sorted(sqlresults,
@@ -91,11 +63,19 @@ class Metrics(object):
         # Declare variables
         avgPassword = 0
         count = 0
-        lastItem = None
         output = {}
         return_dict = {}
 
-        if len(sqlresults[0]) == 3:
+        if not sqlresults:
+            return
+        elif len(sqlresults[0]) == 2:
+            # Create a dictionary with a key of account and list of values of every password age
+            for account,passwordage in sqlresults:
+                if account in output:
+                        output[account].append((passwordage))
+                else:
+                        output[account] = [(passwordage)]
+        elif len(sqlresults[0]) == 3:
             # Create a dictionary with a key of account and list of values of every password age
             for account,_,passwordage in sqlresults:
                 if account in output:
@@ -109,13 +89,26 @@ class Metrics(object):
                         output[account].append((passwordage))
                 else:
                         output[account] = [(passwordage)]
+        elif len(sqlresults[0]) == 5:
+            # Create a dictionary with a key of account and list of values of every password age
+            for account,_,_,_,passwordage in sqlresults:
+                if account in output:
+                        output[account].append((passwordage))
+                else:
+                        output[account] = [(passwordage)]
+        elif len(sqlresults[0]) == 7:
+            # Create a dictionary with a key of account and list of values of every password age
+            for account,_,_,_,_,_,passwordage in sqlresults:
+                if account in output:
+                        output[account].append((passwordage))
+                else:
+                        output[account] = [(passwordage)]
 
         # Loop through created dict and average password age
         for account in output:
             for result in output[account]:
                 avgPassword += result
                 count += 1
-                lastItem = account
             return_dict[account] = avgPassword/len(output[account])
             avgPassword = 0
             count = 0
@@ -209,7 +202,7 @@ class Metrics(object):
 
 
     def unique_svc_avg(sqlresults):
-        unique_svc_avg_values = [x[2] for x in sqlresults]
+        unique_svc_avg_values = [x[3] for x in sqlresults]
         unique_svc_avg_overall = sum(unique_svc_avg_values) / len(unique_svc_avg_values)
         logger.info("Calculated Overall Average Password Age for Unique Expired Services \
             using: {} / {}".format(
