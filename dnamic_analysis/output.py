@@ -37,7 +37,7 @@ class Output(object):
             self._excel_object.write(self._worksheet, self._col, 0, data, 'row1')
             self._excel_object.write(self._worksheet, self._col, 1, 'Expired Domain Privileged IDs', 'header')
             self._excel_object.write(self._worksheet, self._col, 2, 'Usernames', 'subheader')
-            self._excel_object.write(self._worksheet, self._col+1, 2, 'Avg Password Age', 'subheader')
+            self._excel_object.write(self._worksheet, self._col+1, 2, 'Avg Password Age (Days)', 'subheader')
             row = 3
             for username,_,_ in max_sorted:
                 self._excel_object.write(self._worksheet, self._col, row, username)
@@ -76,7 +76,7 @@ class Output(object):
             self._excel_object.write(self._worksheet, self._col, 0, data, 'row1')
             self._excel_object.write(self._worksheet, self._col, 1, 'Unique Expired Local Privileged IDs', 'header')
             self._excel_object.write(self._worksheet, self._col, 2, 'Usernames', 'subheader')
-            self._excel_object.write(self._worksheet, self._col+1, 2, 'Avg Password Age', 'subheader')
+            self._excel_object.write(self._worksheet, self._col+1, 2, 'Avg Password Age (Days)', 'subheader')
             row = 3
             used_usernames = []
             for username,_,_,_ in max_sorted:
@@ -121,7 +121,7 @@ class Output(object):
             self._excel_object.write(self._worksheet, self._col, 0, data, 'row1')
             self._excel_object.write(self._worksheet, self._col, 1, 'Local Abandoned Accounts', 'header')
             self._excel_object.write(self._worksheet, self._col, 2, 'Usernames', 'subheader')
-            self._excel_object.write(self._worksheet, self._col+1, 2, 'Avg Password Age', 'subheader')
+            self._excel_object.write(self._worksheet, self._col+1, 2, 'Avg Password Age (Days)', 'subheader')
             row = 3
             for username,_,_,_ in abandoned_accounts:
                 self._excel_object.write(self._worksheet, self._col, row, username)
@@ -140,7 +140,7 @@ class Output(object):
             self._excel_object.write(self._worksheet, self._col, 0, data, 'row1')
             self._excel_object.write(self._worksheet, self._col, 1, 'Domain Abandoned Accounts', 'header')
             self._excel_object.write(self._worksheet, self._col, 2, 'Usernames', 'subheader')
-            self._excel_object.write(self._worksheet, self._col+1, 2, 'Avg Password Age', 'subheader')
+            self._excel_object.write(self._worksheet, self._col+1, 2, 'Avg Password Age (Days)', 'subheader')
             row = 3
             for username,_,_,_ in abandoned_accounts:
                 self._excel_object.write(self._worksheet, self._col, row, username)
@@ -165,7 +165,7 @@ class Output(object):
                 if len(multi_machine_accts[i]) != 0:
                     self._excel_object.write(self._worksheet, self._col, 2, tiers[i], 'subheader')
                     self._excel_object.write(self._worksheet, self._col, 3, 'Usernames', 'subheader')
-                    self._excel_object.write(self._worksheet, self._col+1, 3, 'Avg Password Age', 'subheader')
+                    self._excel_object.write(self._worksheet, self._col+1, 3, 'Avg Password Age (Days)', 'subheader')
                     row = 4
                     for username in multi_machine_accts[i]:
                         self._excel_object.write(self._worksheet, self._col, row, username)
@@ -187,7 +187,7 @@ class Output(object):
             self._excel_object.write(self._worksheet, self._col, 1, 'Unique Domain Admins', 'header')
             self._excel_object.write(self._worksheet, self._col, 2, 'Total Detected', 'subheader')
             self._excel_object.write(self._worksheet, self._col, 3, 'Usernames', 'subheader')
-            self._excel_object.write(self._worksheet, self._col+1, 3, 'Avg Password Age', 'subheader')
+            self._excel_object.write(self._worksheet, self._col+1, 3, 'Avg Password Age (Days)', 'subheader')
             row = 4
             for username in sqlresults:
                 self._excel_object.write(self._worksheet, self._col, row, username[0])
@@ -196,7 +196,7 @@ class Output(object):
             self._col += 2
             self._excel_object.write(self._worksheet, self._col, 2, 'Potential Service Accounts', 'subheader')
             self._excel_object.write(self._worksheet, self._col, 3, 'Usernames', 'subheader')
-            self._excel_object.write(self._worksheet, self._col+1, 3, 'Avg Password Age', 'subheader')
+            self._excel_object.write(self._worksheet, self._col+1, 3, 'Avg Password Age (Days)', 'subheader')
             row = 4
             for username in svc_domadm:
                 self._excel_object.write(self._worksheet, self._col, row, username)
@@ -224,7 +224,7 @@ class Output(object):
             self._excel_object.write(self._worksheet, self._col, 0, data, 'row1')
             self._excel_object.write(self._worksheet, self._col, 1, 'Expired Domain Admins', 'header')
             self._excel_object.write(self._worksheet, self._col, 2, 'Usernames', 'subheader')
-            self._excel_object.write(self._worksheet, self._col+1, 2, 'Avg Password Age', 'subheader')
+            self._excel_object.write(self._worksheet, self._col+1, 2, 'Avg Password Age (Days)', 'subheader')
             row = 3
             for username,_,_,_,_ in max_sorted:
                 self._excel_object.write(self._worksheet, self._col, row, username)
@@ -244,7 +244,7 @@ class Output(object):
             self._excel_object.write(self._worksheet, self._col, 0, data, 'row1')
             self._excel_object.write(self._worksheet, self._col, 1, 'Personal Accounts Running Services', 'header')
             self._excel_object.write(self._worksheet, self._col, 2, 'Usernames', 'subheader')
-            self._excel_object.write(self._worksheet, self._col+1, 2, 'Avg Password Age', 'subheader')
+            self._excel_object.write(self._worksheet, self._col+1, 2, 'Avg Password Age (Days)', 'subheader')
             row = 3
             for username in sqlresults:
                 self._excel_object.write(self._worksheet, self._col, row, username[0])
@@ -264,7 +264,7 @@ class Output(object):
             self._excel_object.write(self._worksheet, self._col, 0, data, 'row1')
             self._excel_object.write(self._worksheet, self._col, 1, 'Non-Admin Accounts w/ Local Admin to Systems', 'header')
             self._excel_object.write(self._worksheet, self._col, 2, 'Usernames', 'subheader')
-            self._excel_object.write(self._worksheet, self._col+1, 2, 'Avg Password Age', 'subheader')
+            self._excel_object.write(self._worksheet, self._col+1, 2, 'Avg Password Age (Days)', 'subheader')
             row = 3
             for username,_,_ in sqlresults:
                 self._excel_object.write(self._worksheet, self._col, row, username)
@@ -289,7 +289,7 @@ class Output(object):
                 self._excel_object.write(self._worksheet, self._col, 0, data, 'row1')
                 self._excel_object.write(self._worksheet, self._col, 1, 'Unique Expired Service Accounts', 'header')
                 self._excel_object.write(self._worksheet, self._col, 2, 'Username', 'subheader')
-                self._excel_object.write(self._worksheet, self._col+2, 2, 'Avg Password Age', 'subheader')
+                self._excel_object.write(self._worksheet, self._col+2, 2, 'Avg Password Age (Days)', 'subheader')
                 row = 3
                 for username,_,_,_ in max_sorted:
                     self._excel_object.write(self._worksheet, self._col, row, username)
@@ -348,7 +348,7 @@ class Output(object):
             self._excel_object.write(self._worksheet, self._col, 0, data, 'row1')
             self._excel_object.write(self._worksheet, self._col, 1, 'Risky Expired Service Principal Names', 'header')
             self._excel_object.write(self._worksheet, self._col, 2, 'SPN', 'subheader')
-            self._excel_object.write(self._worksheet, self._col+1, 2, 'Avg Password Age', 'subheader')
+            self._excel_object.write(self._worksheet, self._col+1, 2, 'Avg Password Age (Days)', 'subheader')
             row = 3
             for username,_ in risky_spns:
                 self._excel_object.write(self._worksheet, self._col, row, username)
@@ -372,7 +372,7 @@ class Output(object):
             self._excel_object.write(self._worksheet, self._col, 0, data, 'row1')
             self._excel_object.write(self._worksheet, self._col, 1, 'Hashes Found on Multiple Machines', 'header')
             self._excel_object.write(self._worksheet, self._col, 2, 'Usernames', 'subheader')
-            self._excel_object.write(self._worksheet, self._col+1, 2, 'Avg Password Age', 'subheader')
+            self._excel_object.write(self._worksheet, self._col+1, 2, 'Avg Password Age (Days)', 'subheader')
             row = 2
             for username in admin_hash_found:
                 self._excel_object.write(self._worksheet, self._col, row, username)
@@ -397,7 +397,7 @@ class Output(object):
                     if len(multi_machine_hashes[i]) != 0:
                         self._excel_object.write(self._worksheet, self._col, 2, tiers[i], 'subheader')
                         self._excel_object.write(self._worksheet, self._col, 3, 'Usernames', 'subheader')
-                        self._excel_object.write(self._worksheet, self._col+1, 3, 'Avg Password Age', 'subheader')
+                        self._excel_object.write(self._worksheet, self._col+1, 3, 'Avg Password Age (Days)', 'subheader')
                         row = 4
                         for username in multi_machine_hashes[i]:
                             self._excel_object.write(self._worksheet, self._col, row, username)
