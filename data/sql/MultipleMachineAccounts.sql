@@ -1,4 +1,5 @@
-SELECT Accounts.Name, COUNT(DISTINCT Machines.Address) as TotalFound
+SELECT Accounts.Name, COUNT(DISTINCT Machines.Address) as TotalFound,
+	MAX(Cast ((JulianDay(datetime('{scanDateTime}')) - JulianDay(OSAccounts.LastPasswordSet)) As Integer)) as PasswordAge
 FROM Accounts
 	LEFT OUTER JOIN OSAccounts
 		ON Accounts.Id = OSAccounts.AccountBase_id
