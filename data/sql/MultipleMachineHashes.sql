@@ -3,7 +3,8 @@ SELECT Accounts.Name,
 		LEFT OUTER JOIN Accounts AS A1
 			ON Machines.Id = A1.Machine_id
 		WHERE A1.Name = Accounts.Name) AS MachineCount,
-	(SELECT SUM(IsPrivileged) FROM Accounts AS A1 WHERE A1.Name = Accounts.Name) AS PrivilegedCount
+	(SELECT SUM(IsPrivileged) FROM Accounts AS A1 WHERE A1.Name = Accounts.Name) AS PrivilegedCount,
+	MAX(Cast ((JulianDay(datetime('{scanDateTime}')) - JulianDay(OSAccounts.LastPasswordSet)) As Integer)) as PasswordAge
 FROM Accounts
 	OUTER LEFT JOIN WindowsAccounts
 		ON WindowsAccounts.OSAccount_id = Accounts.Id
