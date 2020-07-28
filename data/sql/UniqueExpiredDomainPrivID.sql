@@ -1,5 +1,6 @@
 SELECT Accounts.Name, Machines.Address, OSAccounts.LastPasswordSet,
 	MAX(Cast ((JulianDay(datetime('{scanDateTime}')) - JulianDay(OSAccounts.LastPasswordSet)) As Integer)) as MaxPasswordAge,
+	COUNT(Accounts.Name) as NumMachines,
 	AVG(Cast ((JulianDay(datetime('{scanDateTime}')) - JulianDay(OSAccounts.LastPasswordSet)) As Integer)) as AvgPasswordAge
 FROM Accounts
 	LEFT OUTER JOIN OSAccounts

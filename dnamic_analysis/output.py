@@ -39,7 +39,7 @@ class Output(object):
             self._excel_object.write(self._worksheet, self._col, 2, 'Usernames', 'subheader')
             self._excel_object.write(self._worksheet, self._col+1, 2, 'Avg Password Age (Days)', 'subheader')
             row = 3
-            for username,_,_ in max_sorted:
+            for username,_,_,_ in max_sorted:
                 self._excel_object.write(self._worksheet, self._col, row, username)
                 self._excel_object.write(self._worksheet, self._col+1, row, password_age[username])
                 row += 1
@@ -79,7 +79,7 @@ class Output(object):
             self._excel_object.write(self._worksheet, self._col+1, 2, 'Avg Password Age (Days)', 'subheader')
             row = 3
             used_usernames = []
-            for username,_,_,_ in max_sorted:
+            for username,_,_,_,_ in max_sorted:
                 if username not in used_usernames:
                     self._excel_object.write(self._worksheet, self._col, row, username)
                     self._excel_object.write(self._worksheet, self._col+1, row, password_age[username])
@@ -226,7 +226,7 @@ class Output(object):
             self._excel_object.write(self._worksheet, self._col, 2, 'Usernames', 'subheader')
             self._excel_object.write(self._worksheet, self._col+1, 2, 'Avg Password Age (Days)', 'subheader')
             row = 3
-            for username,_,_,_,_ in max_sorted:
+            for username,_,_,_,_,_ in max_sorted:
                 self._excel_object.write(self._worksheet, self._col, row, username)
                 self._excel_object.write(self._worksheet, self._col+1, row, password_age[username])
                 row += 1
@@ -266,7 +266,7 @@ class Output(object):
             self._excel_object.write(self._worksheet, self._col, 2, 'Usernames', 'subheader')
             self._excel_object.write(self._worksheet, self._col+1, 2, 'Avg Password Age (Days)', 'subheader')
             row = 3
-            for username,_,_ in sqlresults:
+            for username,_,_,_ in sqlresults:
                 self._excel_object.write(self._worksheet, self._col, row, username)
                 self._excel_object.write(self._worksheet, self._col+1, row, password_age[username])
                 row += 1
@@ -291,14 +291,14 @@ class Output(object):
                 self._excel_object.write(self._worksheet, self._col, 2, 'Username', 'subheader')
                 self._excel_object.write(self._worksheet, self._col+2, 2, 'Avg Password Age (Days)', 'subheader')
                 row = 3
-                for username,_,_,_ in max_sorted:
+                for username,_,_,_,_ in max_sorted:
                     self._excel_object.write(self._worksheet, self._col, row, username)
                     self._excel_object.write(self._worksheet, self._col+2, row, password_age[username])
                     row += 1
                 self._col += 1
                 self._excel_object.write(self._worksheet, self._col, 2, 'Address', 'subheader')
                 row = 3
-                for _,_,address,_ in max_sorted:
+                for _,_,address,_,_ in max_sorted:
                     self._excel_object.write(self._worksheet, self._col, row, address)
                     row += 1
                 self._col += 2
@@ -350,7 +350,7 @@ class Output(object):
             self._excel_object.write(self._worksheet, self._col, 2, 'SPN', 'subheader')
             self._excel_object.write(self._worksheet, self._col+1, 2, 'Avg Password Age (Days)', 'subheader')
             row = 3
-            for username,_ in risky_spns:
+            for username,_,_ in risky_spns:
                 self._excel_object.write(self._worksheet, self._col, row, username)
                 self._excel_object.write(self._worksheet, self._col+1, row, password_age[username])
                 row += 1

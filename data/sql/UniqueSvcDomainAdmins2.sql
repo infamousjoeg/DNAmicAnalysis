@@ -1,4 +1,5 @@
 SELECT DISTINCT Services.AccountName,
+	COUNT(Accounts.Name) as NumMachines,
 	MAX(Cast ((JulianDay(datetime('{scanDateTime}')) - JulianDay(OSAccounts.LastPasswordSet)) As Integer)) as PasswordAge
 FROM Services
 	LEFT OUTER JOIN Accounts

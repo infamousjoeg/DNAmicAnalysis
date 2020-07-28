@@ -96,9 +96,23 @@ class Metrics(object):
                         output[account].append((passwordage))
                 else:
                         output[account] = [(passwordage)]
+        elif len(sqlresults[0]) == 6:
+            # Create a dictionary with a key of account and list of values of every password age
+            for account,_,_,_,_,passwordage in sqlresults:
+                if account in output:
+                        output[account].append((passwordage))
+                else:
+                        output[account] = [(passwordage)]
         elif len(sqlresults[0]) == 7:
             # Create a dictionary with a key of account and list of values of every password age
             for account,_,_,_,_,_,passwordage in sqlresults:
+                if account in output:
+                        output[account].append((passwordage))
+                else:
+                        output[account] = [(passwordage)]
+        elif len(sqlresults[0]) == 8:
+            # Create a dictionary with a key of account and list of values of every password age
+            for account,_,_,_,_,_,_,passwordage in sqlresults:
                 if account in output:
                         output[account].append((passwordage))
                 else:
