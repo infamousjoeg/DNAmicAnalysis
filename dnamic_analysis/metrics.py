@@ -109,7 +109,7 @@ class Metrics(object):
             for result in output[account]:
                 avgPassword += result
                 count += 1
-            return_dict[account] = avgPassword/len(output[account])
+            return_dict[account] = avgPassword//len(output[account])
             avgPassword = 0
             count = 0
         
