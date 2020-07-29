@@ -2,6 +2,7 @@ SELECT Accounts.Name, WindowsAccounts.CausesVulnerabilityOnXOfMachines, Machines
 	CASE Machines.ProductType WHEN 'Workstation' THEN 1 ELSE 0 END AS Workstation,
 	CASE Machines.ProductType WHEN 'Server' THEN 1 ELSE 0 END AS Server,
 	(SELECT SUM(IsPrivileged) FROM Accounts AS A1 WHERE A1.Name = Accounts.Name) AS PrivilegedCount,
+	COUNT(Accounts.Name) as NumMachines,
 	MAX(Cast ((JulianDay(datetime('{scanDateTime}')) - JulianDay(OSAccounts.LastPasswordSet)) As Integer)) as PasswordAge
 FROM Accounts
 	LEFT OUTER JOIN WindowsAccounts

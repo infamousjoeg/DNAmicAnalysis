@@ -1,4 +1,5 @@
-SELECT Accounts.Name, HCPA.Name
+SELECT Accounts.Name, HCPA.Name,
+	COUNT(Accounts.Name) as NumMachines
 FROM HardCodedPasswordAccounts AS HCPA
 	LEFT OUTER JOIN Accounts
 		ON Accounts.Id = HCPA.WebAppAccount_id
