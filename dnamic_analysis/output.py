@@ -6,7 +6,12 @@ from dnamic_analysis import Excel
 
 class Output(object):
 
-    def __init__(self, excel_object, workbook, worksheet):
+    def __init__(
+        self,
+        excel_object,
+        workbook,
+        worksheet
+    ):
         self._excel_object = excel_object
         self._workbook = workbook
         self._worksheet = worksheet
@@ -25,7 +30,8 @@ class Output(object):
         percent_len,
         all_len,
         percent_overall,
-        password_age
+        password_age,
+        num_machines
     ):
         if max_sorted is not False:
             # Write bulk data to Excel workbook
@@ -38,12 +44,14 @@ class Output(object):
             self._excel_object.write(self._worksheet, self._col, 1, 'Expired Domain Privileged IDs', 'header')
             self._excel_object.write(self._worksheet, self._col, 2, 'Usernames', 'subheader')
             self._excel_object.write(self._worksheet, self._col+1, 2, 'Avg Password Age (Days)', 'subheader')
+            self._excel_object.write(self._worksheet, self._col+2, 2, 'Number of Machines', 'subheader')
             row = 3
             for username,_,_,_ in max_sorted:
                 self._excel_object.write(self._worksheet, self._col, row, username)
                 self._excel_object.write(self._worksheet, self._col+1, row, password_age[username])
+                self._excel_object.write(self._worksheet, self._col+2, row, num_machines[username][0])
                 row += 1
-            self._col += 2
+            self._col += 3
             self._excel_object.save(self._workbook)
 
 
@@ -61,7 +69,8 @@ class Output(object):
         percent_overall,
         sqlcount,
         unique_count,
-        password_age
+        password_age,
+        num_machines
     ):
         if max_sorted is not False and sqlcount != 0 and unique_count != 0:
             # Write bulk data to Excel workbook
@@ -77,22 +86,29 @@ class Output(object):
             self._excel_object.write(self._worksheet, self._col, 1, 'Unique Expired Local Privileged IDs', 'header')
             self._excel_object.write(self._worksheet, self._col, 2, 'Usernames', 'subheader')
             self._excel_object.write(self._worksheet, self._col+1, 2, 'Avg Password Age (Days)', 'subheader')
+            self._excel_object.write(self._worksheet, self._col+2, 2, 'Number of Machines', 'subheader')
             row = 3
             used_usernames = []
             for username,_,_,_,_ in max_sorted:
                 if username not in used_usernames:
                     self._excel_object.write(self._worksheet, self._col, row, username)
                     self._excel_object.write(self._worksheet, self._col+1, row, password_age[username])
+                    self._excel_object.write(self._worksheet, self._col+2, row, num_machines[username][0])
                     used_usernames.append(username)
                     row += 1
-            self._col += 2
+            self._col += 3
             self._excel_object.save(self._workbook)
 
 
     #####################################################
     ## Expired Local Admins Total w/ Machine Addresses ##
     #####################################################
-    def local_expired_machines(self,max_grouped,count_accounts,percent_accounts):
+    def local_expired_machines(
+        self,
+        max_grouped,
+        count_accounts,
+        percent_accounts
+    ):
         self._excel_object.write(self._worksheet, self._col, 1, 'Expired Local Admins Total w/ Machine Addresses', 'header')
         count = 0
         row = 2
@@ -114,7 +130,13 @@ class Output(object):
     ##############################
     ## Local Abandoned Accounts ##
     ##############################
-    def local_abandoned(self,abandoned_accounts, count_accounts, password_age):
+    def local_abandoned(
+        self,
+        abandoned_accounts,
+        count_accounts,
+        password_age,
+        num_machines
+    ):
         if abandoned_accounts is not False:
             # Write bulk data to Excel workbook
             data = 'Total Abandoned / Total Overall: {} / {}'.format(len(abandoned_accounts), count_accounts)
@@ -122,18 +144,26 @@ class Output(object):
             self._excel_object.write(self._worksheet, self._col, 1, 'Local Abandoned Accounts', 'header')
             self._excel_object.write(self._worksheet, self._col, 2, 'Usernames', 'subheader')
             self._excel_object.write(self._worksheet, self._col+1, 2, 'Avg Password Age (Days)', 'subheader')
+            self._excel_object.write(self._worksheet, self._col+2, 2, 'Number of Machines', 'subheader')
             row = 3
             for username,_,_,_ in abandoned_accounts:
                 self._excel_object.write(self._worksheet, self._col, row, username)
                 self._excel_object.write(self._worksheet, self._col+1, row, password_age[username])
+                self._excel_object.write(self._worksheet, self._col+2, row, num_machines[username][0])
                 row += 1
-            self._col += 2
+            self._col += 3
             self._excel_object.save(self._workbook)
 
     ###############################
     ## Domain Abandoned Accounts ##
     ###############################
-    def domain_abandoned(self,abandoned_accounts, count_accounts, password_age):
+    def domain_abandoned(
+        self,
+        abandoned_accounts,
+        count_accounts,
+        password_age,
+        num_machines
+    ):
         if abandoned_accounts is not False:
             # Write bulk data to Excel workbook
             data = 'Total Abandoned / Total Overall: {} / {}'.format(len(abandoned_accounts), count_accounts)
@@ -141,19 +171,26 @@ class Output(object):
             self._excel_object.write(self._worksheet, self._col, 1, 'Domain Abandoned Accounts', 'header')
             self._excel_object.write(self._worksheet, self._col, 2, 'Usernames', 'subheader')
             self._excel_object.write(self._worksheet, self._col+1, 2, 'Avg Password Age (Days)', 'subheader')
+            self._excel_object.write(self._worksheet, self._col+2, 2, 'Number of Machines', 'subheader')
             row = 3
             for username,_,_,_ in abandoned_accounts:
                 self._excel_object.write(self._worksheet, self._col, row, username)
                 self._excel_object.write(self._worksheet, self._col+1, row, password_age[username])
+                self._excel_object.write(self._worksheet, self._col+2, row, num_machines[username][0])
                 row += 1
-            self._col += 2
+            self._col += 3
             self._excel_object.save(self._workbook)
 
 
     #########################################################
     ## Accounts w/ Multiple Machine Exposure - By %age Tiers ##
     #########################################################
-    def multi_machine_accts(self,multi_machine_accts, password_age):
+    def multi_machine_accts(
+        self,
+        multi_machine_accts,
+        password_age,
+        num_machines
+    ):
         if multi_machine_accts is not False:
             tiers = ['> 95% Exposure','90-95% Exposure','80-90% Exposure','70-80% Exposure','60-70% Exposure',
                 '50-60% Exposure','40-50% Exposure','30-40% Exposure','20-30% Exposure','10-20% Exposure',
@@ -166,12 +203,14 @@ class Output(object):
                     self._excel_object.write(self._worksheet, self._col, 2, tiers[i], 'subheader')
                     self._excel_object.write(self._worksheet, self._col, 3, 'Usernames', 'subheader')
                     self._excel_object.write(self._worksheet, self._col+1, 3, 'Avg Password Age (Days)', 'subheader')
+                    self._excel_object.write(self._worksheet, self._col+2, 3, 'Number of Machines', 'subheader')
                     row = 4
                     for username in multi_machine_accts[i]:
                         self._excel_object.write(self._worksheet, self._col, row, username)
                         self._excel_object.write(self._worksheet, self._col+1, row, password_age[username])
+                        self._excel_object.write(self._worksheet, self._col+2, row, num_machines[username][0])
                         row += 1
-                    self._col += 2
+                    self._col += 3
 
             self._excel_object.save(self._workbook)
 
@@ -179,7 +218,15 @@ class Output(object):
     ##########################
     ## Unique Domain Admins ##
     ##########################
-    def unique_domain_admins(self,sqlresults, svc_sqlresults, svc_domadm, svc_domadm2, password_age):
+    def unique_domain_admins(
+        self,
+        sqlresults,
+        svc_sqlresults,
+        svc_domadm,
+        svc_domadm2,
+        password_age,
+        num_machines
+    ):
         if sqlresults is not False:
             data = 'Total Detected: {}\n' \
                     'Total Potential Service Accounts: {}'.format(len(sqlresults),len(svc_sqlresults))
@@ -188,32 +235,48 @@ class Output(object):
             self._excel_object.write(self._worksheet, self._col, 2, 'Total Detected', 'subheader')
             self._excel_object.write(self._worksheet, self._col, 3, 'Usernames', 'subheader')
             self._excel_object.write(self._worksheet, self._col+1, 3, 'Avg Password Age (Days)', 'subheader')
+            self._excel_object.write(self._worksheet, self._col+2, 3, 'Number of Machines', 'subheader')
             row = 4
-            for username in sqlresults:
-                self._excel_object.write(self._worksheet, self._col, row, username[0])
-                self._excel_object.write(self._worksheet, self._col+1, row, password_age[username[0]])
+            for username,_,_ in sqlresults:
+                self._excel_object.write(self._worksheet, self._col, row, username)
+                self._excel_object.write(self._worksheet, self._col+1, row, password_age[username])
+                self._excel_object.write(self._worksheet, self._col+2, row, num_machines[username][0])
                 row += 1
-            self._col += 2
+            self._col += 3
             self._excel_object.write(self._worksheet, self._col, 2, 'Potential Service Accounts', 'subheader')
             self._excel_object.write(self._worksheet, self._col, 3, 'Usernames', 'subheader')
             self._excel_object.write(self._worksheet, self._col+1, 3, 'Avg Password Age (Days)', 'subheader')
+            self._excel_object.write(self._worksheet, self._col+2, 3, 'Number of Machines', 'subheader')
             row = 4
-            for username in svc_domadm:
-                self._excel_object.write(self._worksheet, self._col, row, username)
-                self._excel_object.write(self._worksheet, self._col+1, row, password_age[username])
-                row += 1
-            for username2 in svc_domadm2:
+            for username2 in svc_domadm:
                 self._excel_object.write(self._worksheet, self._col, row, username2)
                 self._excel_object.write(self._worksheet, self._col+1, row, password_age[username2])
+                self._excel_object.write(self._worksheet, self._col+2, row, num_machines[username2][0])
                 row += 1
-            self._col += 2
+            for username3 in svc_domadm2:
+                self._excel_object.write(self._worksheet, self._col, row, username3)
+                self._excel_object.write(self._worksheet, self._col+1, row, password_age[username3])
+                self._excel_object.write(self._worksheet, self._col+2, row, num_machines[username3][0])
+                row += 1
+            self._col += 3
             self._excel_object.save(self._workbook)
 
 
     ##########################################
     ## Expired Domain Privileged IDs ##
     ##########################################
-    def unique_domain_expired(self,max_sorted,avg_sum,avg_len,avg_overall,percent_len,all_len,percent_overall,password_age):
+    def unique_domain_expired(
+        self,
+        max_sorted,
+        avg_sum,
+        avg_len,
+        avg_overall,
+        percent_len,
+        all_len,
+        percent_overall,
+        password_age,
+        num_machines
+    ):
         if max_sorted is not False:
             data = 'Oldest Non-Compliant Username: {}\n' \
                     'Max Password Age: {} days ({:.1f} years)\n' \
@@ -225,19 +288,26 @@ class Output(object):
             self._excel_object.write(self._worksheet, self._col, 1, 'Expired Domain Admins', 'header')
             self._excel_object.write(self._worksheet, self._col, 2, 'Usernames', 'subheader')
             self._excel_object.write(self._worksheet, self._col+1, 2, 'Avg Password Age (Days)', 'subheader')
+            self._excel_object.write(self._worksheet, self._col+2, 2, 'Number of Machines', 'subheader')
             row = 3
             for username,_,_,_,_,_ in max_sorted:
                 self._excel_object.write(self._worksheet, self._col, row, username)
                 self._excel_object.write(self._worksheet, self._col+1, row, password_age[username])
+                self._excel_object.write(self._worksheet, self._col+2, row, num_machines[username][0])
                 row += 1
-            self._col += 2
+            self._col += 3
             self._excel_object.save(self._workbook)
 
 
     ########################################
     ## Personal Accounts Running Services ##
     ########################################
-    def personal_accts_running_svcs(self,sqlresults,password_age):
+    def personal_accts_running_svcs(
+        self,
+        sqlresults,
+        password_age,
+        num_machines
+    ):
         if sqlresults is not False:
             # Write bulk data to Excel workbook
             data = 'Total Personal Accounts: {}'.format(len(sqlresults))
@@ -245,19 +315,26 @@ class Output(object):
             self._excel_object.write(self._worksheet, self._col, 1, 'Personal Accounts Running Services', 'header')
             self._excel_object.write(self._worksheet, self._col, 2, 'Usernames', 'subheader')
             self._excel_object.write(self._worksheet, self._col+1, 2, 'Avg Password Age (Days)', 'subheader')
+            self._excel_object.write(self._worksheet, self._col+2, 2, 'Number of Machines', 'subheader')
             row = 3
-            for username in sqlresults:
-                self._excel_object.write(self._worksheet, self._col, row, username[0])
-                self._excel_object.write(self._worksheet, self._col+1, row, password_age[username[0]])
+            for username,_,_ in sqlresults:
+                self._excel_object.write(self._worksheet, self._col, row, username)
+                self._excel_object.write(self._worksheet, self._col+1, row, password_age[username])
+                self._excel_object.write(self._worksheet, self._col+2, row, num_machines[username][0])
                 row += 1
-            self._col += 2
+            self._col += 3
             self._excel_object.save(self._workbook)
 
 
     #######################################################
     ## Non-adm Accounts w/ Local Admin Rights on Systems ##
     #######################################################
-    def non_admin_with_local_admin(self,sqlresults,password_age):
+    def non_admin_with_local_admin(
+        self,
+        sqlresults,
+        password_age,
+        num_machines
+    ):
         if sqlresults is not False:
             # Write bulk data to Excel workbook
             data = 'Total Non-Admin Accounts: {}'.format(len(sqlresults))
@@ -265,19 +342,32 @@ class Output(object):
             self._excel_object.write(self._worksheet, self._col, 1, 'Non-Admin Accounts w/ Local Admin to Systems', 'header')
             self._excel_object.write(self._worksheet, self._col, 2, 'Usernames', 'subheader')
             self._excel_object.write(self._worksheet, self._col+1, 2, 'Avg Password Age (Days)', 'subheader')
+            self._excel_object.write(self._worksheet, self._col+2, 2, 'Number of Machines', 'subheader')
             row = 3
             for username,_,_,_ in sqlresults:
                 self._excel_object.write(self._worksheet, self._col, row, username)
                 self._excel_object.write(self._worksheet, self._col+1, row, password_age[username])
+                self._excel_object.write(self._worksheet, self._col+2, row, num_machines[username][0])
                 row += 1
-            self._col += 2
+            self._col += 3
             self._excel_object.save(self._workbook)
 
 
     #####################################
     ## Unique Expired Service Accounts ##
     #####################################
-    def unique_expired_svcs(self,max_sorted,avg_sum,avg_len,avg_overall,percent_len,all_len,percent_overall,password_age):
+    def unique_expired_svcs(
+        self,
+        max_sorted,
+        avg_sum,
+        avg_len,
+        avg_overall,
+        percent_len,
+        all_len,
+        percent_overall,
+        password_age,
+        num_machines
+    ):
             if max_sorted is not False:
                 # Write bulk data to Excel workbook
                 data = 'Oldest Non-Compliant Service: {}\n' \
@@ -290,10 +380,12 @@ class Output(object):
                 self._excel_object.write(self._worksheet, self._col, 1, 'Unique Expired Service Accounts', 'header')
                 self._excel_object.write(self._worksheet, self._col, 2, 'Username', 'subheader')
                 self._excel_object.write(self._worksheet, self._col+2, 2, 'Avg Password Age (Days)', 'subheader')
+                self._excel_object.write(self._worksheet, self._col+3, 2, 'Number of Machines', 'subheader')
                 row = 3
                 for username,_,_,_,_ in max_sorted:
                     self._excel_object.write(self._worksheet, self._col, row, username)
                     self._excel_object.write(self._worksheet, self._col+2, row, password_age[username])
+                    self._excel_object.write(self._worksheet, self._col+3, row, num_machines[username][0])
                     row += 1
                 self._col += 1
                 self._excel_object.write(self._worksheet, self._col, 2, 'Address', 'subheader')
@@ -301,14 +393,18 @@ class Output(object):
                 for _,_,address,_,_ in max_sorted:
                     self._excel_object.write(self._worksheet, self._col, row, address)
                     row += 1
-                self._col += 2
+                self._col += 3
                 self._excel_object.save(self._workbook)
 
 
     ####################
     ## Clear Text IDs ##
     ####################
-    def clear_text_ids(self,sqlcount, sqlresults):
+    def clear_text_ids(
+        self,
+        sqlcount,
+        sqlresults
+    ):
         if sqlcount is not False:
             self._excel_object.write(self._worksheet, self._col, 1, 'Clear Text IDs', 'header')
             row = 2
@@ -323,7 +419,10 @@ class Output(object):
     ##########################################
     ## Applications w/ Clear Text Passwords ##
     ##########################################
-    def apps_clear_text_passwords(self,sqlresults):
+    def apps_clear_text_passwords(
+        self,
+        sqlresults
+    ):
         if sqlresults is not False:
             self._excel_object.write(self._worksheet, self._col, 1, 'Applications with Clear Text Passwords', 'header')
             row = 2
@@ -341,7 +440,13 @@ class Output(object):
     #################################################
     ## Risky Expired Service Principal Names (SPN) ##
     #################################################
-    def risky_spns(self,risky_spns, sqlcount, password_age):
+    def risky_spns(
+        self,
+        risky_spns,
+        sqlcount,
+        password_age,
+        num_machines
+    ):
         if risky_spns is not False:
             # Write bulk data to Excel workbook
             data = 'Total Unique Expired over Total Overall: {} / {}'.format(len(risky_spns), sqlcount)
@@ -349,19 +454,31 @@ class Output(object):
             self._excel_object.write(self._worksheet, self._col, 1, 'Risky Expired Service Principal Names', 'header')
             self._excel_object.write(self._worksheet, self._col, 2, 'SPN', 'subheader')
             self._excel_object.write(self._worksheet, self._col+1, 2, 'Avg Password Age (Days)', 'subheader')
+            self._excel_object.write(self._worksheet, self._col+2, 2, 'Number of Machines', 'subheader')
             row = 3
             for username,_,_ in risky_spns:
                 self._excel_object.write(self._worksheet, self._col, row, username)
                 self._excel_object.write(self._worksheet, self._col+1, row, password_age[username])
+                self._excel_object.write(self._worksheet, self._col+2, row, num_machines[username][0])
                 row += 1
-            self._col += 2
+            self._col += 3
             self._excel_object.save(self._workbook)
 
 
     #######################################
     ## Hashes Found on Multiple Machines ##
     #######################################
-    def hashes_found_on_multiple(self,uniquecount, admin_hash_found, totalsrv, totalwks, totaladminsrv, totaladminwks, password_age):
+    def hashes_found_on_multiple(
+        self,
+        uniquecount,
+        admin_hash_found,
+        totalsrv,
+        totalwks,
+        totaladminsrv,
+        totaladminwks,
+        password_age,
+        num_machines
+    ):
         if totalsrv is not False:
             data = 'Total Unique Accounts: {}\n' \
                     'Total Administrative Hashes Found: {}\n' \
@@ -373,19 +490,26 @@ class Output(object):
             self._excel_object.write(self._worksheet, self._col, 1, 'Hashes Found on Multiple Machines', 'header')
             self._excel_object.write(self._worksheet, self._col, 2, 'Usernames', 'subheader')
             self._excel_object.write(self._worksheet, self._col+1, 2, 'Avg Password Age (Days)', 'subheader')
+            self._excel_object.write(self._worksheet, self._col+2, 2, 'Number of Machines', 'subheader')
             row = 2
             for username in admin_hash_found:
                 self._excel_object.write(self._worksheet, self._col, row, username)
                 self._excel_object.write(self._worksheet, self._col+1, row, password_age[username])
+                self._excel_object.write(self._worksheet, self._col+2, row, num_machines[username][0])
                 row += 1
-            self._col += 2
+            self._col += 3
             self._excel_object.save(self._workbook)
 
 
     ##################################################################
     ## Account Hashes that Expose Multiple Machines - By %age Tiers ##
     ##################################################################
-    def multi_machine_hashes(self,multi_machine_hashes,password_age):
+    def multi_machine_hashes(
+        self,
+        multi_machine_hashes,
+        password_age,
+        num_machines
+    ):
         if multi_machine_hashes is not False:
             tiers = ['> 95% Exposure','90-95% Exposure','80-90% Exposure','70-80% Exposure','60-70% Exposure',
                     '50-60% Exposure','40-50% Exposure','30-40% Exposure','20-30% Exposure','10-20% Exposure',
@@ -398,11 +522,13 @@ class Output(object):
                         self._excel_object.write(self._worksheet, self._col, 2, tiers[i], 'subheader')
                         self._excel_object.write(self._worksheet, self._col, 3, 'Usernames', 'subheader')
                         self._excel_object.write(self._worksheet, self._col+1, 3, 'Avg Password Age (Days)', 'subheader')
+                        self._excel_object.write(self._worksheet, self._col+2, 3, 'Number of Machines', 'subheader')
                         row = 4
                         for username in multi_machine_hashes[i]:
                             self._excel_object.write(self._worksheet, self._col, row, username)
                             self._excel_object.write(self._worksheet, self._col+1, row, password_age[username])
+                            self._excel_object.write(self._worksheet, self._col+2, row, num_machines[username][0])
                             row += 1
-                        self._col += 2
+                        self._col += 3
 
             self._excel_object.save(self._workbook)
