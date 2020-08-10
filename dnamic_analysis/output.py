@@ -148,14 +148,16 @@ class Output(object):
             self._excel_object.write(self._worksheet, self._col+1, 2, 'Avg Password Age (Days)', 'subheader')
             self._excel_object.write(self._worksheet, self._col+2, 2, 'Number of Machines', 'subheader')
             self._excel_object.write(self._worksheet, self._col+3, 2, 'Last Password Set', 'subheader')
+            self._excel_object.write(self._worksheet, self._col+4, 2, 'Last Logon Date', 'subheader')
             row = 3
-            for username,_,_,lastpasswordset,_,_ in abandoned_accounts:
+            for username,_,lastlogon,lastpasswordset,_,_ in abandoned_accounts:
                 self._excel_object.write(self._worksheet, self._col, row, username)
                 self._excel_object.write(self._worksheet, self._col+1, row, password_age[username])
                 self._excel_object.write(self._worksheet, self._col+2, row, num_machines[username][0])
                 self._excel_object.write(self._worksheet, self._col+3, row, lastpasswordset)
+                self._excel_object.write(self._worksheet, self._col+4, row, lastlogon)
                 row += 1
-            self._col += 4
+            self._col += 5
             self._excel_object.save(self._workbook)
 
     ###############################
@@ -176,13 +178,15 @@ class Output(object):
             self._excel_object.write(self._worksheet, self._col, 2, 'Usernames', 'subheader')
             self._excel_object.write(self._worksheet, self._col+1, 2, 'Avg Password Age (Days)', 'subheader')
             self._excel_object.write(self._worksheet, self._col+2, 2, 'Number of Machines', 'subheader')
+            self._excel_object.write(self._worksheet, self._col+3, 2, 'Last Logon Date', 'subheader')
             row = 3
-            for username,_,_,_ in abandoned_accounts:
+            for username,_,lastlogon,_ in abandoned_accounts:
                 self._excel_object.write(self._worksheet, self._col, row, username)
                 self._excel_object.write(self._worksheet, self._col+1, row, password_age[username])
                 self._excel_object.write(self._worksheet, self._col+2, row, num_machines[username][0])
+                self._excel_object.write(self._worksheet, self._col+3, row, lastlogon)
                 row += 1
-            self._col += 3
+            self._col += 4
             self._excel_object.save(self._workbook)
 
 
