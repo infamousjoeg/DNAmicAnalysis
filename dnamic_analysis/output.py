@@ -415,12 +415,17 @@ class Output(object):
     ):
         if sqlcount is not False:
             self._excel_object.write(self._worksheet, self._col, 1, 'Clear Text IDs', 'header')
+            self._excel_object.write(self._worksheet, self._col, 2, 'Username', 'subheader')
+            self._excel_object.write(self._worksheet, self._col+1, 2, 'Total Found', 'subheader')
+            self._excel_object.write(self._worksheet, self._col+2, 2, 'Password Length', 'subheader')
             row = 2
             if sqlcount > 0:
                 for username,total,length in sqlresults:
                     self._excel_object.write(self._worksheet, self._col, row, username)
+                    self._excel_object.write(self._worksheet, self._col+1, row, total)
+                    self._excel_object.write(self._worksheet, self._col+2, row, length)
                     row += 1
-            self._col += 1
+            self._col += 3
             self._excel_object.save(self._workbook)
 
 
