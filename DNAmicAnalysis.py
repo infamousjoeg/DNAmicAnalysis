@@ -18,7 +18,7 @@ from logzero import logger
 from dnamic_analysis import Database, DomainCheck, Excel, Metrics, Output
 
 __author__ = "Joe Garcia"
-__version__ = "2.0.2"
+__version__ = "2.0.3"
 __license__ = "MIT"
 
 log_timestamp = time.strftime("%Y-%m-%d_%H-%M-%S")
@@ -612,9 +612,6 @@ def main(cfg):
 
     if not unique_clear_text_apps:
         unique_clear_text_apps = False
-        unique_clear_num_machines = None
-    else:
-        unique_clear_num_machines = Metrics.number_of_machines(unique_clear_text_apps, metric_name)
 
     process_unique_clear_test_apps = threading.Thread(
         target=output.apps_clear_text_passwords,

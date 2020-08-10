@@ -425,15 +425,21 @@ class Output(object):
     ):
         if sqlresults is not False:
             self._excel_object.write(self._worksheet, self._col, 1, 'Applications with Clear Text Passwords', 'header')
-            row = 2
+            self._excel_object.write(self._worksheet, self._col, 2, 'Application Name', 'subheader')
+            self._excel_object.write(self._worksheet, self._col+1, 2, 'Username', 'subheader')
+            self._excel_object.write(self._worksheet, self._col+2, 2, 'Password Length', 'subheader')
+            row = 3
             if len(sqlresults) > 0:
                 app_names = []
-                for app_name,username,_ in sqlresults:
+                for app_name,_,_ in sqlresults:
                     app_names.append(app_name)
                 for app_name in set(app_names):
+                    index = [i for i, v in enumerate(sqlresults) if v[0] == app_name]
                     self._excel_object.write(self._worksheet, self._col, row, app_name)
+                    self._excel_object.write(self._worksheet, self._col+1, row, sqlresults[index[0]][1])
+                    self._excel_object.write(self._worksheet, self._col+2, row, sqlresults[index[0]][2])
                     row += 1
-            self._col += 1
+            self._col += 3
             self._excel_object.save(self._workbook)
 
 
