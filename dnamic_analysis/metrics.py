@@ -121,7 +121,8 @@ class Metrics(object):
         # Loop through created dict and average password age
         for account in output:
             for result in output[account]:
-                avgPassword += result
+                if result is not None:
+                    avgPassword += result
                 count += 1
             return_dict[account] = avgPassword//len(output[account])
             avgPassword = 0

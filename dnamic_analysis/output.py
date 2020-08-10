@@ -146,7 +146,7 @@ class Output(object):
             self._excel_object.write(self._worksheet, self._col+1, 2, 'Avg Password Age (Days)', 'subheader')
             self._excel_object.write(self._worksheet, self._col+2, 2, 'Number of Machines', 'subheader')
             row = 3
-            for username,_,_,_ in abandoned_accounts:
+            for username,_,_,_,_ in abandoned_accounts:
                 self._excel_object.write(self._worksheet, self._col, row, username)
                 self._excel_object.write(self._worksheet, self._col+1, row, password_age[username])
                 self._excel_object.write(self._worksheet, self._col+2, row, num_machines[username][0])
@@ -428,7 +428,7 @@ class Output(object):
             row = 2
             if len(sqlresults) > 0:
                 app_names = []
-                for app_name,username in sqlresults:
+                for app_name,username,_ in sqlresults:
                     app_names.append(app_name)
                 for app_name in set(app_names):
                     self._excel_object.write(self._worksheet, self._col, row, app_name)

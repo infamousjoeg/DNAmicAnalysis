@@ -18,7 +18,7 @@ from logzero import logger
 from dnamic_analysis import Database, DomainCheck, Excel, Metrics, Output
 
 __author__ = "Joe Garcia"
-__version__ = "2.0.0"
+__version__ = "2.0.2"
 __license__ = "MIT"
 
 log_timestamp = time.strftime("%Y-%m-%d_%H-%M-%S")
@@ -363,7 +363,6 @@ def main(cfg):
         elif unique_svcacct_domain_admins2:
             unique_domain_combined += unique_svcacct_domain_admins2
         unique_domain_passwordage = Metrics.password_age(unique_domain_combined)
-        print(unique_domain_combined)
         unique_domain_num_machines = Metrics.number_of_machines(unique_domain_combined, metric_name)
         
     else:
@@ -534,8 +533,8 @@ def main(cfg):
             uniqueSvcCombined += unique_expired_svcs_domain
         elif unique_expired_svcs_local:
             uniqueSvcCombined += unique_expired_svcs_local
-        uniqueSvcPasswordAge = Metrics.password_age(uniqueSvcCombined)
-        uniqueSvcNumMachines = Metrics.number_of_machines(uniqueSvcCombined, metric_name)
+        uniqueSvcPasswordAge = Metrics.password_age(unique_expired_svcs)
+        uniqueSvcNumMachines = Metrics.number_of_machines(unique_expired_svcs, metric_name)
     else:
         uniqueSvcMaxSorted = False
         uniqueSvcAverage = [0, 0, 0, 0]
