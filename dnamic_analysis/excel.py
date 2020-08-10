@@ -41,7 +41,7 @@ class Excel(object):
         subheader_style.font = subheader_font
         normal_style = xlwt.XFStyle()
         normal_style.font = normal_font
-        normal_style.num_format_str = "#,###.##"
+        normal_style.num_format_str = "#,###"
 
         # Declare styles to class
         self._row1_style = row1_style

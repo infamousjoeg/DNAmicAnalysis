@@ -18,7 +18,7 @@ from logzero import logger
 from dnamic_analysis import Database, DomainCheck, Excel, Metrics, Output
 
 __author__ = "Joe Garcia"
-__version__ = "2.0.0"
+__version__ = "2.0.2"
 __license__ = "MIT"
 
 log_timestamp = time.strftime("%Y-%m-%d_%H-%M-%S")
@@ -110,6 +110,7 @@ def main(cfg):
         domainAverage = Metrics.domain_avg(expired_domain)
         domainPercent = Metrics.domain_percent(expired_domain, all_domain_count, domainMaxSorted)
         domainPasswordAge = Metrics.password_age(expired_domain)
+        domainNumMachines = Metrics.number_of_machines(expired_domain, metric_name)
     else:
         domainMaxSorted = False
         domainAverage = [0, 0, 0]
@@ -125,7 +126,8 @@ def main(cfg):
             domainPercent[0],
             domainPercent[1],
             domainPercent[2],
-            domainPasswordAge
+            domainPasswordAge,
+            domainNumMachines
         )
     )
 
@@ -134,14 +136,6 @@ def main(cfg):
 
     while process_domain_expired.is_alive():
         animated_processing()
-    # output.domain_expired(
-    #     domainMaxSorted,
-    #     domainAverage[0],
-    #     domainAverage[1],
-    #     domainAverage[2],
-    #     domainPercent[0],
-    #     domainPercent[1],
-    #     domainPercent[2])
         
     print('\r\n' + status_pre + Fore.GREEN + ' Completed ' + metric_name + status_post)
 
@@ -165,6 +159,7 @@ def main(cfg):
         localAverage = Metrics.local_avg(expired_local)
         localPercent = Metrics.local_percent(expired_local, all_local_count, localMaxSorted)
         localPasswordAge = Metrics.password_age(expired_local)
+        localNumMachines = Metrics.number_of_machines(expired_local, metric_name)
     else:
         localMaxSorted = False
         localAverage = [0, 0, 0]
@@ -185,7 +180,8 @@ def main(cfg):
             localPercent[2],
             len(all_local_count),
             len(set(all_local_unique_count)),
-            localPasswordAge
+            localPasswordAge,
+            localNumMachines
         )
     )
 
@@ -194,16 +190,6 @@ def main(cfg):
 
     while process_local_expired.is_alive():
         animated_processing()
-    # output.local_expired(
-    #     localMaxSorted,
-    #     localAverage[0],
-    #     localAverage[1],
-    #     localAverage[2],
-    #     localPercent[0],
-    #     localPercent[1],
-    #     localPercent[2],
-    #     len(all_local_count),
-    #     len(set(all_local_unique_count)))
 
     print('\r\n' + status_pre + Fore.GREEN + ' Completed ' + metric_name + status_post)
 
@@ -234,10 +220,6 @@ def main(cfg):
 
         while process_local_expired_machines.is_alive():
             animated_processing()
-        # output.local_expired_machines(
-        #     localMaxGrouped,
-        #     len(all_local_count),
-        #     len(localMaxGrouped)/len(all_local_count))
 
     print('\r\n' + status_pre + Fore.GREEN + ' Completed ' + metric_name + status_post)
 
@@ -256,15 +238,18 @@ def main(cfg):
         abandoned_local = False
         abandoned_local_count = []
         abandoned_local_passwordage = None
+        abandoned_local_num_machines = None
     else:
         abandoned_local_passwordage = Metrics.password_age(abandoned_local)
+        abandoned_local_num_machines = Metrics.number_of_machines(abandoned_local, metric_name)
 
     process_abandoned_local = threading.Thread(
         target=output.local_abandoned,
         args=(
             abandoned_local,
             len(abandoned_local_count),
-            abandoned_local_passwordage
+            abandoned_local_passwordage,
+            abandoned_local_num_machines
         )
     )
 
@@ -273,9 +258,6 @@ def main(cfg):
 
     while process_abandoned_local.is_alive():
         animated_processing()
-    # output.local_abandoned(
-    #     abandoned_local,
-    #     len(abandoned_local_count))
         
     print('\r\n' + status_pre + Fore.GREEN + ' Completed ' + metric_name + status_post)
 
@@ -292,15 +274,18 @@ def main(cfg):
     if not abandoned_domain or not all_domain_count:
         abandoned_domain = False
         abandoned_domain_passwordage = None
+        abandoned_domain_num_machines = None
     else:
         abandoned_domain_passwordage = Metrics.password_age(abandoned_domain)
+        abandoned_domain_num_machines = Metrics.number_of_machines(abandoned_domain, metric_name)
 
     process_abandoned_domain = threading.Thread(
         target=output.domain_abandoned,
         args=(
             abandoned_domain,
             len(all_domain_count),
-            abandoned_domain_passwordage
+            abandoned_domain_passwordage,
+            abandoned_domain_num_machines
         )
     )
 
@@ -309,9 +294,6 @@ def main(cfg):
 
     while process_abandoned_domain.is_alive():
         animated_processing()
-    # output.domain_abandoned(
-    #     abandoned_domain,
-    #     len(all_domain_count))
 
     print('\r\n' + status_pre + Fore.GREEN + ' Completed ' + metric_name + status_post)
 
@@ -329,6 +311,7 @@ def main(cfg):
     if multi_machine_accts and all_machines_count:
         multiMachineAccounts = Metrics.multi_machine_accts(multi_machine_accts, all_machines_count[0][0])
         multiMachinePasswordAge = Metrics.password_age(multi_machine_accts)
+        multiMachineNumMachines = Metrics.number_of_machines(multi_machine_accts, metric_name)
     else:
         multiMachineAccounts = False
 
@@ -336,7 +319,8 @@ def main(cfg):
         target=output.multi_machine_accts,
         args=(
             multiMachineAccounts,
-            multiMachinePasswordAge
+            multiMachinePasswordAge,
+            multiMachineNumMachines
         )
     )
 
@@ -345,7 +329,6 @@ def main(cfg):
 
     while process_multi_machine_accts.is_alive():
         animated_processing()
-    # output.multi_machine_accts(multiMachineAccounts)
 
     print('\r\n' + status_pre + Fore.GREEN + ' Completed ' + metric_name + status_post)
 
@@ -380,6 +363,7 @@ def main(cfg):
         elif unique_svcacct_domain_admins2:
             unique_domain_combined += unique_svcacct_domain_admins2
         unique_domain_passwordage = Metrics.password_age(unique_domain_combined)
+        unique_domain_num_machines = Metrics.number_of_machines(unique_domain_combined, metric_name)
         
     else:
         unique_domain_admins = False
@@ -389,6 +373,7 @@ def main(cfg):
         unique_svcacct_domadm_usernames = []
         unique_svcacct_domadm2_usernames = []
         unique_domain_passwordage = None
+        unique_domain_num_machines = None
 
     process_unique_domain_admins = threading.Thread(
         target=output.unique_domain_admins,
@@ -397,7 +382,8 @@ def main(cfg):
             (unique_svcacct_domain_admins+unique_svcacct_domain_admins2),
             set(unique_svcacct_domadm_usernames),
             set(unique_svcacct_domadm2_usernames),
-            unique_domain_passwordage
+            unique_domain_passwordage,
+            unique_domain_num_machines
         )
     )
 
@@ -406,11 +392,6 @@ def main(cfg):
 
     while process_unique_domain_admins.is_alive():
         animated_processing()
-    # output.unique_domain_admins(
-    #     unique_domain_admins,
-    #     (unique_svcacct_domain_admins+unique_svcacct_domain_admins2),
-    #     set(unique_svcacct_domadm_usernames),
-    #     set(unique_svcacct_domadm2_usernames))
 
     print('\r\n' + status_pre + Fore.GREEN + ' Completed ' + metric_name + status_post)
 
@@ -429,11 +410,13 @@ def main(cfg):
         uniqueDomainAverage = Metrics.unique_domain_avg(unique_expired_domain)
         uniqueDomainPercent = Metrics.unique_domain_percent(unique_expired_domain, len(unique_domain_admins), uniqueDomainMaxSorted)
         uniqueDomainPasswordAge = Metrics.password_age(unique_expired_domain)
+        uniqueDomainNumMachines = Metrics.number_of_machines(unique_expired_domain, metric_name)
     else:
         uniqueDomainMaxSorted = False
         uniqueDomainAverage = [0, 0, 0]
         uniqueDomainPercent = [0, 0, 0]
         uniqueDomainPasswordAge = None
+        uniqueDomainNumMachines = None
 
     process_unique_expired_domain = threading.Thread(
         target=output.unique_domain_expired,
@@ -444,7 +427,8 @@ def main(cfg):
             uniqueDomainPercent[0],
             uniqueDomainPercent[1],
             uniqueDomainPercent[2],
-            uniqueDomainPasswordAge
+            uniqueDomainPasswordAge,
+            uniqueDomainNumMachines
         )
     )
 
@@ -453,14 +437,6 @@ def main(cfg):
 
     while process_unique_expired_domain.is_alive():
         animated_processing()
-    # output.unique_domain_expired(
-    #     uniqueDomainMaxSorted,
-    #     uniqueDomainAverage[0],
-    #     uniqueDomainAverage[1],
-    #     uniqueDomainAverage[2],
-    #     uniqueDomainPercent[0],
-    #     uniqueDomainPercent[1],
-    #     uniqueDomainPercent[2])
 
     print('\r\n' + status_pre + Fore.GREEN + ' Completed Expired Domain Privileged IDs' + status_post)
 
@@ -477,14 +453,17 @@ def main(cfg):
     if not personal_accts_running_svcs:
         personal_accts_running_svcs = False
         personal_accts_passwordage = None
+        personal_accts_num_machines = None
     else:
         personal_accts_passwordage = Metrics.password_age(personal_accts_running_svcs)
+        personal_accts_num_machines = Metrics.number_of_machines(personal_accts_running_svcs, metric_name)
 
     process_personal_accts_running_svcs = threading.Thread(
         target=output.personal_accts_running_svcs,
         args=(
             personal_accts_running_svcs,
-            personal_accts_passwordage
+            personal_accts_passwordage,
+            personal_accts_num_machines
         )
     )
 
@@ -493,8 +472,6 @@ def main(cfg):
 
     while process_personal_accts_running_svcs.is_alive():
         animated_processing()
-    # output.personal_accts_running_svcs(
-    #     personal_accts_running_svcs)
         
     print('\r\n' + status_pre + Fore.GREEN + ' Completed ' + metric_name + status_post)
 
@@ -511,14 +488,17 @@ def main(cfg):
     if not non_admin_with_local_admin:
         non_admin_with_local_admin = False
         non_admin_passwordage = None
+        non_admin_num_machines = None
     else:
         non_admin_passwordage = Metrics.password_age(non_admin_with_local_admin)
+        non_admin_num_machines = Metrics.number_of_machines(non_admin_with_local_admin, metric_name)
 
     process_non_admin_with_local_admin = threading.Thread(
         target=output.non_admin_with_local_admin,
         args=(
             non_admin_with_local_admin,
-            non_admin_passwordage
+            non_admin_passwordage,
+            non_admin_num_machines
         )
     )
 
@@ -527,8 +507,6 @@ def main(cfg):
 
     while process_non_admin_with_local_admin.is_alive():
         animated_processing()
-    # output.non_admin_with_local_admin(
-    #     non_admin_with_local_admin)
 
     print('\r\n' + status_pre + Fore.GREEN + ' Completed ' + metric_name + status_post)
 
@@ -555,12 +533,14 @@ def main(cfg):
             uniqueSvcCombined += unique_expired_svcs_domain
         elif unique_expired_svcs_local:
             uniqueSvcCombined += unique_expired_svcs_local
-        uniqueSvcPasswordAge = Metrics.password_age(uniqueSvcCombined)
+        uniqueSvcPasswordAge = Metrics.password_age(unique_expired_svcs)
+        uniqueSvcNumMachines = Metrics.number_of_machines(unique_expired_svcs, metric_name)
     else:
         uniqueSvcMaxSorted = False
         uniqueSvcAverage = [0, 0, 0, 0]
         uniqueSvcPercent = [0, 0, 0, 0]
         uniqueSvcPasswordAge = None
+        uniqueSvcNumMachines = None
 
     process_unique_expired_svc_acct = threading.Thread(
         target=output.unique_expired_svcs,
@@ -572,7 +552,8 @@ def main(cfg):
             uniqueSvcPercent[0],
             uniqueSvcPercent[1],
             uniqueSvcPercent[2],
-            uniqueSvcPasswordAge
+            uniqueSvcPasswordAge,
+            uniqueSvcNumMachines
         )
     )
 
@@ -581,14 +562,6 @@ def main(cfg):
 
     while process_unique_expired_svc_acct.is_alive():
         animated_processing()
-    # output.unique_expired_svcs(
-    #     uniqueSvcMaxSorted,
-    #     uniqueSvcAverage[0],
-    #     uniqueSvcAverage[1],
-    #     uniqueSvcAverage[2],
-    #     uniqueSvcPercent[0],
-    #     uniqueSvcPercent[1],
-    #     uniqueSvcPercent[2])
 
     print('\r\n' + status_pre + Fore.GREEN + ' Completed ' + metric_name + status_post)
 
@@ -624,9 +597,6 @@ def main(cfg):
 
     while process_clear_text_ids.is_alive():
         animated_processing()
-    # output.clear_text_ids(
-    #     clear_text_ids_count,
-    #     clear_text_ids)
         
     print('\r\n' + status_pre + Fore.GREEN + ' Completed ' + metric_name + status_post)
 
@@ -642,6 +612,9 @@ def main(cfg):
 
     if not unique_clear_text_apps:
         unique_clear_text_apps = False
+        unique_clear_num_machines = None
+    else:
+        unique_clear_num_machines = Metrics.number_of_machines(unique_clear_text_apps, metric_name)
 
     process_unique_clear_test_apps = threading.Thread(
         target=output.apps_clear_text_passwords,
@@ -653,8 +626,6 @@ def main(cfg):
 
     while process_unique_clear_test_apps.is_alive():
         animated_processing()
-    # output.apps_clear_text_passwords(
-    #     unique_clear_text_apps)
         
     print('\r\n' + status_pre + Fore.GREEN + ' Completed ' + metric_name + status_post)
 
@@ -673,15 +644,19 @@ def main(cfg):
         risky_spns = False
         spns_count[0][0] = None
         spns_passwordage = None
+        spns_num_machines = None
     else:
         spns_passwordage = Metrics.password_age(risky_spns)
+        spns_num_machines = Metrics.number_of_machines(risky_spns, metric_name)
 
     process_risky_spns = threading.Thread(
         target=output.risky_spns,
         args=(
             risky_spns,
             spns_count[0][0],
-            spns_passwordage)
+            spns_passwordage,
+            spns_num_machines
+        )
     )
 
     process_risky_spns.daemon = True
@@ -689,9 +664,6 @@ def main(cfg):
 
     while process_risky_spns.is_alive():
         animated_processing()
-    # output.risky_spns(
-    #     risky_spns,
-    #     spns_count[0][0])
         
     print('\r\n' + status_pre + Fore.GREEN + ' Completed ' + metric_name + status_post)
 
@@ -733,6 +705,7 @@ def main(cfg):
             total_hash_admins_wks += hashes_found_on_multiple_admins[x][3]
 
         total_hash_passwordage = Metrics.password_age(total_hash_combined)
+        total_hash_num_machines = Metrics.number_of_machines(total_hash_combined, metric_name)
     else:
         unique_hash_name = []
         admin_hash_found = []
@@ -741,6 +714,7 @@ def main(cfg):
         total_hash_admins_srv = 0
         total_hash_admins_wks = 0
         total_hash_passwordage = None
+        total_hash_num_machines = None
 
     process_hashes_found_on_multiple = threading.Thread(
         target=output.hashes_found_on_multiple,
@@ -751,7 +725,8 @@ def main(cfg):
             total_hash_wks,
             total_hash_admins_srv,
             total_hash_admins_wks,
-            total_hash_passwordage
+            total_hash_passwordage,
+            total_hash_num_machines
         )
     )
 
@@ -760,13 +735,6 @@ def main(cfg):
 
     while process_hashes_found_on_multiple.is_alive():
         animated_processing()
-    # output.hashes_found_on_multiple(
-    #     len(unique_hash_name),
-    #     sorted(admin_hash_found, key=str.lower),
-    #     total_hash_srv,
-    #     total_hash_wks,
-    #     total_hash_admins_srv,
-    #     total_hash_admins_wks)
 
     print('\r\n' + status_pre + Fore.GREEN + ' Completed ' + metric_name + status_post)
 
@@ -783,15 +751,18 @@ def main(cfg):
     if multi_machine_hashes and all_machines_count:
         multiMachineHashes = Metrics.multi_machine_hashes(multi_machine_hashes, all_machines_count[0][0])
         multiMachinePasswordAge = Metrics.password_age(multi_machine_hashes)
+        multiMachineNumMachines = Metrics.number_of_machines(multi_machine_hashes, metric_name)
     else:
         multiMachineHashes = False
         multiMachinePasswordAge = None
+        multiMachineNumMachines = None
 
     process_multiple_machine_hashes = threading.Thread(
         target=output.multi_machine_hashes,
         args=(
             multiMachineHashes,
-            multiMachinePasswordAge
+            multiMachinePasswordAge,
+            multiMachineNumMachines
         )
     )
 
@@ -800,8 +771,6 @@ def main(cfg):
 
     while process_multiple_machine_hashes.is_alive():
         animated_processing()
-
-    # output.multi_machine_hashes(multiMachineHashes)
 
     print('\r\n' + status_pre + Fore.GREEN + ' Completed ' + metric_name + status_post)
 
