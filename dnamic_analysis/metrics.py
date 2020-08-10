@@ -287,14 +287,14 @@ class Metrics(object):
                         output[account].append((num_machines))
                 else:
                         output[account] = [(num_machines)]
-        elif metric_name == 'Unique Expired Local Privileged IDs' or metric_name == 'Local Abandoned Accounts' or metric_name == 'Domain Abandoned Accounts' or metric_name == 'Unique Expired Service Accounts' or metric_name == 'Account Hashes that Expose Multiple Machines':
+        elif metric_name == 'Unique Expired Local Privileged IDs' or metric_name == 'Domain Abandoned Accounts' or metric_name == 'Unique Expired Service Accounts' or metric_name == 'Account Hashes that Expose Multiple Machines':
             # Create a dictionary with a key of account and list of values of every password age
             for account,_,_,num_machines,_ in sqlresults:
                 if account in output:
                         output[account].append((num_machines))
                 else:
                         output[account] = [(num_machines)]
-        elif metric_name == 'Unique Expired Domain Privileged IDs':
+        elif metric_name == 'Unique Expired Domain Privileged IDs' or metric_name == 'Local Abandoned Accounts':
             # Create a dictionary with a key of account and list of values of every password age
             for account,_,_,_,num_machines,_ in sqlresults:
                 if account in output:
