@@ -16,7 +16,7 @@
       "ftp_password": "{{env `SMARTFILE_PASSWORD`}}",
       "ftp_hostname": "{{env `SMARTFILE_HOSTNAME`}}",
       "vm_name": "Ubuntu-18.04.4-amd64-minimal",
-      "box_version": "1804.4.20200715.201",
+      "box_version": "1804.4.20200810.202",
       "preseed": "ubuntu-server.seed",
       "virtualbox_version": "6.0.16",
       "num_cpus": "4",
