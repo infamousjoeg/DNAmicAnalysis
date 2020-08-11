@@ -1,0 +1,22 @@
+name: DNAmic Analysis Packer Automation
+
+on:
+  push:
+    branches:
+      - test-packer-via-push
+
+jobs:
+  packer:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: Packer VMWare ISO
+        run: packer build -only=vmware-iso build/packer/ubuntu/ubuntu-18.04.4/ubuntu-18.04.4-minimal.json
+        with:
+          GITHUB_USERNAME: "{{ secrets.GITHUB_USERNAME }}"
+          GITHUB_TOKEN: "{{ secrets.GITHUB_TOKEN }}"
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v1
+        with:
+          name: Ubuntu-18.04.4-amd64-minimal-v1804.4.2-vmware-iso.zip
+          path: Ubuntu-18.04.4-amd64-minimal-v1804.4.2-vmware-iso.zip
