@@ -13,6 +13,7 @@ coverage = "*"
 xlwt = "*"
 pyyaml = "*"
 alive-progress = "*"
+xlsxwriter = "*"
 
 [requires]
 python_version = "3.8"
