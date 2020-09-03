@@ -5,3 +5,4 @@ from .html import *
 from .pptx import *
 from .excel import *
 from .output import *
+from .xlsx import *
