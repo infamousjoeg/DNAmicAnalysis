@@ -54,7 +54,8 @@ class Xlsx(object):
             # Set the top row style (row1)
             self._row1_format = workbook.add_format({
                 'font_name':    'Calibri',
-                'font_size':    10
+                'font_size':    10,
+                'text_wrap':    True
             })
             # Set the header row style
             self._header_format = workbook.add_format({
@@ -86,6 +87,8 @@ class Xlsx(object):
         try:
             # Add a worksheet to workbook with the worksheet tab title matching name
             worksheet = workbook.add_worksheet(name)
+            worksheet.set_column('A:Z', 40)
+            worksheet.autofilter('A3:Z3')
             return worksheet
         except Exception as e:
             raise Exception(e)
@@ -93,7 +96,7 @@ class Xlsx(object):
 
     # Writes `data` in the format of `type` to a cell in the worksheet specified
     # Returns true if successful and false if failure
-    def write(self, worksheet, row, col, data, cell_format=None, rowcol=None):
+    def write(self, worksheet, col, row, data, cell_format=None, rowcol=None):
 
         try:
             if cell_format == 'row1':
@@ -152,8 +155,14 @@ class Xlsx(object):
     # Closes the workbook to further edits
     def close_workbook(self, workbook):
 
-        try:
-            workbook.close()
-            return True
-        except:
-            return False
+        while True:
+            try:
+                workbook.close()
+            except xlsxwriter.exceptions.FileCreateError as e:
+                decision = input("Exception caught in workbook.close(): {}\n"
+                                 "Please close the file if it is open in Excel.\n"
+                                 "Try to write file again? [Y/n]: ".format(e))
+                if decision != 'n':
+                    continue
+            
+            break

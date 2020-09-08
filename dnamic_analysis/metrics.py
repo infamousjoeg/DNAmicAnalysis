@@ -280,7 +280,7 @@ class Metrics(object):
                         output[account].append((num_machines))
                 else:
                         output[account] = [(num_machines)]
-        elif metric_name == 'Expired Domain Privileged IDs' or metric_name == 'Accounts w/ Multiple Machine Access - By Percentage Tiers' or metric_name == 'Non-adm Accounts w/ Local Admin Rights on Systems':
+        elif metric_name == 'Expired Domain Privileged IDs' or metric_name == 'Accounts w Multiple Machine Access By Percentage Tiers' or metric_name == 'Non-adm Accounts w Local Admin Rights on Systems':
             # Create a dictionary with a key of account and list of values of every password age
             for account,_,num_machines,_ in sqlresults:
                 if account in output:
