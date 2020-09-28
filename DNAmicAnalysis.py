@@ -624,7 +624,7 @@ def main(cfg):
         total_hash_admins_srv = 0
         total_hash_admins_wks = 0
         total_hash_passwordage = None
-        total_hash_num_machines = Non
+        total_hash_num_machines = None
         worksheet = None
 
     output.hashes_found_on_multiple(
