@@ -213,7 +213,7 @@
   ],
   "variables": {
     "archive_mirror": "http://archive.ubuntu.com/ubuntu",
-    "box_version": "1804.4.20200810.202",
+    "box_version": "1804.4.2",
     "disk_size": "40960",
     "ftp_hostname": "{{env `SMARTFILE_HOSTNAME`}}",
     "ftp_password": "{{env `SMARTFILE_PASSWORD`}}",

@@ -1,5 +1,7 @@
 import ntpath
 import sqlite3
+import sys
+import time
 from datetime import datetime
 from pathlib import Path
 from sqlite3 import Error
@@ -16,6 +18,11 @@ class Database(object):
         self._disabledSqlQuery = "0"
         if disabled is False:
             self._disabledSqlQuery = "1"
+        self._progressIndex = 0
+        self._metricName = None
+        # Set the value below to increase performance for larger data sets
+        # Note: This is the amount of SQLite VMs per progress report - NOT RESULTS!
+        self._progressIncrement = 100000
         
         # Parse scan date & time if no override detected
         if not scan_datetime['override']:
@@ -38,6 +45,12 @@ class Database(object):
             logger.info("Manual override detected, received scan datetime as: {}".format(self._scanDateTime))
 
 
+    def progress_handler(self):
+        """ Handles progress animation during SQLite database queries """
+        self._progressIndex += 1
+        print("{} Processing... [{}]".format(self._metricName, self._progressIndex), end="\r", flush=True)
+
+
     def create_connection(self):
         """ Create a database connection to the SQLite database """
         try:
@@ -50,7 +63,7 @@ class Database(object):
         return None
 
 
-    def exec_fromfile(self, sqlfile, regex_flag=False, regex_array=None):
+    def exec_fromfile(self, sqlfile, metric_name, regex_flag=False, regex_array=None):
         """ Executes the query from a SQL file and returns all rows """
         # Open and read the SQL file as a single buffer
         try:
@@ -63,6 +76,8 @@ class Database(object):
         # Create database connection
         try:
             conn = self.create_connection()
+            self._metricName = metric_name
+            conn.set_progress_handler(self.progress_handler, self._progressIncrement)
 
             # Create a cursor for the database connection
             c = conn.cursor()
@@ -111,6 +126,8 @@ class Database(object):
         except Error as e:
             logger.exception(e)
         finally:
+            print("\nFinished processing {}.".format(self._metricName), flush=True)
+            self._progressIndex = 0
             conn.close()
 
         # Return all rows returned from SQL query

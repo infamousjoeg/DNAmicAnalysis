@@ -1,5 +1,5 @@
 SELECT Accounts.Name, HCPA.Name,
-	COUNT(Accounts.Name) as NumMachines
+	HCPA.PasswordLength
 FROM HardCodedPasswordAccounts AS HCPA
 	LEFT OUTER JOIN Accounts
 		ON Accounts.Id = HCPA.WebAppAccount_id
