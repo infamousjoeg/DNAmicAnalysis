@@ -88,8 +88,27 @@ class Xlsx(object):
             # Add a worksheet to workbook with the worksheet tab title matching name
             worksheet = workbook.add_worksheet(name)
             worksheet.set_column('A:Z', 40)
-            worksheet.autofilter('A3:Z3')
-            return worksheet
+            if name == 'Expired Local Admins Total w Ma':
+                worksheet.autofilter('A1')
+                return worksheet
+            elif name == 'Clear Text IDs' or name == 'Applications w Clear Text Passw':
+                worksheet.autofilter('A2:C2')
+                return worksheet
+            elif name == 'Unique Expired Local Privileged' or name == 'Unique Expired Service Accounts':
+                worksheet.autofilter('A3:D3')
+                return worksheet
+            elif name == 'Local Abandoned Accounts' or name == 'Domain Abandoned Accounts':
+                worksheet.autofilter('A3:E3')
+                return worksheet
+            elif name == 'Unique Domain Admins':
+                worksheet.autofilter('A4:F4')
+                return worksheet
+            elif name == 'Accounts w Multiple Machine Acc' or name == 'Account Hashes that Expose Mult':
+                worksheet.autofilter('A3:Z3')
+                return worksheet
+            else:
+                worksheet.autofilter('A3:C3')
+                return worksheet
         except Exception as e:
             raise Exception(e)
 
