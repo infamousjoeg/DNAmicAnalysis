@@ -40,7 +40,7 @@ class Metrics(object):
 
 
     def local_avg(sqlresults):
-        local_avg_values = [x[3] for x in sqlresults]
+        local_avg_values = [x[4] for x in sqlresults]
         local_avg_overall = sum(local_avg_values) / len(local_avg_values)
         logger.info("Calculated Overall Average Password Age for Expired Local \
             Accounts using: {} / {}".format(
@@ -188,7 +188,7 @@ class Metrics(object):
 
 
     def unique_domain_avg(sqlresults):
-        unique_domain_avg_values = [x[4] for x in sqlresults]
+        unique_domain_avg_values = [x[5] for x in sqlresults]
         unique_domain_avg_overall = sum(unique_domain_avg_values) / len(unique_domain_avg_values)
         logger.info("Calculated Overall Average Password Age for Unique Expired Domain \
             Admins using: {} / {}".format(
@@ -210,14 +210,14 @@ class Metrics(object):
 
     def unique_svc_max(sqlresults):
         unique_svc_max_sorted = sorted(sqlresults,
-                                    key=lambda sqlresults: sqlresults[2],
+                                    key=lambda sqlresults: sqlresults[4],
                                     reverse=True)
         logger.info("Ordered Expired Services ascending by Service Name")
         return unique_svc_max_sorted
 
 
     def unique_svc_avg(sqlresults):
-        unique_svc_avg_values = [x[3] for x in sqlresults]
+        unique_svc_avg_values = [x[4] for x in sqlresults]
         unique_svc_avg_overall = sum(unique_svc_avg_values) / len(unique_svc_avg_values)
         logger.info("Calculated Overall Average Password Age for Unique Expired Services \
             using: {} / {}".format(
@@ -280,7 +280,7 @@ class Metrics(object):
                         output[account].append((num_machines))
                 else:
                         output[account] = [(num_machines)]
-        elif metric_name == 'Expired Domain Privileged IDs' or metric_name == 'Accounts w/ Multiple Machine Access - By Percentage Tiers' or metric_name == 'Non-adm Accounts w/ Local Admin Rights on Systems':
+        elif metric_name == 'Expired Domain Privileged IDs' or metric_name == 'Accounts w Multiple Machine Access By Percentage Tiers' or metric_name == 'Non-adm Accounts w Local Admin Rights on Systems':
             # Create a dictionary with a key of account and list of values of every password age
             for account,_,num_machines,_ in sqlresults:
                 if account in output:
