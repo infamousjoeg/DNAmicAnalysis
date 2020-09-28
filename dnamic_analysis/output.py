@@ -78,7 +78,7 @@ class Output(object):
                     'Total Avg Password Age: {:.2f} / {} = {:.2f} days ({:.1f} years)\n' \
                     'Total Percent Non-Compliant: {} / {} = {:.2%}\n' \
                     'Total Unique Local Privileged IDs: {}\n' \
-                    'Total Unique Local Privileged ID Names: {}'.format(max_sorted[0][0],max_sorted[0][3],max_sorted[0][3]/365,
+                    'Total Unique Local Privileged ID Names: {}'.format(max_sorted[0][0],max_sorted[0][4],max_sorted[0][4]/365,
                                                                     avg_sum,avg_len,avg_overall,avg_overall/365,percent_len,
                                                                     all_len,percent_overall,sqlcount,unique_count)
             self._excel_object.write(worksheet, self._col, 0, data, 'row1')
@@ -384,7 +384,7 @@ class Output(object):
             data = 'Oldest Non-Compliant Service: {}\n' \
                     'Max Password Age: {} days ({:.1f} years)\n' \
                     'Total Avg Password Age: {} / {} = {:.2f} days ({:.1f} years)\n' \
-                    'Total Percent Non-Compliant: {} / {} = {:.2%}'.format(max_sorted[0][0],max_sorted[0][3],max_sorted[0][3]/365,
+                    'Total Percent Non-Compliant: {} / {} = {:.2%}'.format(max_sorted[0][0],max_sorted[0][2],max_sorted[0][2]/365,
                                                                         avg_sum,avg_len,avg_overall,avg_overall/365,percent_len,
                                                                         all_len,percent_overall)
             self._excel_object.write(worksheet, self._col, 0, data, 'row1')
