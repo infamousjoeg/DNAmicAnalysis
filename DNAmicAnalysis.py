@@ -18,7 +18,7 @@ from logzero import logger
 from dnamic_analysis import Database, DomainCheck, Xlsx, Metrics, Output
 
 __author__ = "Joe Garcia"
-__version__ = "2.0.3"
+__version__ = "2.1.0"
 __license__ = "MIT"
 
 log_timestamp = time.strftime("%Y-%m-%d_%H-%M-%S")
@@ -46,13 +46,14 @@ def main(cfg):
     logger.info("Configuration values read: {}".format(cfg))
 
     # Check that database file exists
-    if not os.path.isfile(cfg['database_file']):
-        e = Exception("DNA database file located at {} does not exist.".format(cfg['database_file']))
-        logger.exception(e)
-        raise e
+    for dbfile in cfg['database_files']:
+        if not os.path.isfile(dbfile):
+            e = Exception("DNA database file located at {} does not exist.".format(dbfile))
+            logger.exception(e)
+            raise e
         
     # Database class init
-    db = Database(cfg['database_file'], cfg['include_disabled_accts'], cfg['scan_datetime'], cfg['expiration_days'])
+    db = Database(cfg['database_files'], cfg['include_disabled_accts'], cfg['scan_datetime'], cfg['expiration_days'])
 
     # Xlsx class init
     xlsx = Xlsx(cfg['domain'].lower())
