@@ -109,6 +109,8 @@ def main(cfg):
         domainMaxSorted = False
         domainAverage = [0, 0, 0]
         domainPercent = [0, 0, 0]
+        domainPasswordAge = None
+        domainNumMachines = None
     output.domain_expired(
         worksheet,
         domainMaxSorted,
@@ -150,7 +152,8 @@ def main(cfg):
         localMaxSorted = False
         localAverage = [0, 0, 0]
         localPercent = [0, 0, 0]
-        localPasswordAge = {}
+        localPasswordAge = None
+        localNumMachines = None
         all_local_count = []
         all_local_unique_count = []
         worksheet = None
@@ -275,6 +278,8 @@ def main(cfg):
         worksheet = xlsx.add_worksheet(workbook, metric_name[:31])
     else:
         multiMachineAccounts = False
+        multiMachinePasswordAge = None
+        multiMachineNumMachines = None
         worksheet = None
 
     output.multi_machine_accts(
