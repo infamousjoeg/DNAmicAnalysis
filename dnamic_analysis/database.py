@@ -50,7 +50,7 @@ class Database(object):
                 i = i + 1
         else:
             for dbfile in self._dbfiles:
-                self._scanDateTime = scan_datetime['manual_scan_datetime']
+                self._scanDateTime.append(scan_datetime['manual_scan_datetime'])
                 logger.info("Manual override detected, received scan datetime as: {}".format(self._scanDateTime[i]))
                 i = i + 1
 
