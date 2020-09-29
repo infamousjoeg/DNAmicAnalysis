@@ -1,7 +1,10 @@
 ---
-# path to where the DNA database file is located
+# path to where the DNA database file(s) is located
+# use ONLY forward slashes - the application will correct for Windows
+# list as many DNA database files as you'd like reported
 database_files:
-  - data/test/prod_DNA_2019-05-21_08-57-43-PM.db
+  - data/test/DNA_2019-05-21_08-57-43-PM.db
+  - data/test/DNA_2020-09-28_05-29-30-PM.db
 # domain name of one scanned domain that can be detected
 domain: cyberarkdemo.com
 # privileged account patterns to match
@@ -9,11 +12,11 @@ domain: cyberarkdemo.com
 # e.g. - adm^ (this will include all usernames STARTING with adm)
 account_regex:
   service_account:
-    - ^svc^
-    - ^service^
+    - svc^
+    - ^service
   admin_account:
-    - ^adm^
-    - ^admin^
+    - adm^
+    - ^admin
 # account expiration period in days to calculate compliance
 expiration_days: 90
 # yes or no: whether to include disabled accounts in metrics
@@ -26,4 +29,5 @@ scan_datetime:
   # yes or no: override the timestamped DNA.db filename with the manual_scan_datetime
   override: yes
   # Use 24-hour format for the time e.g. 2019-05-21 20:57:43 for 08:57:43 PM
+  # YYYY-MM-DD HH:MM:SS
   manual_scan_datetime: "2019-05-21 20:57:43"
