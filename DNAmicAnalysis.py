@@ -291,6 +291,66 @@ def main(cfg):
 
     print('\r\n' + status_pre + Fore.GREEN + ' Completed ' + metric_name + status_post)
 
+    #########################################################
+    ## Domain Admin Accounts w/ Multiple Machine Access - By %age Tiers ##
+    #########################################################
+
+    metric_name = 'Domain Admin Accounts w Multiple Machine Access By Percentage Tiers'
+
+    print(status_pre + Fore.YELLOW + ' Starting ' + metric_name + status_post)
+
+    multi_machine_accts_da = db.exec_fromfile("data/sql/MultipleMachineAccountsDA.sql", "Multiple Machine Accounts DA")
+
+    if multi_machine_accts_da and all_machines_count:
+        multiMachineAccountsDA = Metrics.multi_machine_accts(multi_machine_accts_da, all_machines_count[0][0])
+        multiMachinePasswordAgeDA = Metrics.password_age(multi_machine_accts_da)
+        multiMachineNumMachinesDA = Metrics.number_of_machines(multi_machine_accts_da, metric_name)
+        worksheet = xlsx.add_worksheet(workbook, metric_name[:31])
+    else:
+        multiMachineAccountsDA = False
+        multiMachinePasswordAgeDA = None
+        multiMachineNumMachinesDA = None
+        worksheet = None
+
+    output.multi_machine_accts(
+        worksheet,
+        multiMachineAccountsDA,
+        multiMachinePasswordAgeDA,
+        multiMachineNumMachinesDA
+    )
+
+    print('\r\n' + status_pre + Fore.GREEN + ' Completed ' + metric_name + status_post)
+
+    #########################################################
+    ## Domain Admin Accounts w/ Multiple Machine Access - By %age Tiers ##
+    #########################################################
+
+    metric_name = 'Non-Domain Admin Accounts w Multiple Machine Access By Percentage Tiers'
+
+    print(status_pre + Fore.YELLOW + ' Starting ' + metric_name + status_post)
+
+    multi_machine_accts_nonda = db.exec_fromfile("data/sql/MultipleMachineAccountsNonDA.sql", "Multiple Machine Accounts Non-DA")
+
+    if multi_machine_accts_da and all_machines_count:
+        multiMachineAccountsNonDA = Metrics.multi_machine_accts(multi_machine_accts_nonda, all_machines_count[0][0])
+        multiMachinePasswordAgeNonDA = Metrics.password_age(multi_machine_accts_nonda)
+        multiMachineNumMachinesNonDA = Metrics.number_of_machines(multi_machine_accts_nonda, metric_name)
+        worksheet = xlsx.add_worksheet(workbook, metric_name[:31])
+    else:
+        multiMachineAccountsNonDA = False
+        multiMachinePasswordAgeNonDA = None
+        multiMachineNumMachinesNonDA = None
+        worksheet = None
+
+    output.multi_machine_accts(
+        worksheet,
+        multiMachineAccountsNonDA,
+        multiMachinePasswordAgeNonDA,
+        multiMachineNumMachinesNonDA
+    )
+
+    print('\r\n' + status_pre + Fore.GREEN + ' Completed ' + metric_name + status_post)
+
     ##########################
     ## Unique Domain Admins ##
     ##########################

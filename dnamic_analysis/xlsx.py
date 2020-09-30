@@ -103,7 +103,7 @@ class Xlsx(object):
             elif name == 'Unique Domain Admins':
                 worksheet.autofilter('A4:F4')
                 return worksheet
-            elif name == 'Accounts w Multiple Machine Acc' or name == 'Account Hashes that Expose Mult':
+            elif name == 'Accounts w Multiple Machine Acc' or name == 'Account Hashes that Expose Mult' or name == 'Domain Admin Accounts w Multipl' or name == 'Non-Domain Admin Accounts w Mul':
                 worksheet.autofilter('A3:Z3')
                 return worksheet
             else:
