@@ -18,7 +18,7 @@ from logzero import logger
 from dnamic_analysis import Database, DomainCheck, Xlsx, Metrics, Output
 
 __author__ = "Joe Garcia"
-__version__ = "2.0.3"
+__version__ = "2.1.0"
 __license__ = "MIT"
 
 log_timestamp = time.strftime("%Y-%m-%d_%H-%M-%S")
@@ -46,13 +46,14 @@ def main(cfg):
     logger.info("Configuration values read: {}".format(cfg))
 
     # Check that database file exists
-    if not os.path.isfile(cfg['database_file']):
-        e = Exception("DNA database file located at {} does not exist.".format(cfg['database_file']))
-        logger.exception(e)
-        raise e
+    for dbfile in cfg['database_files']:
+        if not os.path.isfile(dbfile):
+            e = Exception("DNA database file located at {} does not exist.".format(dbfile))
+            logger.exception(e)
+            raise e
         
     # Database class init
-    db = Database(cfg['database_file'], cfg['include_disabled_accts'], cfg['scan_datetime'], cfg['expiration_days'])
+    db = Database(cfg['database_files'], cfg['include_disabled_accts'], cfg['scan_datetime'], cfg['expiration_days'])
 
     # Xlsx class init
     xlsx = Xlsx(cfg['domain'].lower())
@@ -108,6 +109,8 @@ def main(cfg):
         domainMaxSorted = False
         domainAverage = [0, 0, 0]
         domainPercent = [0, 0, 0]
+        domainPasswordAge = None
+        domainNumMachines = None
     output.domain_expired(
         worksheet,
         domainMaxSorted,
@@ -149,7 +152,8 @@ def main(cfg):
         localMaxSorted = False
         localAverage = [0, 0, 0]
         localPercent = [0, 0, 0]
-        localPasswordAge = {}
+        localPasswordAge = None
+        localNumMachines = None
         all_local_count = []
         all_local_unique_count = []
         worksheet = None
@@ -274,6 +278,8 @@ def main(cfg):
         worksheet = xlsx.add_worksheet(workbook, metric_name[:31])
     else:
         multiMachineAccounts = False
+        multiMachinePasswordAge = None
+        multiMachineNumMachines = None
         worksheet = None
 
     output.multi_machine_accts(
@@ -281,6 +287,66 @@ def main(cfg):
         multiMachineAccounts,
         multiMachinePasswordAge,
         multiMachineNumMachines
+    )
+
+    print('\r\n' + status_pre + Fore.GREEN + ' Completed ' + metric_name + status_post)
+
+    #########################################################
+    ## Domain Admin Accounts w/ Multiple Machine Access - By %age Tiers ##
+    #########################################################
+
+    metric_name = 'Domain Admin Accounts w Multiple Machine Access By Percentage Tiers'
+
+    print(status_pre + Fore.YELLOW + ' Starting ' + metric_name + status_post)
+
+    multi_machine_accts_da = db.exec_fromfile("data/sql/MultipleMachineAccountsDA.sql", "Multiple Machine Accounts DA")
+
+    if multi_machine_accts_da and all_machines_count:
+        multiMachineAccountsDA = Metrics.multi_machine_accts(multi_machine_accts_da, all_machines_count[0][0])
+        multiMachinePasswordAgeDA = Metrics.password_age(multi_machine_accts_da)
+        multiMachineNumMachinesDA = Metrics.number_of_machines(multi_machine_accts_da, metric_name)
+        worksheet = xlsx.add_worksheet(workbook, metric_name[:31])
+    else:
+        multiMachineAccountsDA = False
+        multiMachinePasswordAgeDA = None
+        multiMachineNumMachinesDA = None
+        worksheet = None
+
+    output.multi_machine_accts(
+        worksheet,
+        multiMachineAccountsDA,
+        multiMachinePasswordAgeDA,
+        multiMachineNumMachinesDA
+    )
+
+    print('\r\n' + status_pre + Fore.GREEN + ' Completed ' + metric_name + status_post)
+
+    #########################################################
+    ## Domain Admin Accounts w/ Multiple Machine Access - By %age Tiers ##
+    #########################################################
+
+    metric_name = 'Non-Domain Admin Accounts w Multiple Machine Access By Percentage Tiers'
+
+    print(status_pre + Fore.YELLOW + ' Starting ' + metric_name + status_post)
+
+    multi_machine_accts_nonda = db.exec_fromfile("data/sql/MultipleMachineAccountsNonDA.sql", "Multiple Machine Accounts Non-DA")
+
+    if multi_machine_accts_da and all_machines_count:
+        multiMachineAccountsNonDA = Metrics.multi_machine_accts(multi_machine_accts_nonda, all_machines_count[0][0])
+        multiMachinePasswordAgeNonDA = Metrics.password_age(multi_machine_accts_nonda)
+        multiMachineNumMachinesNonDA = Metrics.number_of_machines(multi_machine_accts_nonda, metric_name)
+        worksheet = xlsx.add_worksheet(workbook, metric_name[:31])
+    else:
+        multiMachineAccountsNonDA = False
+        multiMachinePasswordAgeNonDA = None
+        multiMachineNumMachinesNonDA = None
+        worksheet = None
+
+    output.multi_machine_accts(
+        worksheet,
+        multiMachineAccountsNonDA,
+        multiMachinePasswordAgeNonDA,
+        multiMachineNumMachinesNonDA
     )
 
     print('\r\n' + status_pre + Fore.GREEN + ' Completed ' + metric_name + status_post)

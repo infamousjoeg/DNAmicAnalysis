@@ -1,7 +1,10 @@
 ---
-# path to where the DNA database file is located
+# path to where the DNA database file(s) is located
 # use ONLY forward slashes - the application will correct for Windows
-database_file: data/test/DNA_2019-05-21_08-57-43-PM.db
+# list as many DNA database files as you'd like reported
+database_files:
+  - data/test/DNA_2019-05-21_08-57-43-PM.db
+  - data/test/DNA_2020-09-28_05-29-30-PM.db
 # domain name of one scanned domain that can be detected
 domain: cyberarkdemo.com
 # privileged account patterns to match

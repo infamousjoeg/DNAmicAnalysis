@@ -150,11 +150,17 @@ The metrics reported in this application are based on SQL queries ran on the DNA
 
 ```yaml
 ---
-# path to where the DNA database file is located
-database_file: /Users/joegarcia/Git/infamousjoeg/DNAmicAnalysis/data/test/DNA_2019-05-21_08-57-43-PM.db
+# path to where the DNA database file(s) is located
+# use ONLY forward slashes - the application will correct for Windows
+# list as many DNA database files as you'd like reported
+database_files:
+  - data/test/DNA_2019-05-21_08-57-43-PM.db
+  - data/test/DNA_2020-09-28_05-29-30-PM.db
 # domain name of one scanned domain that can be detected
 domain: cyberarkdemo.com
 # privileged account patterns to match
+# to include a wildcard, use ^
+# e.g. - adm^ (this will include all usernames STARTING with adm)
 account_regex:
   service_account:
     - svc^
@@ -162,16 +168,19 @@ account_regex:
   admin_account:
     - adm^
     - ^admin
+# account expiration period in days to calculate compliance
+expiration_days: 90
 # yes or no: whether to include disabled accounts in metrics
 include_disabled_accts: no
 # yes or no: activate test mode... do not adjust unless you
   # know what you are doing
-test_mode: yes
+test_mode: no
 # DNA scan date & time settings
 scan_datetime:
   # yes or no: override the timestamped DNA.db filename with the manual_scan_datetime
-  override: yes
+  override: no
   # Use 24-hour format for the time e.g. 2019-05-21 20:57:43 for 08:57:43 PM
+  # YYYY-MM-DD HH:MM:SS
   manual_scan_datetime: "2019-05-21 20:57:43"
 ```
 
@@ -185,9 +194,9 @@ scan_datetime:
 
 ### Output
 
-An Excel workbook in .xls format will be created and will contain the bulk data of the metrics' output.  The file is created in a `reports/` directory that the `DNAmicAnalysis.py` executable is run from.
+An Excel workbook in .xlsx format will be created and will contain the bulk data of the metrics' output.  The file is created in a `reports/` directory that the `DNAmicAnalysis.py` executable is run from.
 
-The format for the Excel filename is `DNAmicAnalysis_<domain>_<date>_<time>.xls`.
+The format for the Excel filename is `DNAmicAnalysis_<domain>_<date>_<time>.xlsx`.
 
 ## Version
 
