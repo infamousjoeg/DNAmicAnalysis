@@ -138,6 +138,7 @@ def main(cfg):
     all_local_count = db.exec_fromfile("data/sql/LocalAdministratorsCount.sql", "Local Administrator Total Count")
 
     if expired_local and all_local_count:
+        print(expired_local)
         all_local_unique_count = []
         for username in all_local_count:
             all_local_unique_count.append(username)

@@ -5,14 +5,14 @@ class Metrics(object):
 
     def domain_max(sqlresults):
         domain_max_sorted = sorted(sqlresults,
-                                    key=lambda sqlresults: sqlresults[2],
+                                    key=lambda sqlresults: sqlresults[3],
                                     reverse=True)
         logger.info("Ordered Non-Compliant Expired Domain Accounts ascending by Username")
         return domain_max_sorted
 
 
     def domain_avg(sqlresults):
-        domain_avg_values = [x[2] for x in sqlresults]
+        domain_avg_values = [x[3] for x in sqlresults]
         domain_avg_overall = sum(domain_avg_values) / len(domain_avg_values)
         logger.info("Calculated Overall Average Password Age for Expired Domain \
             Accounts using: {} / {}".format(
@@ -33,7 +33,7 @@ class Metrics(object):
 
     def local_max(sqlresults):
         local_max_sorted = sorted(sqlresults,
-                                    key=lambda sqlresults: sqlresults[2],
+                                    key=lambda sqlresults: sqlresults[4],
                                     reverse=False)
         logger.info("Ordered Non-Compliant Expired Local Accounts ascending by Username")
         return local_max_sorted
