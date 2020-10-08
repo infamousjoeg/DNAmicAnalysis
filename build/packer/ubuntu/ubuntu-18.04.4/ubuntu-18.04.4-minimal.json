@@ -230,7 +230,7 @@
     "mem_size": "4096",
     "num_cpus": "4",
     "preseed": "ubuntu-server.seed",
-    "package_date": "20201007",
+    "package_date": "20201008",
     "remote_datastore": "{{env `REMOTE_DATASTORE`}}",
     "remote_host": "{{env `REMOTE_HOST`}}",
     "remote_password": "{{env `REMOTE_PASSWORD`}}",
