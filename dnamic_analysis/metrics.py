@@ -269,7 +269,7 @@ class Metrics(object):
 
     def number_of_machines(sqlresults, metric_name):
         # Declare variables
-        output = {}
+        output = dict()
 
         if not sqlresults:
             return
@@ -294,6 +294,7 @@ class Metrics(object):
                         output[account].append((num_machines))
                 else:
                         output[account] = [(num_machines)]
+            print(output)
         elif metric_name == 'Unique Expired Domain Privileged IDs' or metric_name == 'Local Abandoned Accounts':
             # Create a dictionary with a key of account and list of values of every password age
             for account,_,_,_,num_machines,_ in sqlresults:

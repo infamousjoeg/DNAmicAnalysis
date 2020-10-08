@@ -93,7 +93,7 @@ class Output(object):
                 if username not in used_usernames:
                     self._excel_object.write(worksheet, self._col, row, username)
                     self._excel_object.write(worksheet, self._col+1, row, password_age[username])
-                    self._excel_object.write(worksheet, self._col+2, row, num_machines[username][0])
+                    self._excel_object.write(worksheet, self._col+2, row, num_machines[username])
                     self._excel_object.write(worksheet, self._col+3, row, lastpasswordset)
                     used_usernames.append(username)
                     row += 1

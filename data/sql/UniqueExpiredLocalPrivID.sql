@@ -15,4 +15,5 @@ WHERE OSAccounts.LastPasswordSet <= datetime('{scanDateTime}', '-{expirationDays
 	AND NOT (Accounts.Name LIKE '%*%'
 		OR Accounts.Name LIKE '')
 	AND OSAccounts.Enabled = {disabled}
+GROUP BY Accounts.Id
 ORDER BY PasswordAge DESC
