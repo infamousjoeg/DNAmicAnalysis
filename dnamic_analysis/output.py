@@ -37,7 +37,7 @@ class Output(object):
             data = 'Oldest Non-Compliant Username: {}\n' \
                     'Max Password Age: {} days ({:.1f} years)\n' \
                     'Total Avg Password Age: {:.2f} / {} = {:.2f} days ({:.1f} years)\n' \
-                    'Total Percent Non-Compliant: {} / {} = {:.2%}'.format(max_sorted[0][0],max_sorted[0][2],max_sorted[0][2]/365,
+                    'Total Percent Non-Compliant: {} / {} = {:.2%}'.format(max_sorted[0][0],max_sorted[0][3],max_sorted[0][3]/365,
                                                                         avg_sum,avg_len,avg_overall,avg_overall/365,percent_len,all_len,percent_overall)
             self._excel_object.write(worksheet, self._col, 0, data, 'row1')
             self._excel_object.write(worksheet, self._col, 1, 'Expired Domain Privileged IDs', 'header')
@@ -93,7 +93,7 @@ class Output(object):
                 if username not in used_usernames:
                     self._excel_object.write(worksheet, self._col, row, username)
                     self._excel_object.write(worksheet, self._col+1, row, password_age[username])
-                    self._excel_object.write(worksheet, self._col+2, row, num_machines[username][0])
+                    self._excel_object.write(worksheet, self._col+2, row, num_machines[username])
                     self._excel_object.write(worksheet, self._col+3, row, lastpasswordset)
                     used_usernames.append(username)
                     row += 1
@@ -291,7 +291,7 @@ class Output(object):
             data = 'Oldest Non-Compliant Username: {}\n' \
                     'Max Password Age: {} days ({:.1f} years)\n' \
                     'Total Avg Password Age: {} / {} = {:.2f} days ({:.1f} years)\n' \
-                    'Total Percent Non-Compliant: {} / {} = {:.2%}'.format(max_sorted[0][0],max_sorted[0][3],max_sorted[0][3]/365,
+                    'Total Percent Non-Compliant: {} / {} = {:.2%}'.format(max_sorted[0][0],max_sorted[0][4],max_sorted[0][4]/365,
                                                                         avg_sum,avg_len,avg_overall,avg_overall/365,percent_len,
                                                                         all_len,percent_overall)
             self._excel_object.write(worksheet, self._col, 0, data, 'row1')
@@ -384,7 +384,7 @@ class Output(object):
             data = 'Oldest Non-Compliant Service: {}\n' \
                     'Max Password Age: {} days ({:.1f} years)\n' \
                     'Total Avg Password Age: {} / {} = {:.2f} days ({:.1f} years)\n' \
-                    'Total Percent Non-Compliant: {} / {} = {:.2%}'.format(max_sorted[0][0],max_sorted[0][3],max_sorted[0][3]/365,
+                    'Total Percent Non-Compliant: {} / {} = {:.2%}'.format(max_sorted[0][0],max_sorted[0][4],max_sorted[0][4]/365,
                                                                         avg_sum,avg_len,avg_overall,avg_overall/365,percent_len,
                                                                         all_len,percent_overall)
             self._excel_object.write(worksheet, self._col, 0, data, 'row1')

@@ -18,7 +18,7 @@ from logzero import logger
 from dnamic_analysis import Database, DomainCheck, Xlsx, Metrics, Output
 
 __author__ = "Joe Garcia"
-__version__ = "2.1.0"
+__version__ = "2.1.1"
 __license__ = "MIT"
 
 log_timestamp = time.strftime("%Y-%m-%d_%H-%M-%S")
@@ -147,13 +147,17 @@ def main(cfg):
         localPercent = Metrics.local_percent(expired_local, all_local_count, localMaxSorted)
         localPasswordAge = Metrics.password_age(expired_local)
         localNumMachines = Metrics.number_of_machines(expired_local, metric_name)
+        combinedNumMachines = dict()
+        for username in localNumMachines:
+            combinedNumMachines[username] = sum(localNumMachines[username])
+        print(combinedNumMachines)
         worksheet = xlsx.add_worksheet(workbook, metric_name[:31])
     else:
         localMaxSorted = False
         localAverage = [0, 0, 0]
         localPercent = [0, 0, 0]
         localPasswordAge = None
-        localNumMachines = None
+        combinedNumMachines = {}
         all_local_count = []
         all_local_unique_count = []
         worksheet = None
@@ -170,7 +174,7 @@ def main(cfg):
         len(all_local_count),
         len(set(all_local_unique_count)),
         localPasswordAge,
-        localNumMachines
+        combinedNumMachines
     )
 
     print('\r\n' + status_pre + Fore.GREEN + ' Completed ' + metric_name + status_post)
