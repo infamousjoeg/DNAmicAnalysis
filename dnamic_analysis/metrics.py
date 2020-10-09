@@ -34,7 +34,7 @@ class Metrics(object):
     def local_max(sqlresults):
         local_max_sorted = sorted(sqlresults,
                                     key=lambda sqlresults: sqlresults[4],
-                                    reverse=False)
+                                    reverse=True)
         logger.info("Ordered Non-Compliant Expired Local Accounts ascending by Username")
         return local_max_sorted
 
