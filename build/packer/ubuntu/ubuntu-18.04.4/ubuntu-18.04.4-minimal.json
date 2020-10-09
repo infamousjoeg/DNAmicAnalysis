@@ -230,14 +230,14 @@
     "mem_size": "4096",
     "num_cpus": "4",
     "preseed": "ubuntu-server.seed",
-    "package_date": "20200930",
+    "package_date": "20201008",
     "remote_datastore": "{{env `REMOTE_DATASTORE`}}",
     "remote_host": "{{env `REMOTE_HOST`}}",
     "remote_password": "{{env `REMOTE_PASSWORD`}}",
     "remote_username": "{{env `REMOTE_USERNAME`}}",
     "ssh_name": "vagrant",
     "ssh_pass": "vagrant",
-    "version": "210",
+    "version": "211",
     "virtualbox_version": "6.0.16",
     "vm_name": "Ubuntu-18.04.4-amd64-minimal"
   }

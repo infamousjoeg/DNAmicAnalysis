@@ -137,13 +137,14 @@ class Database(object):
             # Fetch all rows returned from SQL query
             try:
                 current_fetched_rows = c.fetchall()
-                all_fetched_rows = all_fetched_rows + current_fetched_rows
                 row_count = len(current_fetched_rows)
+                if row_count > 0:
+                    all_fetched_rows = all_fetched_rows + current_fetched_rows
                 logger.info("Fetched {} rows".format(row_count))
             except Error as e:
                 logger.exception(e)
             finally:
-                print("\nFinished processing {} on {}.".format(self._metricName, dbfile), flush=True)
+                print("\nFinished processing {} on {} finding {} row(s).".format(self._metricName, dbfile, row_count), flush=True)
                 self._progressIndex = 0
                 conn.close()
             i = i + 1
