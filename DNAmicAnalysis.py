@@ -150,7 +150,6 @@ def main(cfg):
         combinedNumMachines = dict()
         for username in localNumMachines:
             combinedNumMachines[username] = sum(localNumMachines[username])
-        print(combinedNumMachines)
         worksheet = xlsx.add_worksheet(workbook, metric_name[:31])
     else:
         localMaxSorted = False
