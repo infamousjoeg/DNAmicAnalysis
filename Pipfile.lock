@@ -103,11 +103,11 @@
         },
         "logzero": {
             "hashes": [
-                "sha256:34fa1e2e436dfa9f37e5ff8750e932bafe0c5abbb42e1f669e4cf5ce1f179142",
-                "sha256:818072e4fcb53a3f6fb4114a92f920e1135fe6f47bffd9dc2b6c4d10eedacf27"
+                "sha256:7d1234dbdef8126b6ace4d15cf8a60418506355b2ad967e117d907026cf4f2b5",
+                "sha256:98621ae85280633a7f6ccc4f81278e9596c9b38666d76b1637dfb5d64894e4ed"
             ],
             "index": "pypi",
-            "version": "==1.5.0"
+            "version": "==1.6.2"
         },
         "pyyaml": {
             "hashes": [
@@ -135,10 +135,10 @@
         },
         "urllib3": {
             "hashes": [
-                "sha256:91056c15fa70756691db97756772bb1eb9678fa585d9184f24534b100dc60f4a",
-                "sha256:e7983572181f5e1522d9c98453462384ee92a0be7fac5f1413a1e35c56cc0461"
+                "sha256:8d7eaa5a82a1cac232164990f04874c594c9453ec55eef02eab885aa02fc17a2",
+                "sha256:f5321fbe4bf3fefa0efd0bfe7fb14e90909eb62a48ccda331726b4319897dd5e"
             ],
-            "version": "==1.25.10"
+            "version": "==1.25.11"
         },
         "xlsxwriter": {
             "hashes": [
