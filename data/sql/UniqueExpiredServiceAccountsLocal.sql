@@ -1,5 +1,5 @@
 SELECT Accounts.Name, OSAccounts.LastPasswordSet, Services.Address,
-	COUNT(Accounts.Name) as NumMachines,
+	COUNT(DISTINCT Machines.Address) as NumMachines,
 	MAX(Cast ((JulianDay(datetime('{scanDateTime}')) - JulianDay(OSAccounts.LastPasswordSet)) As Integer)) as PasswordAge
 FROM Services
 	LEFT OUTER JOIN Accounts
@@ -7,6 +7,8 @@ FROM Services
 		COLLATE nocase
 	LEFT OUTER JOIN OSAccounts
 		ON Accounts.Id = OSAccounts.accountbase_id
+	LEFT OUTER JOIN Machines
+		ON Accounts.Machine_id = Machines.Id
 WHERE OSAccounts.LastPasswordSet <= datetime('{scanDateTime}', '-{expirationDays} days')
 	AND NOT (Accounts.Name LIKE '%*%'
 		OR Accounts.Name LIKE ''

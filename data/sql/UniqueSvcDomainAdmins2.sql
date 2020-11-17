@@ -1,5 +1,5 @@
 SELECT DISTINCT Services.AccountName,
-	COUNT(Accounts.Name) as NumMachines,
+	COUNT(DISTINCT Machines.Address) as NumMachines,
 	MAX(Cast ((JulianDay(datetime('{scanDateTime}')) - JulianDay(OSAccounts.LastPasswordSet)) As Integer)) as PasswordAge
 FROM Services
 	LEFT OUTER JOIN Accounts
@@ -8,6 +8,8 @@ FROM Services
 		ON Accounts.Id = OSGroupModel.OSAccount_id
 	LEFT OUTER JOIN OSAccounts
 		ON Accounts.Id = OSAccounts.AccountBase_id
+	LEFT OUTER JOIN Machines
+		ON Accounts.Machine_id = Machines.Id
 WHERE OSGroupModel.DomainGroup LIKE '%Domain Admins%'
 	AND NOT ({whereStmt})
 	AND NOT (Accounts.Name LIKE '%*%'

@@ -1,5 +1,5 @@
 SELECT Accounts.Name, COUNT(Machines.Address) AS TotalMachines,
-	COUNT(Accounts.Name) as NumMachines,
+	COUNT(DISTINCT Machines.Address) as NumMachines,
 	MAX(Cast ((JulianDay(datetime('{scanDateTime}')) - JulianDay(OSAccounts.LastPasswordSet)) As Integer)) as PasswordAge
 FROM Accounts
 	LEFT OUTER JOIN OSGroupModel
