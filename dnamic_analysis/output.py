@@ -181,7 +181,7 @@ class Output(object):
             self._excel_object.write(worksheet, self._col+2, 2, 'Number of Machines', 'subheader')
             self._excel_object.write(worksheet, self._col+3, 2, 'Last Logon Date', 'subheader')
             row = 3
-            for username,_,lastlogon,_ in abandoned_accounts:
+            for username,_,lastlogon,_,_ in abandoned_accounts:
                 self._excel_object.write(worksheet, self._col, row, username)
                 self._excel_object.write(worksheet, self._col+1, row, password_age[username])
                 self._excel_object.write(worksheet, self._col+2, row, num_machines[username][0])
