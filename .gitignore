@@ -112,6 +112,7 @@ data/test_private
 config/test_private
 docs/~$*
 reports/*
+data/*.pdf
 
 # Packer assets
 build/packer/ubuntu/ubuntu-18.04.4/iso
