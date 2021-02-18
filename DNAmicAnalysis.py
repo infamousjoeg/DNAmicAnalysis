@@ -18,7 +18,7 @@ from logzero import logger
 from dnamic_analysis import Database, DomainCheck, Xlsx, Metrics, Output
 
 __author__ = "Joe Garcia"
-__version__ = "2.1.1"
+__version__ = "3.0.0"
 __license__ = "MIT"
 
 log_timestamp = time.strftime("%Y-%m-%d_%H-%M-%S")
