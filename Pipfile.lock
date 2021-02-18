@@ -18,11 +18,11 @@
     "default": {
         "alive-progress": {
             "hashes": [
-                "sha256:2a0d7516ec0f596d5ce53755c0913a909eb1c91854e1d782e511ef5e1dd53218",
-                "sha256:9a0fae6b94fb4e4bcd9fb51760506d29a33358ebbfef2c6516dce3e359a661b5"
+                "sha256:0f1111f56b1b870f5e5edd57e89fc97dc1ca0a73eb5c5a09533494c7e850a818",
+                "sha256:642e1ce98becf226c8c36bf24e10221085998c5465a357a66fb83b7dc618b43e"
             ],
             "index": "pypi",
-            "version": "==1.6.1"
+            "version": "==1.6.2"
         },
         "certifi": {
             "hashes": [
