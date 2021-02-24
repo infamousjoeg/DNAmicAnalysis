@@ -238,6 +238,10 @@ class Output(object):
         num_machines
     ):
         if sqlresults is not False:
+            # Turn everything lowercase for easy matching
+            password_age_lower = dict((k.lower(), v) for k,v in password_age.items())
+            num_machines_lower = dict((k.lower(), v) for k,v in num_machines.items())
+    
             data = 'Total Detected: {}\n' \
                     'Total Potential Service Accounts: {}'.format(len(sqlresults),len(svc_sqlresults))
             self._excel_object.write(worksheet, self._col, 0, data, 'row1')
@@ -248,9 +252,10 @@ class Output(object):
             self._excel_object.write(worksheet, self._col+2, 3, 'Number of Machines', 'subheader')
             row = 4
             for username,_,_ in sqlresults:
-                self._excel_object.write(worksheet, self._col, row, username)
-                self._excel_object.write(worksheet, self._col+1, row, password_age[username])
-                self._excel_object.write(worksheet, self._col+2, row, num_machines[username][0])
+                username_lower = username.lower()
+                self._excel_object.write(worksheet, self._col, row, username_lower)
+                self._excel_object.write(worksheet, self._col+1, row, password_age_lower[username_lower])
+                self._excel_object.write(worksheet, self._col+2, row, num_machines_lower[username_lower][0])
                 row += 1
             self._col += 3
             self._excel_object.write(worksheet, self._col, 2, 'Potential Service Accounts', 'subheader')
@@ -259,14 +264,18 @@ class Output(object):
             self._excel_object.write(worksheet, self._col+2, 3, 'Number of Machines', 'subheader')
             row = 4
             for username2 in svc_domadm:
-                self._excel_object.write(worksheet, self._col, row, username2)
-                self._excel_object.write(worksheet, self._col+1, row, password_age[username2])
-                self._excel_object.write(worksheet, self._col+2, row, num_machines[username2][0])
+                username2_lower = username2.lower()
+                print("username2_lower %s", username2_lower)
+                self._excel_object.write(worksheet, self._col, row, username2_lower)
+                self._excel_object.write(worksheet, self._col+1, row, password_age_lower[username2_lower])
+                self._excel_object.write(worksheet, self._col+2, row, num_machines_lower[username2_lower][0])
                 row += 1
             for username3 in svc_domadm2:
-                self._excel_object.write(worksheet, self._col, row, username3)
-                self._excel_object.write(worksheet, self._col+1, row, password_age[username3])
-                self._excel_object.write(worksheet, self._col+2, row, num_machines[username3][0])
+                username3_lower = username3.lower()
+                print("username3_lower %s", username3_lower)
+                self._excel_object.write(worksheet, self._col, row, username3_lower)
+                self._excel_object.write(worksheet, self._col+1, row, password_age_lower[username3_lower])
+                self._excel_object.write(worksheet, self._col+2, row, num_machines_lower[username3_lower][0])
                 row += 1
         self._col = 0
 
