@@ -265,14 +265,12 @@ class Output(object):
             row = 4
             for username2 in svc_domadm:
                 username2_lower = username2.lower()
-                print("username2_lower %s", username2_lower)
                 self._excel_object.write(worksheet, self._col, row, username2_lower)
                 self._excel_object.write(worksheet, self._col+1, row, password_age_lower[username2_lower])
                 self._excel_object.write(worksheet, self._col+2, row, num_machines_lower[username2_lower][0])
                 row += 1
             for username3 in svc_domadm2:
                 username3_lower = username3.lower()
-                print("username3_lower %s", username3_lower)
                 self._excel_object.write(worksheet, self._col, row, username3_lower)
                 self._excel_object.write(worksheet, self._col+1, row, password_age_lower[username3_lower])
                 self._excel_object.write(worksheet, self._col+2, row, num_machines_lower[username3_lower][0])

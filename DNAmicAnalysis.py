@@ -62,6 +62,15 @@ def main(cfg):
     # Tests class init
     output = Output(xlsx, workbook)
 
+    # Declare OS Platform data is from
+    if cfg['platform'] == 'windows' or cfg['platform'] == 'unix':
+        platform = cfg['platform']
+        logger.info("Platform recognized as {}".format(cfg['platform']))
+    else:
+        e = Exception("Platform {} not recognized.".format(cfg['platform']))
+        logger.exception(e)
+        raise e
+
     # Declare svc, adm, and both arrays properly
     svc_array = cfg['account_regex']['service_account']
     adm_array = cfg['account_regex']['admin_account']
