@@ -1,0 +1,17 @@
+SELECT Accounts.Name, Machines.Address,
+	MAX(Cast ((JulianDay(datetime('{scanDateTime}')) - JulianDay(OSAccounts.LastPasswordSet)) As Integer)) as MaxPasswordAge,
+	COUNT(DISTINCT Machines.Address) as NumMachines
+FROM Accounts
+	LEFT OUTER JOIN OSAccounts
+		ON Accounts.Id = OSAccounts.AccountBase_id
+	LEFT OUTER JOIN Machines
+		ON Accounts.Machine_id = Machines.Id
+WHERE Machines.Platform = 'Nix'
+	AND OSAccounts.LastPasswordSet <= datetime('{scanDateTime}', '-{executionDays} days')
+	AND OSAccounts.LastPasswordSet != ''
+	AND Accounts.AccountType = 'Domain'
+	AND MaxPasswordAge != '0'
+	AND ({whereStmt})
+	AND OSAccounts.Enabled = {disabled}
+GROUP BY LOWER(Machines.Address)
+ORDER BY MaxPasswordAge DESC
