@@ -712,3 +712,30 @@ class Output(object):
                     self._excel_object.write(worksheet, self._col+2, row, num_machines[username][0], 'subheader')
                     row += 1
         self._col = 0
+
+
+    ##############################################
+    ## Machines w/ Expired Root Public SSH Keys ##
+    ##############################################
+    def unix_root_pub_sshkeys(
+        self,
+        worksheet,
+        root_pub_sshkeys,
+        count_sshkeys,
+        key_age,
+        num_machines
+    ):
+        if root_pub_sshkeys is not False:
+            # Write bulk data to Excel workbook
+            data = 'Total Expired Root Public SSH Keys / Total Overall: {} / {}'.format(len(root_pub_sshkeys), count_sshkeys)
+            self._excel_object.write(worksheet, self._col, 0, data, 'row1')
+            self._excel_object.write(worksheet, self._col, 1, 'Machines w/ Expired Root Public SSH Keys', 'header')
+            self._excel_object.write(worksheet, self._col, 2, 'Address', 'subheader')
+            self._excel_object.write(worksheet, self._col+1, 2, 'Avg Key Age (Days)', 'subheader')
+            row = 3
+            for address,_,_,_ in root_pub_sshkeys:
+                self._excel_object.write(worksheet, self._col, row, address)
+                self._excel_object.write(worksheet, self._col+1, row, key_age[address])
+                self._excel_object.write(worksheet, self._col+2, row, num_machines[address][0])
+                row += 1
+        self._col = 0

@@ -1,6 +1,6 @@
-SELECT Machines.Address,
-	MAX(Cast ((JulianDay(datetime('{scanDateTime}')) - JulianDay(SshKeys.LastModifyDate)) As Integer)) as MaxKeyAge,
+SELECT LOWER(Accounts.Name) as UserName, LOWER(Machines.Address) as MachineAddress,
 	COUNT(DISTINCT Machines.Address) as NumMachines
+	MAX(Cast ((JulianDay(datetime('{scanDateTime}')) - JulianDay(SshKeys.LastModifyDate)) As Integer)) as MaxKeyAge
 FROM Accounts
 	LEFT OUTER JOIN OSAccounts
 		ON Accounts.Id = OSAccounts.AccountBase_id
@@ -16,5 +16,5 @@ WHERE Machines.Platform = 'Nix'
 	AND SshKeys.SshKeyType = 'Public'
 	AND Accounts.Name = 'root'
 	AND OSAccounts.Enabled = {disabled}
-GROUP BY LOWER(Machines.Address)
+GROUP BY MachinesAddress
 ORDER BY MaxKeyAge DESC

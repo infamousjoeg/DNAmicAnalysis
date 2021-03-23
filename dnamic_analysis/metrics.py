@@ -326,7 +326,7 @@ class Metrics(object):
 
         if not sqlresults:
             return
-        elif metric_name == 'Expired Privileged Domain ID Passwords' or metric_name == 'Expired Privileged Local ID Passwords' or metric_name == 'Abandoned Local Accounts':
+        elif metric_name == 'Expired Privileged Domain ID Passwords' or metric_name == 'Expired Privileged Local ID Passwords' or metric_name == 'Abandoned Local Accounts' or metric_name == 'Machines w/ Expired Root Public SSH Keys':
             # Create a dictionary with a key of account and list of values of every password age
             for account,_,num_machines,_ in sqlresults:
                 if account in output:

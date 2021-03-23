@@ -898,8 +898,8 @@ def main(cfg):
             u_abandoned_domain_num_machines = None
             worksheet = None
         else:
-            u_abandoned_domain_passwordage = Metrics.password_age(abandoned_domain)
-            u_abandoned_domain_num_machines = Metrics.unix_number_of_machines(abandoned_domain, metric_name)
+            u_abandoned_domain_passwordage = Metrics.password_age(u_abandoned_domain)
+            u_abandoned_domain_num_machines = Metrics.unix_number_of_machines(u_abandoned_domain, metric_name)
             worksheet = xlsx.add_worksheet(workbook, metric_name[:31])
 
         output.unix_domain_abandoned(
@@ -915,6 +915,34 @@ def main(cfg):
         ##############################################
         ## Machines w/ Expired Root Public SSH Keys ##
         ##############################################
+
+        metric_name = 'Machines w/ Expired Root Public SSH Keys'
+
+        print(status_pre + Fore.YELLOW + ' Starting ' + metric_name + status_post)
+
+        u_root_pub_sshkeys = db.exec_fromfile("data/sql/Unix_ExpiredRootPubSSHKeys.sql", "Expired Root Public SSH Keys")
+        u_root_pub_sshkeys_count = db.exec_fromfile("data/sql/Unix_TotalRootPubSSHKeys.sql", "Root Public Keys Total Count")
+
+        if not u_root_pub_sshkeys or not u_root_pub_sshkeys_count:
+            u_root_pub_sshkeys = False
+            u_root_pub_sshkeys_passwordage = None
+            u_root_pub_sshkeys_num_machines = None
+            worksheet = None
+        else:
+            u_root_pub_sshkeys_passwordage = Metrics.password_age(u_root_pub_sshkeys)
+            u_root_pub_sshkeys_num_machines = Metrics.unix_number_of_machines(u_root_pub_sshkeys, metric_name)
+            worksheet = xlsx.add_worksheet(workbook, metric_name[:31])
+
+        output.unix_root_pub_sshkeys(
+            worksheet,
+            u_root_pub_sshkeys,
+            len(u_root_pub_sshkeys_count),
+            u_root_pub_sshkeys_passwordage,
+            u_root_pub_sshkeys_num_machines
+        )
+
+        print('\r\n' + status_pre + Fore.GREEN + ' Completed ' + metric_name + status_post)
+        
 
         ########################################
         ## Machines w/ Expired Root Passwords ##
