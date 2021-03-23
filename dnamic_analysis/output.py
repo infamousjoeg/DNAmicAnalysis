@@ -651,3 +651,64 @@ class Output(object):
                     used_usernames.append(username)
                     row += 1
         self._col = 0
+
+
+    ##############################
+    ## Abandoned Local Accounts ##
+    ##############################
+    def unix_local_abandoned(
+        self,
+        worksheet,
+        abandoned_accounts,
+        count_accounts,
+        password_age,
+        num_machines
+    ):
+        if abandoned_accounts is not False:
+            # Write bulk data to Excel workbook
+            data = 'Total Abandoned / Total Overall: {} / {}'.format(len(abandoned_accounts), count_accounts)
+            self._excel_object.write(worksheet, self._col, 0, data, 'row1')
+            self._excel_object.write(worksheet, self._col, 1, 'Abandoned Local Accounts', 'header')
+            self._excel_object.write(worksheet, self._col, 2, 'Usernames', 'subheader')
+            self._excel_object.write(worksheet, self._col+1, 2, 'Avg Password Age (Days)', 'subheader')
+            self._excel_object.write(worksheet, self._col+2, 2, 'Number of Machines', 'subheader')
+            row = 3
+            for username,_,_,_ in abandoned_accounts:
+                self._excel_object.write(worksheet, self._col, row, username)
+                self._excel_object.write(worksheet, self._col+1, row, password_age[username])
+                self._excel_object.write(worksheet, self._col+2, row, num_machines[username][0])
+                row += 1
+        self._col = 0
+
+
+    ###############################
+    ## Abandoned Domain Accounts ##
+    ###############################
+    def unix_domain_abandoned(
+        self,
+        worksheet,
+        abandoned_accounts,
+        count_accounts,
+        password_age,
+        num_machines
+    ):
+        if abandoned_accounts is not False:
+            # Write bulk data to Excel workbook
+            data = 'Total Abandoned / Total Overall: {} / {}'.format(len(abandoned_accounts), count_accounts)
+            self._excel_object.write(worksheet, self._col, 0, data, 'row1')
+            self._excel_object.write(worksheet, self._col, 1, 'Abandoned Domain Accounts', 'header')
+            self._excel_object.write(worksheet, self._col, 2, 'Usernames', 'subheader')
+            self._excel_object.write(worksheet, self._col+1, 2, 'Avg Password Age (Days)', 'subheader')
+            row = 3
+            for username,_,isgroup,_,_ in abandoned_accounts:
+                if isgroup != 1:
+                    self._excel_object.write(worksheet, self._col, row, username)
+                    self._excel_object.write(worksheet, self._col+1, row, password_age[username])
+                    self._excel_object.write(worksheet, self._col+2, row, num_machines[username][0])
+                    row += 1
+                else:
+                    self._excel_object.write(worksheet, self._col, row, username, 'subheader')
+                    self._excel_object.write(worksheet, self._col+1, row, password_age[username], 'subheader')
+                    self._excel_object.write(worksheet, self._col+2, row, num_machines[username][0], 'subheader')
+                    row += 1
+        self._col = 0

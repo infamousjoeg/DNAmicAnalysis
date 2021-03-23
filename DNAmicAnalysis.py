@@ -853,9 +853,64 @@ def main(cfg):
         ## Abandoned Local Accounts ##
         ##############################
 
+        metric_name = 'Abandoned Local Accounts'
+
+        print(status_pre + Fore.YELLOW + ' Starting ' + metric_name + status_post)
+
+        u_abandoned_local = db.exec_fromfile("data/sql/Unix_ExpiredLocalSvcAccts.sql", "Abandoned Local Accounts")
+        u_abandoned_local_count = db.exec_fromfile("data/sql/Unix_TotalAbandonedLocal.sql", "Abandoned Local Total Count")
+
+        if not u_abandoned_local:
+            u_abandoned_local = False
+            u_abandoned_local_count = []
+            u_abandoned_local_passwordage = None
+            u_abandoned_local_num_machines = None
+            worksheet = None
+        else:
+            u_abandoned_local_passwordage = Metrics.password_age(u_abandoned_local)
+            u_abandoned_local_num_machines = Metrics.unix_number_of_machines(u_abandoned_local, metric_name)
+            worksheet = xlsx.add_worksheet(workbook, metric_name[:31])
+
+        output.unix_local_abandoned(
+            worksheet,
+            u_abandoned_local,
+            len(u_abandoned_local_count),
+            u_abandoned_local_passwordage,
+            u_abandoned_local_num_machines
+        )
+            
+        print('\r\n' + status_pre + Fore.GREEN + ' Completed ' + metric_name + status_post)
+
         ###############################
         ## Abandoned Domain Accounts ##
         ###############################
+
+        metric_name = 'Abandoned Domain Accounts'
+
+        print(status_pre + Fore.YELLOW + ' Starting ' + metric_name + status_post)
+
+        u_abandoned_domain = db.exec_fromfile("data/sql/Unix_DomainAbandonedAccounts.sql", "Abandoned Domain Accounts")
+        u_abandoned_domain_count = db.exec_fromfile("data/sql/Unix_TotalAbandonedDomain.sql", "Abandoned Domain Total Count")
+
+        if not u_abandoned_domain or not u_abandoned_domain_count:
+            u_abandoned_domain = False
+            u_abandoned_domain_passwordage = None
+            u_abandoned_domain_num_machines = None
+            worksheet = None
+        else:
+            u_abandoned_domain_passwordage = Metrics.password_age(abandoned_domain)
+            u_abandoned_domain_num_machines = Metrics.unix_number_of_machines(abandoned_domain, metric_name)
+            worksheet = xlsx.add_worksheet(workbook, metric_name[:31])
+
+        output.unix_domain_abandoned(
+            worksheet,
+            u_abandoned_domain,
+            len(u_abandoned_domain_count),
+            u_abandoned_domain_passwordage,
+            u_abandoned_domain_num_machines
+        )
+
+        print('\r\n' + status_pre + Fore.GREEN + ' Completed ' + metric_name + status_post)
 
         ##############################################
         ## Machines w/ Expired Root Public SSH Keys ##
