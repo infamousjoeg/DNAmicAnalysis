@@ -55,13 +55,6 @@ def main(cfg):
     # Database class init
     db = Database(cfg['database_files'], cfg['include_disabled_accts'], cfg['scan_datetime'], cfg['expiration_days'])
 
-    # Xlsx class init
-    xlsx = Xlsx(cfg['domain'].lower())
-    workbook = xlsx.create_workbook()
-
-    # Tests class init
-    output = Output(xlsx, workbook)
-
     # Declare OS Platform data is from
     if cfg['platform'].lower() == 'windows' or cfg['platform'].lower() == 'unix':
         platform = cfg['platform'].lower()
@@ -70,6 +63,13 @@ def main(cfg):
         e = Exception("Platform {} not recognized.".format(cfg['platform']))
         logger.exception(e)
         raise e
+
+    # Xlsx class init
+    xlsx = Xlsx(cfg['domain'].lower())
+    workbook = xlsx.create_workbook()
+
+    # Tests class init
+    output = Output(xlsx, workbook, platform)
 
     # Declare svc, adm, and both arrays properly
     svc_array = cfg['account_regex']['service_account']
@@ -756,14 +756,98 @@ def main(cfg):
         print('\r\n' + status_pre + Fore.GREEN + ' Completed ' + metric_name + status_post)
 
     if platform == 'unix':
-        pass
+
         ############################################
         ## Expired Privileged Domain ID Passwords ##
         ############################################
 
+        metric_name = 'Expired Privileged Domain ID Passwords'
+
+        print(status_pre + Fore.YELLOW + ' Starting ' + metric_name + status_post)
+
+        expired_domain_passwords = db.exec_fromfile("data/sql/Unix_ExpiredDomainPrivIDPasswords.sql", "Expired Privileged Domain PWs")
+        unix_domain_count = db.exec_fromfile("data/sql/Unix_TotalPrivDomain.sql", "Privileged Domain Total Count")
+
+        if expired_domain_passwords and unix_domain_count:
+            u_domainMaxSorted = Metrics.unix_domain_max(expired_domain_passwords)
+            u_domainAverage = Metrics.unix_domain_avg(expired_domain_passwords)
+            u_domainPercent = Metrics.unix_domain_percent(expired_domain_passwords, unix_domain_count, u_domainMaxSorted)
+            u_domainPasswordAge = Metrics.password_age(expired_domain_passwords)
+            u_domainNumMachines = Metrics.unix_number_of_machines(expired_domain_passwords, metric_name)
+            worksheet = xlsx.add_worksheet(workbook, metric_name[:31])
+        else:
+            worksheet = None
+            u_domainMaxSorted = False
+            u_domainAverage = [0, 0, 0]
+            u_domainPercent = [0, 0, 0]
+            u_domainPasswordAge = None
+            u_domainNumMachines = None
+        output.unix_domain_expired(
+            worksheet,
+            u_domainMaxSorted,
+            u_domainAverage[0],
+            u_domainAverage[1],
+            u_domainAverage[2],
+            u_domainPercent[0],
+            u_domainPercent[1],
+            u_domainPercent[2],
+            u_domainPasswordAge,
+            u_domainNumMachines
+        )
+            
+        print('\r\n' + status_pre + Fore.GREEN + ' Completed ' + metric_name + status_post)
+
         ###########################################
         ## Expired Privileged Local ID Passwords ##
         ###########################################
+        
+        metric_name = 'Expired Privileged Local ID Passwords'
+
+        print(status_pre + Fore.YELLOW + ' Starting ' + metric_name + status_post)
+
+        expired_local_passwords = db.exec_fromfile("data/sql/Unix_ExpiredLocalPrivIDPasswords.sql", "Expired Privileged Local PWs")
+        unix_local_count = db.exec_fromfile("data/sql/Unix_TotalPrivLocal.sql", "Privileged Local Total Count")
+
+        if expired_local_passwords and unix_local_count:
+            u_all_local_unique_count = []
+            for username in unix_local_count:
+                u_all_local_unique_count.append(username)
+
+            u_localMaxSorted = Metrics.unix_local_max(expired_local_passwords)
+            u_localAverage = Metrics.unix_local_avg(expired_local_passwords)
+            u_localPercent = Metrics.unix_local_percent(expired_local_passwords, unix_local_count, u_localMaxSorted)
+            u_localPasswordAge = Metrics.password_age(expired_local_passwords)
+            u_localNumMachines = Metrics.unix_number_of_machines(expired_local_passwords, metric_name)
+            u_combinedNumMachines = dict()
+            for username in u_localNumMachines:
+                u_combinedNumMachines[username] = sum(u_localNumMachines[username])
+            worksheet = xlsx.add_worksheet(workbook, metric_name[:31])
+        else:
+            u_localMaxSorted = False
+            u_localAverage = [0, 0, 0]
+            u_localPercent = [0, 0, 0]
+            u_localPasswordAge = None
+            u_combinedNumMachines = {}
+            unix_local_count = []
+            u_all_local_unique_count = []
+            worksheet = None
+
+        output.unix_local_expired(
+            worksheet,
+            u_localMaxSorted,
+            u_localAverage[0],
+            u_localAverage[1],
+            u_localAverage[2],
+            u_localPercent[0],
+            u_localPercent[1],
+            u_localPercent[2],
+            len(unix_local_count),
+            len(set(u_all_local_unique_count)),
+            u_localPasswordAge,
+            u_combinedNumMachines
+        )
+
+        print('\r\n' + status_pre + Fore.GREEN + ' Completed ' + metric_name + status_post)
 
         ##############################
         ## Abandoned Local Accounts ##

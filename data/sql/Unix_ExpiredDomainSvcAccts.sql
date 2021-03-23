@@ -7,7 +7,7 @@ FROM Accounts
 	LEFT OUTER JOIN Machines
 		ON Accounts.Machine_id = Machines.Id
 WHERE Machines.Platform = 'Nix'
-	AND OSAccounts.LastPasswordSet <= datetime('{scanDateTime}', '-{executionDays} days')
+	AND OSAccounts.LastPasswordSet <= datetime('{scanDateTime}', '-{expirationDays} days')
 	AND OSAccounts.LastPasswordSet != ''
 	AND Accounts.AccountType = 'Domain'
 	AND MaxPasswordAge != '0'

@@ -4,7 +4,7 @@ FROM Accounts
 		ON Accounts.Id = OSAccounts.AccountBase_id
 	LEFT OUTER JOIN Machines
 		ON Accounts.Machine_id = Machines.Id
-WHERE OSAccounts.LastPasswordSet <= datetime('{scanDateTime}', '-{executionDays} days')
+WHERE OSAccounts.LastPasswordSet <= datetime('{scanDateTime}', '-{expirationDays} days')
 	AND OSAccounts.LastLogon <= datetime('{scanDateTime}', '-1 year')
 	AND Accounts.AccountType != 'Local'
 	AND NOT Accounts.Name = 'root'

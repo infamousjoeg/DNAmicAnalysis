@@ -7,7 +7,7 @@ class Metrics(object):
     ## WINDOWS SCAN METRICS ##
     ##########################
 
-    def domain_max(self, sqlresults):
+    def domain_max(sqlresults):
         domain_max_sorted = sorted(sqlresults,
                                     key=lambda sqlresults: sqlresults[3],
                                     reverse=True)
@@ -15,7 +15,7 @@ class Metrics(object):
         return domain_max_sorted
 
 
-    def domain_avg(self, sqlresults):
+    def domain_avg(sqlresults):
         domain_avg_values = [x[3] for x in sqlresults]
         domain_avg_overall = sum(domain_avg_values) / len(domain_avg_values)
         logger.info("Calculated Overall Average Password Age for Expired Domain \
@@ -35,7 +35,7 @@ class Metrics(object):
         return len(domain_max_sorted), len(sqlcount), domain_percent_overall
 
 
-    def local_max(self, sqlresults):
+    def local_max(sqlresults):
         local_max_sorted = sorted(sqlresults,
                                     key=lambda sqlresults: sqlresults[4],
                                     reverse=True)
@@ -43,7 +43,7 @@ class Metrics(object):
         return local_max_sorted
 
 
-    def local_avg(self, sqlresults):
+    def local_avg(sqlresults):
         local_avg_values = [x[4] for x in sqlresults]
         local_avg_overall = sum(local_avg_values) / len(local_avg_values)
         logger.info("Calculated Overall Average Password Age for Expired Local \
@@ -63,7 +63,7 @@ class Metrics(object):
         return len(local_max_sorted), len(sqlcount), local_percent_overall
 
 
-    def password_age(self, sqlresults):
+    def password_age(sqlresults):
         # Declare variables
         avgPassword = 0
         count = 0
@@ -135,7 +135,7 @@ class Metrics(object):
         return return_dict
 
 
-    def local_expired_machines(self, local_max_sorted):
+    def local_expired_machines(local_max_sorted):
         # Take localMaxSorted first 2 values in each row and add to var
         local_max_pruned = [metric[0:2] for metric in local_max_sorted]
         # Create blank set
@@ -150,7 +150,7 @@ class Metrics(object):
         return local_max_grouped
 
 
-    def multi_machine_accts(self, sqlresults, sqlcount):
+    def multi_machine_accts(sqlresults, sqlcount):
         percent95 = []; percent90 = []; percent80 = []; percent70 = []; percent60 = []
         percent50 = []; percent40 = []; percent30 = []; percent20 = []; percent10 = []
         percent0 = []
@@ -183,7 +183,7 @@ class Metrics(object):
             percent20, percent10, percent0
 
 
-    def unique_domain_max(self, sqlresults):
+    def unique_domain_max(sqlresults):
             unique_domain_max_sorted = sorted(sqlresults,
                                         key=lambda sqlresults: sqlresults[3],
                                         reverse=True)
@@ -191,7 +191,7 @@ class Metrics(object):
             return unique_domain_max_sorted
 
 
-    def unique_domain_avg(self, sqlresults):
+    def unique_domain_avg(sqlresults):
         unique_domain_avg_values = [x[5] for x in sqlresults]
         unique_domain_avg_overall = sum(unique_domain_avg_values) / len(unique_domain_avg_values)
         logger.info("Calculated Overall Average Password Age for Unique Expired Domain \
@@ -212,7 +212,7 @@ class Metrics(object):
         return len(unique_domain_max_sorted), sqlcount, unique_domain_percent_overall
 
 
-    def unique_svc_max(self, sqlresults):
+    def unique_svc_max(sqlresults):
         unique_svc_max_sorted = sorted(sqlresults,
                                     key=lambda sqlresults: sqlresults[4],
                                     reverse=True)
@@ -220,7 +220,7 @@ class Metrics(object):
         return unique_svc_max_sorted
 
 
-    def unique_svc_avg(self, sqlresults):
+    def unique_svc_avg(sqlresults):
         unique_svc_avg_values = [x[4] for x in sqlresults]
         unique_svc_avg_overall = sum(unique_svc_avg_values) / len(unique_svc_avg_values)
         logger.info("Calculated Overall Average Password Age for Unique Expired Services \
@@ -239,7 +239,7 @@ class Metrics(object):
         return unique_svc_count, sqlcount, unique_svc_percent_overall
 
 
-    def multi_machine_hashes(self, sqlresults, sqlcount):
+    def multi_machine_hashes(sqlresults, sqlcount):
         percent95 = []; percent90 = []; percent80 = []; percent70 = []; percent60 = []
         percent50 = []; percent40 = []; percent30 = []; percent20 = []; percent10 = []
         percent0 = []
@@ -271,7 +271,7 @@ class Metrics(object):
             percent60, percent50, percent40, percent30, \
             percent20, percent10, percent0
 
-    def number_of_machines(self, sqlresults, metric_name):
+    def number_of_machines(sqlresults, metric_name):
         # Declare variables
         output = dict()
 
@@ -320,42 +320,74 @@ class Metrics(object):
     ## UNIX SCAN METRICS ##
     #######################
 
-    def expired_priv_domain_passwords(self, sqlresults):
-        pass
+    def unix_number_of_machines(sqlresults, metric_name):
+        # Declare variables
+        output = dict()
+
+        if not sqlresults:
+            return
+        elif metric_name == 'Expired Privileged Domain ID Passwords' or metric_name == 'Expired Privileged Local ID Passwords':
+            # Create a dictionary with a key of account and list of values of every password age
+            for account,_,num_machines,_ in sqlresults:
+                if account in output:
+                        output[account].append((num_machines))
+                else:
+                        output[account] = [(num_machines)]
+        
+        return output
 
 
-    def expired_priv_local_passwords(self, sqlresults):
-        pass
+    def unix_domain_max(sqlresults):
+        u_domain_max_sorted = sorted(sqlresults,
+                                    key=lambda sqlresults: sqlresults[3],
+                                    reverse=True)
+        logger.info("Ordered Non-Compliant Expired Domain Passwords ascending by Username")
+        return u_domain_max_sorted
 
 
-    def abandoned_local_unix(self, sqlresults):
-        pass
+    def unix_domain_avg(sqlresults):
+        u_domain_avg_values = [x[3] for x in sqlresults]
+        u_domain_avg_overall = sum(u_domain_avg_values) / len(u_domain_avg_values)
+        logger.info("Calculated Overall Average Password Age for Expired Domain \
+            Passwords using: {} / {}".format(
+                sum(u_domain_avg_values),
+                len(u_domain_avg_values)))
+        return sum(u_domain_avg_values), len(u_domain_avg_values), u_domain_avg_overall
 
 
-    def abandoned_domain_unix(self, sqlresults):
-        pass
+    @classmethod
+    def unix_domain_percent(cls, sqlresults, sqlcount, domain_max_sorted):
+        u_domain_percent_overall = len(domain_max_sorted) / len(sqlcount)
+        logger.info("Calulated Percentage Overall Non-Compliant Expired Domain \
+            Passwords using: {} / {}".format(
+                len(domain_max_sorted),
+                len(sqlcount)))
+        return len(domain_max_sorted), len(sqlcount), u_domain_percent_overall
 
 
-    def machines_expired_root_pubssh(self, sqlresults):
-        pass
-
-    
-    def machines_expired_root_passwords(self, sqlresults):
-        pass
-
-
-    def sshkeys_1024_length(self, sqlresults):
-        pass
+    def unix_local_max(sqlresults):
+        u_local_max_sorted = sorted(sqlresults,
+                                    key=lambda sqlresults: sqlresults[3],
+                                    reverse=True)
+        logger.info("Ordered Non-Compliant Expired Local Passwords ascending by Username")
+        return u_local_max_sorted
 
 
-    def instances_insecure_priv_escalation(self, sqlresults):
-        pass
+    def unix_local_avg(sqlresults):
+        u_local_avg_values = [x[3] for x in sqlresults]
+        u_local_avg_overall = sum(u_local_avg_values) / len(u_local_avg_values)
+        logger.info("Calculated Overall Average Password Age for Expired Local \
+            Passwords using: {} / {}".format(
+                sum(u_local_avg_values),
+                len(u_local_avg_values)))
+        return sum(u_local_avg_values), len(u_local_avg_values), u_local_avg_overall
 
 
-    def expired_local_svc_accounts(self, sqlresults):
-        pass
-
-
-    def expired_domain_svc_accounts(self, sqlresults):
-        pass
-
+    @classmethod
+    def unix_local_percent(cls, sqlresults, sqlcount, local_max_sorted):
+        u_local_percent_overall = len(local_max_sorted) / len(sqlcount)
+        logger.info("Calulated Percentage Overall Non-Compliant Expired Local \
+            Passwords using: {} / {}".format(
+                len(local_max_sorted),
+                len(sqlcount)))
+        return len(local_max_sorted), len(sqlcount), u_local_percent_overall

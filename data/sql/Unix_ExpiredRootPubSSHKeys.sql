@@ -11,7 +11,7 @@ FROM Accounts
 	LEFT OUTER JOIN Machines
 		ON Accounts.Machine_id = Machines.Id
 WHERE Machines.Platform = 'Nix'
-	AND SshKeys.LastModifyDate <= datetime('{scanDateTime}', '-{executionDays} days')
+	AND SshKeys.LastModifyDate <= datetime('{scanDateTime}', '-{expirationDays} days')
 	AND SshKeys.LastModifyDate != ''
 	AND SshKeys.SshKeyType = 'Public'
 	AND Accounts.Name = 'root'
