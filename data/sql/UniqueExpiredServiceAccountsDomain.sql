@@ -1,4 +1,4 @@
-SELECT Accounts.BasePath, OSAccounts.LastPasswordSet, Services.Address,
+SELECT Accounts.BasePath, OSAccounts.LastPasswordSet, Machines.Address,
 	COUNT(DISTINCT Machines.Address) as NumMachines,
 	MAX(Cast ((JulianDay(datetime('{scanDateTime}')) - JulianDay(OSAccounts.LastPasswordSet)) As Integer)) as PasswordAge
 FROM Services
@@ -16,5 +16,5 @@ WHERE OSAccounts.LastPasswordSet <= datetime('{scanDateTime}', '-{expirationDays
 	AND (Services.AccountType = 'Domain'
 		OR Accounts.AccountType = 'Domain')
 	AND OSAccounts.Enabled = {disabled}
-GROUP BY LOWER(Accounts.Name)
+GROUP BY LOWER(Machines.Address), LOWER(Accounts.Name)
 ORDER BY PasswordAge DESC

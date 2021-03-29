@@ -389,8 +389,28 @@ class Output(object):
         all_len,
         percent_overall,
         password_age,
-        num_machines
+        num_machines,
+        max_grouped
     ):
+        ####################################
+        self._excel_object.write(worksheet, self._col, 0, 'Expired Local Admins Total w/ Machine Addresses', 'header')
+        count = 0
+        row = 1
+        for value in max_grouped.items():
+            for key in value:
+                if not isinstance(key, str):
+                    if isinstance(key, list):
+                        for machine in key:
+                            self._excel_object.write(worksheet, self._col, row, machine)
+                            count = len(key)
+                            row += 1
+                else:
+                    self._excel_object.write(worksheet, self._col, row, key, 'subheader')
+                    row += 1
+
+        self._col = 0
+        ############################
+
         if max_sorted is not False:
             # Write bulk data to Excel workbook
             data = 'Oldest Non-Compliant Service: {}\n' \
@@ -404,6 +424,7 @@ class Output(object):
             self._excel_object.write(worksheet, self._col, 2, 'Username', 'subheader')
             self._excel_object.write(worksheet, self._col+2, 2, 'Avg Password Age (Days)', 'subheader')
             self._excel_object.write(worksheet, self._col+3, 2, 'Number of Machines', 'subheader')
+            count = 0
             row = 3
             for username,_,_,_,_ in max_sorted:
                 self._excel_object.write(worksheet, self._col, row, username)
@@ -413,9 +434,20 @@ class Output(object):
             self._col += 1
             self._excel_object.write(worksheet, self._col, 2, 'Address', 'subheader')
             row = 3
-            for _,_,address,_,_ in max_sorted:
-                self._excel_object.write(worksheet, self._col, row, address)
+            for value in max_grouped.items():
+                machines = []
+                for key in value:
+                    if not isinstance(key, str):
+                        if isinstance(key, list):
+                            for machine in key:
+                                machines.append(machine)
+                                count = len(key)
+                machines_list = ", ".join(machines)
+                self._excel_object.write(worksheet, self._col, row, machines_list)
                 row += 1
+            # for _,_,address,_,_ in max_sorted:
+            #     self._excel_object.write(worksheet, self._col, row, address)
+            #     row += 1
         self._col = 0
 
 
