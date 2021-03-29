@@ -1,4 +1,4 @@
-SELECT Accounts.Name, Machines.Address, OSAccounts.LastLogon,
+SELECT Accounts.BasePath, Machines.Address, OSAccounts.LastLogon,
 	COUNT(DISTINCT Machines.Address) as NumMachines,
 	MAX(Cast ((JulianDay(datetime('{scanDateTime}')) - JulianDay(OSAccounts.LastPasswordSet)) As Integer)) as MaxPasswordAge
 FROM Accounts

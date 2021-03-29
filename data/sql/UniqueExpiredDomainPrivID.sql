@@ -1,4 +1,4 @@
-SELECT Accounts.Name, Machines.Address, OSAccounts.LastPasswordSet,
+SELECT Accounts.BasePath, Machines.Address, OSAccounts.LastPasswordSet,
 	MAX(Cast ((JulianDay(datetime('{scanDateTime}')) - JulianDay(OSAccounts.LastPasswordSet)) As Integer)) as MaxPasswordAge,
 	COUNT(DISTINCT Machines.Address) as NumMachines,
 	AVG(Cast ((JulianDay(datetime('{scanDateTime}')) - JulianDay(OSAccounts.LastPasswordSet)) As Integer)) as AvgPasswordAge
