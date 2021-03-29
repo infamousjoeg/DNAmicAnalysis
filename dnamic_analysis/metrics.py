@@ -3,6 +3,10 @@ from logzero import logger
 
 class Metrics(object):
 
+    ##########################
+    ## WINDOWS SCAN METRICS ##
+    ##########################
+
     def domain_max(sqlresults):
         domain_max_sorted = sorted(sqlresults,
                                     key=lambda sqlresults: sqlresults[3],
@@ -22,7 +26,7 @@ class Metrics(object):
 
 
     @classmethod
-    def domain_percent(self, sqlresults, sqlcount, domain_max_sorted):
+    def domain_percent(cls, sqlresults, sqlcount, domain_max_sorted):
         domain_percent_overall = len(domain_max_sorted) / len(sqlcount)
         logger.info("Calulated Percentage Overall Non-Compliant Expired Domain \
             Accounts using: {} / {}".format(
@@ -50,7 +54,7 @@ class Metrics(object):
 
 
     @classmethod
-    def local_percent(self, sqlresults, sqlcount, local_max_sorted):
+    def local_percent(cls, sqlresults, sqlcount, local_max_sorted):
         local_percent_overall = len(local_max_sorted) / len(sqlcount)
         logger.info("Calulated Percentage Overall Non-Compliant Expired Local \
             Accounts using: {} / {}".format(
@@ -199,7 +203,7 @@ class Metrics(object):
 
 
     @classmethod
-    def unique_domain_percent(self, sqlresults, sqlcount, unique_domain_max_sorted):
+    def unique_domain_percent(cls, sqlresults, sqlcount, unique_domain_max_sorted):
         unique_domain_percent_overall = len(unique_domain_max_sorted) / sqlcount
         logger.info("Calulated Percentage Overall Non-Compliant Expired Domain Admins \
             using: {} / {}".format(
@@ -227,7 +231,7 @@ class Metrics(object):
 
 
     @classmethod
-    def unique_svc_percent(self, sqlresults, sqlcount, unique_svc_count):
+    def unique_svc_percent(cls, sqlresults, sqlcount, unique_svc_count):
         unique_svc_percent_overall = unique_svc_count / sqlcount
         logger.info("Calulated Percentage Overall Expired Service using: {} / {}".format(
                 unique_svc_count,
@@ -310,3 +314,61 @@ class Metrics(object):
                         output[account] = [(num_machines)]
         
         return output
+
+
+    #######################
+    ## UNIX SCAN METRICS ##
+    #######################
+
+    def unix_number_of_machines(sqlresults, metric_name):
+        # Declare variables
+        output = dict()
+
+        if not sqlresults:
+            return
+        elif metric_name == 'Expired Privileged Domain ID Passwords' or metric_name == 'Expired Privileged Local ID Passwords' or metric_name == 'Abandoned Local Accounts' or metric_name == 'Machines w Expired Root Public SSH Keys' or metric_name == 'Machines w Expired Root Passwords' or metric_name == 'Expired Local Service Accounts' or metric_name == 'Expired Domain Service Accounts':
+            # Create a dictionary with a key of account and list of values of every password age
+            for account,_,num_machines,_ in sqlresults:
+                if account in output:
+                        output[account].append((num_machines))
+                else:
+                        output[account] = [(num_machines)]
+        elif metric_name == 'Abandoned Domain Accounts':
+            # Create a dictionary with a key of account and list of values of every password age
+            for account,_,_,num_machines,_ in sqlresults:
+                if account in output:
+                        output[account].append((num_machines))
+                else:
+                        output[account] = [(num_machines)]
+        
+        return output
+
+
+    def unix_max(sqlresults, scope):
+        u_max_sorted = sorted(sqlresults,
+                                    key=lambda sqlresults: sqlresults[3],
+                                    reverse=True)
+        logger.info("Ordered Non-Compliant Expired {} ascending by Username".format(scope))
+        return u_max_sorted
+
+
+    def unix_avg(sqlresults, scope):
+        u_avg_values = [x[3] for x in sqlresults]
+        u_avg_overall = sum(u_avg_values) / len(u_avg_values)
+        logger.info("Calculated Overall Average Password Age for Expired {} \
+            using: {} / {}".format(
+                scope,
+                sum(u_avg_values),
+                len(u_avg_values)))
+        return sum(u_avg_values), len(u_avg_values), u_avg_overall
+
+
+    @classmethod
+    def unix_percent(cls, sqlresults, sqlcount, max_sorted, scope):
+        u_percent_overall = len(max_sorted) / len(sqlcount)
+        logger.info("Calulated Percentage Overall Non-Compliant Expired {} \
+            using: {} / {}".format(
+                scope,
+                len(max_sorted),
+                len(sqlcount)))
+        return len(max_sorted), len(sqlcount), u_percent_overall
