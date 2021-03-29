@@ -204,6 +204,7 @@ def main(cfg):
         localMaxGrouped = None
         if localMaxSorted is not False:
             localMaxGrouped = Metrics.local_expired_machines(localMaxSorted)
+            print(localMaxGrouped)
             worksheet = xlsx.add_worksheet(workbook, metric_name[:31])
 
         if localMaxGrouped and len(all_local_count) != 0:
@@ -548,6 +549,7 @@ def main(cfg):
                 uniqueSvcCombined += unique_expired_svcs_domain
             elif unique_expired_svcs_local:
                 uniqueSvcCombined += unique_expired_svcs_local
+            unique_expired_svc_grouped = Metrics.unique_expired_svc_machines(uniqueSvcCombined)
             uniqueSvcPasswordAge = Metrics.password_age(unique_expired_svcs)
             uniqueSvcNumMachines = Metrics.number_of_machines(unique_expired_svcs, metric_name)
 
@@ -570,7 +572,8 @@ def main(cfg):
             uniqueSvcPercent[1],
             uniqueSvcPercent[2],
             uniqueSvcPasswordAge,
-            uniqueSvcNumMachines
+            uniqueSvcNumMachines,
+            unique_expired_svc_grouped
         )
 
         print('\r\n' + status_pre + Fore.GREEN + ' Completed ' + metric_name + status_post)

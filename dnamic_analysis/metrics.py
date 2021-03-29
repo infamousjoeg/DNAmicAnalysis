@@ -149,6 +149,20 @@ class Metrics(object):
         logger.info("Grouped Expired Local Admins Total w/ Machine Names by Username")
         return local_max_grouped
 
+    def unique_expired_svc_machines(local_max_sorted):
+        # Take localMaxSorted first 2 values in each row and add to var
+        local_max_pruned = [metric[0:3] for metric in local_max_sorted]
+        # Create blank set
+        local_max_grouped = {}
+        # Group by account and add to set previously created
+        for account,_,machine in local_max_pruned:
+            if account in local_max_grouped:
+                local_max_grouped[account].append((machine))
+            else:
+                local_max_grouped[account] = [(machine)]
+        logger.info("Grouped Expired Local Admins Total w/ Machine Names by Username")
+        return local_max_grouped
+
 
     def multi_machine_accts(sqlresults, sqlcount):
         percent95 = []; percent90 = []; percent80 = []; percent70 = []; percent60 = []
