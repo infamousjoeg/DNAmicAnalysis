@@ -1,4 +1,4 @@
-SELECT Name,
+SELECT BasePath,
 	COUNT(Name) as NumMachines,
 	MAX(Cast ((JulianDay(datetime('{scanDateTime}')) - JulianDay(LastPasswordSet)) As Integer)) as PasswordAge
 FROM SPN
