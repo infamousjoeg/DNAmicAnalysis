@@ -326,7 +326,7 @@ class Metrics(object):
 
         if not sqlresults:
             return
-        elif metric_name == 'Expired Privileged Domain ID Passwords' or metric_name == 'Expired Privileged Local ID Passwords' or metric_name == 'Abandoned Local Accounts' or metric_name == 'Machines w/ Expired Root Public SSH Keys':
+        elif metric_name == 'Expired Privileged Domain ID Passwords' or metric_name == 'Expired Privileged Local ID Passwords' or metric_name == 'Abandoned Local Accounts' or metric_name == 'Machines w Expired Root Public SSH Keys' or metric_name == 'Machines w Expired Root Passwords' or metric_name == 'Expired Local Service Accounts' or metric_name == 'Expired Domain Service Accounts':
             # Create a dictionary with a key of account and list of values of every password age
             for account,_,num_machines,_ in sqlresults:
                 if account in output:
@@ -344,57 +344,31 @@ class Metrics(object):
         return output
 
 
-    def unix_domain_max(sqlresults):
-        u_domain_max_sorted = sorted(sqlresults,
+    def unix_max(sqlresults, scope):
+        u_max_sorted = sorted(sqlresults,
                                     key=lambda sqlresults: sqlresults[3],
                                     reverse=True)
-        logger.info("Ordered Non-Compliant Expired Domain Passwords ascending by Username")
-        return u_domain_max_sorted
+        logger.info("Ordered Non-Compliant Expired {} ascending by Username".format(scope))
+        return u_max_sorted
 
 
-    def unix_domain_avg(sqlresults):
-        u_domain_avg_values = [x[3] for x in sqlresults]
-        u_domain_avg_overall = sum(u_domain_avg_values) / len(u_domain_avg_values)
-        logger.info("Calculated Overall Average Password Age for Expired Domain \
-            Passwords using: {} / {}".format(
-                sum(u_domain_avg_values),
-                len(u_domain_avg_values)))
-        return sum(u_domain_avg_values), len(u_domain_avg_values), u_domain_avg_overall
+    def unix_avg(sqlresults, scope):
+        u_avg_values = [x[3] for x in sqlresults]
+        u_avg_overall = sum(u_avg_values) / len(u_avg_values)
+        logger.info("Calculated Overall Average Password Age for Expired {} \
+            using: {} / {}".format(
+                scope,
+                sum(u_avg_values),
+                len(u_avg_values)))
+        return sum(u_avg_values), len(u_avg_values), u_avg_overall
 
 
     @classmethod
-    def unix_domain_percent(cls, sqlresults, sqlcount, domain_max_sorted):
-        u_domain_percent_overall = len(domain_max_sorted) / len(sqlcount)
-        logger.info("Calulated Percentage Overall Non-Compliant Expired Domain \
-            Passwords using: {} / {}".format(
-                len(domain_max_sorted),
+    def unix_percent(cls, sqlresults, sqlcount, max_sorted, scope):
+        u_percent_overall = len(max_sorted) / len(sqlcount)
+        logger.info("Calulated Percentage Overall Non-Compliant Expired {} \
+            using: {} / {}".format(
+                scope,
+                len(max_sorted),
                 len(sqlcount)))
-        return len(domain_max_sorted), len(sqlcount), u_domain_percent_overall
-
-
-    def unix_local_max(sqlresults):
-        u_local_max_sorted = sorted(sqlresults,
-                                    key=lambda sqlresults: sqlresults[3],
-                                    reverse=True)
-        logger.info("Ordered Non-Compliant Expired Local Passwords ascending by Username")
-        return u_local_max_sorted
-
-
-    def unix_local_avg(sqlresults):
-        u_local_avg_values = [x[3] for x in sqlresults]
-        u_local_avg_overall = sum(u_local_avg_values) / len(u_local_avg_values)
-        logger.info("Calculated Overall Average Password Age for Expired Local \
-            Passwords using: {} / {}".format(
-                sum(u_local_avg_values),
-                len(u_local_avg_values)))
-        return sum(u_local_avg_values), len(u_local_avg_values), u_local_avg_overall
-
-
-    @classmethod
-    def unix_local_percent(cls, sqlresults, sqlcount, local_max_sorted):
-        u_local_percent_overall = len(local_max_sorted) / len(sqlcount)
-        logger.info("Calulated Percentage Overall Non-Compliant Expired Local \
-            Passwords using: {} / {}".format(
-                len(local_max_sorted),
-                len(sqlcount)))
-        return len(local_max_sorted), len(sqlcount), u_local_percent_overall
+        return len(max_sorted), len(sqlcount), u_percent_overall

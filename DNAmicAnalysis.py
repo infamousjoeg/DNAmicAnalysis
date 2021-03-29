@@ -769,9 +769,9 @@ def main(cfg):
         unix_domain_count = db.exec_fromfile("data/sql/Unix_TotalPrivDomain.sql", "Privileged Domain Total Count")
 
         if expired_domain_passwords and unix_domain_count:
-            u_domainMaxSorted = Metrics.unix_domain_max(expired_domain_passwords)
-            u_domainAverage = Metrics.unix_domain_avg(expired_domain_passwords)
-            u_domainPercent = Metrics.unix_domain_percent(expired_domain_passwords, unix_domain_count, u_domainMaxSorted)
+            u_domainMaxSorted = Metrics.unix_max(expired_domain_passwords, "Domain Passwords")
+            u_domainAverage = Metrics.unix_avg(expired_domain_passwords, "Domain Passwords")
+            u_domainPercent = Metrics.unix_percent(expired_domain_passwords, unix_domain_count, u_domainMaxSorted, "Domain Passwords")
             u_domainPasswordAge = Metrics.password_age(expired_domain_passwords)
             u_domainNumMachines = Metrics.unix_number_of_machines(expired_domain_passwords, metric_name)
             worksheet = xlsx.add_worksheet(workbook, metric_name[:31])
@@ -813,9 +813,9 @@ def main(cfg):
             for username in unix_local_count:
                 u_all_local_unique_count.append(username)
 
-            u_localMaxSorted = Metrics.unix_local_max(expired_local_passwords)
-            u_localAverage = Metrics.unix_local_avg(expired_local_passwords)
-            u_localPercent = Metrics.unix_local_percent(expired_local_passwords, unix_local_count, u_localMaxSorted)
+            u_localMaxSorted = Metrics.unix_max(expired_local_passwords, "Local Passwords")
+            u_localAverage = Metrics.unix_avg(expired_local_passwords, "Local Passwords")
+            u_localPercent = Metrics.unix_percent(expired_local_passwords, unix_local_count, u_localMaxSorted, "Local Passwords")
             u_localPasswordAge = Metrics.password_age(expired_local_passwords)
             u_localNumMachines = Metrics.unix_number_of_machines(expired_local_passwords, metric_name)
             u_combinedNumMachines = dict()
@@ -916,31 +916,40 @@ def main(cfg):
         ## Machines w/ Expired Root Public SSH Keys ##
         ##############################################
 
-        metric_name = 'Machines w/ Expired Root Public SSH Keys'
+        metric_name = 'Machines w Expired Root Public SSH Keys'
 
         print(status_pre + Fore.YELLOW + ' Starting ' + metric_name + status_post)
 
         u_root_pub_sshkeys = db.exec_fromfile("data/sql/Unix_ExpiredRootPubSSHKeys.sql", "Expired Root Public SSH Keys")
-        u_root_pub_sshkeys_count = db.exec_fromfile("data/sql/Unix_TotalRootPubSSHKeys.sql", "Root Public Keys Total Count")
+        u_root_pub_sshkeys_count = db.exec_fromfile("data/sql/Unix_TotalRootPubSSHKeys.sql", "Root Public SSH Keys Total Count")
 
-        if not u_root_pub_sshkeys or not u_root_pub_sshkeys_count:
-            u_root_pub_sshkeys = False
-            u_root_pub_sshkeys_passwordage = None
-            u_root_pub_sshkeys_num_machines = None
-            worksheet = None
-        else:
-            u_root_pub_sshkeys_passwordage = Metrics.password_age(u_root_pub_sshkeys)
-            u_root_pub_sshkeys_num_machines = Metrics.unix_number_of_machines(u_root_pub_sshkeys, metric_name)
+        if u_root_pub_sshkeys and u_root_pub_sshkeys_count:
+            u_root_pub_sshkeysMaxSorted = Metrics.unix_max(u_root_pub_sshkeys, "Root Public SSH Keys")
+            u_root_pub_sshkeysAverage = Metrics.unix_avg(u_root_pub_sshkeys, "Root Public SSH Keys")
+            u_root_pub_sshkeysPercent = Metrics.unix_percent(u_root_pub_sshkeys, u_root_pub_sshkeys_count, u_root_pub_sshkeysMaxSorted, "Root Public SSH Keys")
+            u_root_pub_sshkeysPasswordAge = Metrics.password_age(u_root_pub_sshkeys)
+            u_root_pub_sshkeysNumMachines = Metrics.unix_number_of_machines(u_root_pub_sshkeys, metric_name)
             worksheet = xlsx.add_worksheet(workbook, metric_name[:31])
-
+        else:
+            worksheet = None
+            u_root_pub_sshkeysMaxSorted = False
+            u_root_pub_sshkeysAverage = [0, 0, 0]
+            u_root_pub_sshkeysPercent = [0, 0, 0]
+            u_root_pub_sshkeysPasswordAge = None
+            u_root_pub_sshkeysNumMachines = None
         output.unix_root_pub_sshkeys(
             worksheet,
-            u_root_pub_sshkeys,
-            len(u_root_pub_sshkeys_count),
-            u_root_pub_sshkeys_passwordage,
-            u_root_pub_sshkeys_num_machines
+            u_root_pub_sshkeysMaxSorted,
+            u_root_pub_sshkeysAverage[0],
+            u_root_pub_sshkeysAverage[1],
+            u_root_pub_sshkeysAverage[2],
+            u_root_pub_sshkeysPercent[0],
+            u_root_pub_sshkeysPercent[1],
+            u_root_pub_sshkeysPercent[2],
+            u_root_pub_sshkeysPasswordAge,
+            u_root_pub_sshkeysNumMachines
         )
-
+            
         print('\r\n' + status_pre + Fore.GREEN + ' Completed ' + metric_name + status_post)
         
 
@@ -948,21 +957,189 @@ def main(cfg):
         ## Machines w/ Expired Root Passwords ##
         ########################################
 
+        metric_name = 'Machines w Expired Root Passwords'
+
+        print(status_pre + Fore.YELLOW + ' Starting ' + metric_name + status_post)
+
+        u_root_passwords = db.exec_fromfile("data/sql/Unix_ExpiredRootPasswords.sql", "Expired Root Passwords")
+        u_root_passwords_count = db.exec_fromfile("data/sql/Unix_TotalRootPasswords.sql", "Root Passwords Total Count")
+
+        if u_root_passwords and u_root_passwords_count:
+            u_root_passwordsMaxSorted = Metrics.unix_max(u_root_passwords, "Root Passwords")
+            u_root_passwordsAverage = Metrics.unix_avg(u_root_passwords, "Root Passwords")
+            u_root_passwordsPercent = Metrics.unix_percent(u_root_passwords, u_root_passwords_count, u_root_passwordsMaxSorted, "Root Passwords")
+            u_root_passwordsPasswordAge = Metrics.password_age(u_root_passwords)
+            u_root_passwordsNumMachines = Metrics.unix_number_of_machines(u_root_passwords, metric_name)
+            worksheet = xlsx.add_worksheet(workbook, metric_name[:31])
+        else:
+            worksheet = None
+            u_root_passwordsMaxSorted = False
+            u_root_passwordsAverage = [0, 0, 0]
+            u_root_passwordsPercent = [0, 0, 0]
+            u_root_passwordsPasswordAge = None
+            u_root_passwordsNumMachines = None
+        output.unix_root_passwords(
+            worksheet,
+            u_root_passwordsMaxSorted,
+            u_root_passwordsAverage[0],
+            u_root_passwordsAverage[1],
+            u_root_passwordsAverage[2],
+            u_root_passwordsPercent[0],
+            u_root_passwordsPercent[1],
+            u_root_passwordsPercent[2],
+            u_root_passwordsPasswordAge,
+            u_root_passwordsNumMachines
+        )
+            
+        print('\r\n' + status_pre + Fore.GREEN + ' Completed ' + metric_name + status_post)
+
         #################################
         ## SSH Keys w/ 1024 bit length ##
         #################################
+
+        metric_name = 'SSH Keys w 1024 bit Length'
+
+        print(status_pre + Fore.YELLOW + ' Starting ' + metric_name + status_post)
+
+        u_sshkeys_1024 = db.exec_fromfile("data/sql/Unix_1024LengthSSHKeys.sql", "SSH Keys w/ 1024 bit Length")
+
+        if not u_sshkeys_1024:
+            u_sshkeys_1024 = False
+            worksheet = None
+        else:
+            worksheet = xlsx.add_worksheet(workbook, metric_name[:31])
+
+        output.unix_sshkeys_1024(
+            worksheet,
+            u_sshkeys_1024
+        )
+
+        print('\r\n' + status_pre + Fore.GREEN + ' Completed ' + metric_name + status_post)
 
         ################################################
         ## Instances of Insecure Privilege Escalation ##
         ################################################
 
-        ################################
-        ## Expired Local SVC Accounts ##
-        ################################
+        metric_name = 'Instances of Insecure Privilege Escalation'
+
+        print(status_pre + Fore.YELLOW + ' Starting ' + metric_name + status_post)
+
+        u_priv_escalation = db.exec_fromfile("data/sql/Unix_InsecurePrivEscalation.sql", "Insecure Priv Escalation")
+
+        if not u_priv_escalation:
+            u_priv_escalation = False
+            u_priv_escalation_unique = False
+            worksheet = None
+        else:
+            u_priv_escalation_unique = []
+
+            for _,address,_ in u_priv_escalation:
+                if address in u_priv_escalation_unique:
+                    continue
+                else:
+                    u_priv_escalation_unique.append(address)
+
+            worksheet = xlsx.add_worksheet(workbook, metric_name[:31])
+
+        output.unix_priv_escalation(
+            worksheet,
+            u_priv_escalation,
+            u_priv_escalation_unique
+        )
+
+        print('\r\n' + status_pre + Fore.GREEN + ' Completed ' + metric_name + status_post)
+
+        ####################################
+        ## Expired Local Service Accounts ##
+        ####################################
+
+        metric_name = 'Expired Local Service Accounts'
+
+        print(status_pre + Fore.YELLOW + ' Starting ' + metric_name + status_post)
+
+        u_expired_local_service = db.exec_fromfile("data/sql/Unix_ExpiredLocalSvcAccts.sql", "Expired Local Service Accounts")
+        u_expired_local_service_count = db.exec_fromfile("data/sql/Unix_TotalSvcLocal.sql", "Local Service Accounts Total Count")
+
+        if u_expired_local_service and u_expired_local_service_count:
+
+            u_expired_local_serviceMaxSorted = Metrics.unix_max(u_expired_local_service, "Local Passwords")
+            u_expired_local_serviceAverage = Metrics.unix_avg(u_expired_local_service, "Local Passwords")
+            u_expired_local_servicePercent = Metrics.unix_percent(u_expired_local_service, u_expired_local_service_count, u_expired_local_serviceMaxSorted, "Local Passwords")
+            u_expired_local_servicePasswordAge = Metrics.password_age(u_expired_local_service)
+            u_expired_local_serviceNumMachines = Metrics.unix_number_of_machines(u_expired_local_service, metric_name)
+            u_combinedNumMachines = dict()
+            for username in u_localNumMachines:
+                u_combinedNumMachines[username] = sum(u_localNumMachines[username])
+            worksheet = xlsx.add_worksheet(workbook, metric_name[:31])
+        else:
+            u_expired_local_serviceMaxSorted = False
+            u_expired_local_serviceAverage = [0, 0, 0]
+            u_expired_local_servicePercent = [0, 0, 0]
+            u_expired_local_servicePasswordAge = None
+            u_combinedNumMachines = {}
+            u_expired_local_service_count = []
+            worksheet = None
+
+        output.unix_local_service_expired(
+            worksheet,
+            u_expired_local_serviceMaxSorted,
+            u_expired_local_serviceAverage[0],
+            u_expired_local_serviceAverage[1],
+            u_expired_local_serviceAverage[2],
+            u_expired_local_servicePercent[0],
+            u_expired_local_servicePercent[1],
+            u_expired_local_servicePercent[2],
+            u_localPasswordAge,
+            u_combinedNumMachines
+        )
+
+        print('\r\n' + status_pre + Fore.GREEN + ' Completed ' + metric_name + status_post)
 
         #################################
         ## Expired Domain SVC Accounts ##
         #################################
+
+        metric_name = 'Expired Domain Service Accounts'
+
+        print(status_pre + Fore.YELLOW + ' Starting ' + metric_name + status_post)
+
+        u_expired_domain_service = db.exec_fromfile("data/sql/Unix_ExpiredDomainSvcAccts.sql", "Expired Domain Service Accounts")
+        u_expired_domain_service_count = db.exec_fromfile("data/sql/Unix_TotalSvcDomain.sql", "Domain Service Accounts Total Count")
+
+        if u_expired_domain_service and u_expired_domain_service_count:
+
+            u_expired_domain_serviceMaxSorted = Metrics.unix_max(u_expired_domain_service, "Domain Passwords")
+            u_expired_domain_serviceAverage = Metrics.unix_avg(u_expired_domain_service, "Domain Passwords")
+            u_expired_domain_servicePercent = Metrics.unix_percent(u_expired_domain_service, u_expired_domain_service_count, u_expired_domain_serviceMaxSorted, "Domain Passwords")
+            u_expired_domain_servicePasswordAge = Metrics.password_age(u_expired_domain_service)
+            u_expired_domain_serviceNumMachines = Metrics.unix_number_of_machines(u_expired_domain_service, metric_name)
+            u_combinedNumMachines = dict()
+            for username in u_domainNumMachines:
+                u_combinedNumMachines[username] = sum(u_domainNumMachines[username])
+            worksheet = xlsx.add_worksheet(workbook, metric_name[:31])
+        else:
+            u_expired_domain_serviceMaxSorted = False
+            u_expired_domain_serviceAverage = [0, 0, 0]
+            u_expired_domain_servicePercent = [0, 0, 0]
+            u_expired_domain_servicePasswordAge = None
+            u_combinedNumMachines = {}
+            u_expired_domain_service_count = []
+            worksheet = None
+
+        output.unix_domain_service_expired(
+            worksheet,
+            u_expired_domain_serviceMaxSorted,
+            u_expired_domain_serviceAverage[0],
+            u_expired_domain_serviceAverage[1],
+            u_expired_domain_serviceAverage[2],
+            u_expired_domain_servicePercent[0],
+            u_expired_domain_servicePercent[1],
+            u_expired_domain_servicePercent[2],
+            u_domainPasswordAge,
+            u_combinedNumMachines
+        )
+
+        print('\r\n' + status_pre + Fore.GREEN + ' Completed ' + metric_name + status_post)
 
     xlsx.close_workbook(workbook)
 

@@ -4,8 +4,10 @@ SELECT Accounts.Name, OSAccounts.LastPasswordSet,
 FROM Accounts
 	LEFT OUTER JOIN OSAccounts
 		ON Accounts.Id = OSAccounts.AccountBase_id
+	LEFT OUTER JOIN SshData
+		ON OSAccounts.SshData_id = SshData.Id
 	LEFT OUTER JOIN SshKeys
-		ON OSAccounts.AccountBase_id = SshKeys.Id
+		ON SshData.Id = SshKeys.SshData_id
 	LEFT OUTER JOIN Machines
 		ON Accounts.Machine_id = Machines.Id
 WHERE OSAccounts.LastPasswordSet <= datetime('{scanDateTime}', '-{expirationDays} days')

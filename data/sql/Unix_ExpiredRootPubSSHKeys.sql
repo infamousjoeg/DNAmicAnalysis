@@ -1,5 +1,5 @@
-SELECT LOWER(Accounts.Name) as UserName, LOWER(Machines.Address) as MachineAddress,
-	COUNT(DISTINCT Machines.Address) as NumMachines
+SELECT LOWER(Machines.Address) as MachineAddress, SshKeys.LastModifyDate,
+	COUNT(DISTINCT Machines.Address) as NumMachines,
 	MAX(Cast ((JulianDay(datetime('{scanDateTime}')) - JulianDay(SshKeys.LastModifyDate)) As Integer)) as MaxKeyAge
 FROM Accounts
 	LEFT OUTER JOIN OSAccounts
