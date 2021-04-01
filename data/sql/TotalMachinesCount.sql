@@ -1,3 +1,3 @@
-SELECT DISTINCT COUNT(Machines.Id) as TotalMachines
+SELECT DISTINCT Machines.Id
 FROM Machines
 WHERE ScanResult <> 'Failed'
