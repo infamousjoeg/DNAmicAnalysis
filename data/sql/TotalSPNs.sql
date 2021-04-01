@@ -1,4 +1,4 @@
-SELECT COUNT(Name)
+SELECT Name
 FROM SPN
 WHERE LastPasswordSet <= datetime('{scanDateTime}', '-{expirationDays} days')
 	AND NOT (Name LIKE '%*%'

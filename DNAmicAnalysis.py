@@ -290,8 +290,10 @@ def main(cfg):
         multi_machine_accts = db.exec_fromfile("data/sql/MultipleMachineAccounts.sql", "Multiple Machine Accounts")
         all_machines_count = db.exec_fromfile("data/sql/TotalMachinesCount.sql", "Total Machines Count")
 
+        print(all_machines_count)
+
         if multi_machine_accts and all_machines_count:
-            multiMachineAccounts = Metrics.multi_machine_accts(multi_machine_accts, all_machines_count[0][0])
+            multiMachineAccounts = Metrics.multi_machine_accts(multi_machine_accts, len(all_machines_count))
             multiMachinePasswordAge = Metrics.password_age(multi_machine_accts)
             multiMachineNumMachines = Metrics.number_of_machines(multi_machine_accts, metric_name)
             worksheet = xlsx.add_worksheet(workbook, metric_name[:31])
@@ -321,7 +323,7 @@ def main(cfg):
         multi_machine_accts_da = db.exec_fromfile("data/sql/MultipleMachineAccountsDA.sql", "Multiple Machine Accounts DA")
 
         if multi_machine_accts_da and all_machines_count:
-            multiMachineAccountsDA = Metrics.multi_machine_accts(multi_machine_accts_da, all_machines_count[0][0])
+            multiMachineAccountsDA = Metrics.multi_machine_accts(multi_machine_accts_da, len(all_machines_count))
             multiMachinePasswordAgeDA = Metrics.password_age(multi_machine_accts_da)
             multiMachineNumMachinesDA = Metrics.number_of_machines(multi_machine_accts_da, metric_name)
             worksheet = xlsx.add_worksheet(workbook, metric_name[:31])
@@ -351,7 +353,7 @@ def main(cfg):
         multi_machine_accts_nonda = db.exec_fromfile("data/sql/MultipleMachineAccountsNonDA.sql", "Multiple Machine Accounts Non-DA")
 
         if multi_machine_accts_da and all_machines_count:
-            multiMachineAccountsNonDA = Metrics.multi_machine_accts(multi_machine_accts_nonda, all_machines_count[0][0])
+            multiMachineAccountsNonDA = Metrics.multi_machine_accts(multi_machine_accts_nonda, len(all_machines_count))
             multiMachinePasswordAgeNonDA = Metrics.password_age(multi_machine_accts_nonda)
             multiMachineNumMachinesNonDA = Metrics.number_of_machines(multi_machine_accts_nonda, metric_name)
             worksheet = xlsx.add_worksheet(workbook, metric_name[:31])
@@ -560,6 +562,7 @@ def main(cfg):
             uniqueSvcPercent = [0, 0, 0, 0]
             uniqueSvcPasswordAge = None
             uniqueSvcNumMachines = None
+            unique_expired_svc_grouped = []
             worksheet = None
 
         output.unique_expired_svcs(
@@ -655,7 +658,7 @@ def main(cfg):
         output.risky_spns(
             worksheet,
             risky_spns,
-            spns_count[0][0],
+            len(spns_count),
             spns_passwordage,
             spns_num_machines
         )
@@ -739,7 +742,7 @@ def main(cfg):
         multi_machine_hashes = db.exec_fromfile("data/sql/MultipleMachineHashes.sql", "Hashes Exposed on Multiple Machines")
 
         if multi_machine_hashes and all_machines_count:
-            multiMachineHashes = Metrics.multi_machine_hashes(multi_machine_hashes, all_machines_count[0][0])
+            multiMachineHashes = Metrics.multi_machine_hashes(multi_machine_hashes, len(all_machines_count))
             multiMachinePasswordAge = Metrics.password_age(multi_machine_hashes)
             multiMachineNumMachines = Metrics.number_of_machines(multi_machine_hashes, metric_name)
             worksheet = xlsx.add_worksheet(workbook, metric_name[:31])
