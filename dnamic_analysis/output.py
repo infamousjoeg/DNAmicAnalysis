@@ -303,7 +303,7 @@ class Output(object):
             data = 'Oldest Non-Compliant Username: {}\n' \
                     'Max Password Age: {} days ({:.1f} years)\n' \
                     'Total Avg Password Age: {} / {} = {:.2f} days ({:.1f} years)\n' \
-                    'Total Percent Non-Compliant: {} / {} = {:.2%}'.format(max_sorted[0][0],max_sorted[0][4],max_sorted[0][4]/365,
+                    'Total Percent Non-Compliant: {} / {} = {:.2%}'.format(max_sorted[0][0],max_sorted[0][3],max_sorted[0][3]/365,
                                                                         avg_sum,avg_len,avg_overall,avg_overall/365,percent_len,
                                                                         all_len,percent_overall)
             self._excel_object.write(worksheet, self._col, 0, data, 'row1')
