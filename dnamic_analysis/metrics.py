@@ -62,71 +62,27 @@ class Metrics(object):
     def password_age(sqlresults):
         # Declare variables
         avgPassword = 0
-        count = 0
         output = {}
         return_dict = {}
 
         if not sqlresults:
             return
-        elif len(sqlresults[0]) == 2:
-            # Create a dictionary with a key of account and list of values of every password age
-            for account,passwordage in sqlresults:
-                if account in output:
-                        output[account].append((passwordage))
-                else:
-                        output[account] = [(passwordage)]
-        elif len(sqlresults[0]) == 3:
-            # Create a dictionary with a key of account and list of values of every password age
-            for account,_,passwordage in sqlresults:
-                if account in output:
-                        output[account].append((passwordage))
-                else:
-                        output[account] = [(passwordage)]
-        elif len(sqlresults[0]) == 4:
-            # Create a dictionary with a key of account and list of values of every password age
-            for account,_,_,passwordage in sqlresults:
-                if account in output:
-                        output[account].append((passwordage))
-                else:
-                        output[account] = [(passwordage)]
-        elif len(sqlresults[0]) == 5:
-            # Create a dictionary with a key of account and list of values of every password age
-            for account,_,_,_,passwordage in sqlresults:
-                if account in output:
-                        output[account].append((passwordage))
-                else:
-                        output[account] = [(passwordage)]
-        elif len(sqlresults[0]) == 6:
-            # Create a dictionary with a key of account and list of values of every password age
-            for account,_,_,_,_,passwordage in sqlresults:
-                if account in output:
-                        output[account].append((passwordage))
-                else:
-                        output[account] = [(passwordage)]
-        elif len(sqlresults[0]) == 7:
-            # Create a dictionary with a key of account and list of values of every password age
-            for account,_,_,_,_,_,passwordage in sqlresults:
-                if account in output:
-                        output[account].append((passwordage))
-                else:
-                        output[account] = [(passwordage)]
-        elif len(sqlresults[0]) == 8:
-            # Create a dictionary with a key of account and list of values of every password age
-            for account,_,_,_,_,_,_,passwordage in sqlresults:
-                if account in output:
-                        output[account].append((passwordage))
-                else:
-                        output[account] = [(passwordage)]
+        
+        for item in sqlresults:
+            account = item[0]
+            password_age = item[len(item)-1]
+            if account in output:
+                output[account].append((password_age))
+            else:
+                output[account] = [(password_age)]
 
         # Loop through created dict and average password age
         for account in output:
             for result in output[account]:
                 if result is not None:
                     avgPassword += result
-                count += 1
             return_dict[account] = avgPassword//len(output[account])
             avgPassword = 0
-            count = 0
         
         return return_dict
 
