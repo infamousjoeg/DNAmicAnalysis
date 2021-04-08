@@ -66,71 +66,27 @@ class Metrics(object):
     def password_age(sqlresults):
         # Declare variables
         avgPassword = 0
-        count = 0
         output = {}
         return_dict = {}
 
         if not sqlresults:
             return
-        elif len(sqlresults[0]) == 2:
-            # Create a dictionary with a key of account and list of values of every password age
-            for account,passwordage in sqlresults:
-                if account in output:
-                        output[account].append((passwordage))
-                else:
-                        output[account] = [(passwordage)]
-        elif len(sqlresults[0]) == 3:
-            # Create a dictionary with a key of account and list of values of every password age
-            for account,_,passwordage in sqlresults:
-                if account in output:
-                        output[account].append((passwordage))
-                else:
-                        output[account] = [(passwordage)]
-        elif len(sqlresults[0]) == 4:
-            # Create a dictionary with a key of account and list of values of every password age
-            for account,_,_,passwordage in sqlresults:
-                if account in output:
-                        output[account].append((passwordage))
-                else:
-                        output[account] = [(passwordage)]
-        elif len(sqlresults[0]) == 5:
-            # Create a dictionary with a key of account and list of values of every password age
-            for account,_,_,_,passwordage in sqlresults:
-                if account in output:
-                        output[account].append((passwordage))
-                else:
-                        output[account] = [(passwordage)]
-        elif len(sqlresults[0]) == 6:
-            # Create a dictionary with a key of account and list of values of every password age
-            for account,_,_,_,_,passwordage in sqlresults:
-                if account in output:
-                        output[account].append((passwordage))
-                else:
-                        output[account] = [(passwordage)]
-        elif len(sqlresults[0]) == 7:
-            # Create a dictionary with a key of account and list of values of every password age
-            for account,_,_,_,_,_,passwordage in sqlresults:
-                if account in output:
-                        output[account].append((passwordage))
-                else:
-                        output[account] = [(passwordage)]
-        elif len(sqlresults[0]) == 8:
-            # Create a dictionary with a key of account and list of values of every password age
-            for account,_,_,_,_,_,_,passwordage in sqlresults:
-                if account in output:
-                        output[account].append((passwordage))
-                else:
-                        output[account] = [(passwordage)]
+        
+        for item in sqlresults:
+            account = item[0]
+            password_age = item[len(item)-1]
+            if account in output:
+                output[account].append((password_age))
+            else:
+                output[account] = [(password_age)]
 
         # Loop through created dict and average password age
         for account in output:
             for result in output[account]:
                 if result is not None:
                     avgPassword += result
-                count += 1
             return_dict[account] = avgPassword//len(output[account])
             avgPassword = 0
-            count = 0
         
         return return_dict
 
@@ -286,47 +242,23 @@ class Metrics(object):
             percent20, percent10, percent0
 
     def number_of_machines(sqlresults, metric_name):
-        # Declare variables
-        output = dict()
+        output = {}
 
         if not sqlresults:
             return
-        elif metric_name == 'Unique Domain Admins' or metric_name == 'Personal Accounts Running Services' or metric_name == 'Risky Expired Service Principal Names':
-            # Create a dictionary with a key of account and list of values of every password age
-            for account,num_machines,_ in sqlresults:
-                if account in output:
-                        output[account].append((num_machines))
-                else:
-                        output[account] = [(num_machines)]
-        elif metric_name == 'Expired Domain Privileged IDs' or metric_name == 'Accounts w Multiple Machine Access By Percentage Tiers' or metric_name == 'Non-Domain Admin Accounts w Multiple Machine Access By Percentage Tiers' or metric_name == 'Domain Admin Accounts w Multiple Machine Access By Percentage Tiers' or metric_name == 'Non-adm Accounts w Local Admin Rights on Systems':
-            # Create a dictionary with a key of account and list of values of every password age
-            for account,_,num_machines,_ in sqlresults:
-                if account in output:
-                        output[account].append((num_machines))
-                else:
-                        output[account] = [(num_machines)]
-        elif metric_name == 'Unique Expired Local Privileged IDs' or metric_name == 'Domain Abandoned Accounts' or metric_name == 'Unique Expired Service Accounts' or metric_name == 'Account Hashes that Expose Multiple Machines':
-            # Create a dictionary with a key of account and list of values of every password age
-            for account,_,_,num_machines,_ in sqlresults:
-                if account in output:
-                        output[account].append((num_machines))
-                else:
-                        output[account] = [(num_machines)]
-        elif metric_name == 'Unique Expired Domain Privileged IDs' or metric_name == 'Local Abandoned Accounts':
-            # Create a dictionary with a key of account and list of values of every password age
-            for account,_,_,_,num_machines,_ in sqlresults:
-                if account in output:
-                        output[account].append((num_machines))
-                else:
-                        output[account] = [(num_machines)]
-        elif metric_name == 'Hashes Found on Multiple Machines':
-            # Create a dictionary with a key of account and list of values of every password age
-            for account,_,_,_,_,_,num_machines,_ in sqlresults:
-                if account in output:
-                        output[account].append((num_machines))
-                else:
-                        output[account] = [(num_machines)]
         
+        for row in sqlresults:
+            # skip all rows that do not have 3 or more columns
+            if len(row) < 3:
+                continue
+
+            account = row[0]
+            num_machines = row[len(row)-2]
+            if account in output:
+                output[account].append((num_machines))
+            else:
+                output[account] = [(num_machines)]
+
         return output
 
 
