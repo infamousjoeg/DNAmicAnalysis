@@ -1,4 +1,4 @@
-SELECT Accounts.Name,
+SELECT Accounts.BasePath,
 	(SELECT COUNT(Machines.Address) FROM Machines
 		LEFT OUTER JOIN Accounts AS A1
 			ON Machines.Id = A1.Machine_id

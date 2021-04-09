@@ -9,12 +9,17 @@ class Output(object):
     def __init__(
         self,
         excel_object,
-        workbook
+        workbook,
+        platform
     ):
         self._excel_object = excel_object
         self._workbook = workbook
+        self._platform = platform
         self._col = 0
 
+    #########################
+    ## WINDOWS SCAN OUTPUT ##
+    #########################
 
     ###################################
     ## Expired Domain Privileged IDs ##
@@ -238,6 +243,10 @@ class Output(object):
         num_machines
     ):
         if sqlresults is not False:
+            # Turn everything lowercase for easy matching
+            password_age_lower = dict((k.lower(), v) for k,v in password_age.items())
+            num_machines_lower = dict((k.lower(), v) for k,v in num_machines.items())
+    
             data = 'Total Detected: {}\n' \
                     'Total Potential Service Accounts: {}'.format(len(sqlresults),len(svc_sqlresults))
             self._excel_object.write(worksheet, self._col, 0, data, 'row1')
@@ -248,9 +257,10 @@ class Output(object):
             self._excel_object.write(worksheet, self._col+2, 3, 'Number of Machines', 'subheader')
             row = 4
             for username,_,_ in sqlresults:
-                self._excel_object.write(worksheet, self._col, row, username)
-                self._excel_object.write(worksheet, self._col+1, row, password_age[username])
-                self._excel_object.write(worksheet, self._col+2, row, num_machines[username][0])
+                username_lower = username.lower()
+                self._excel_object.write(worksheet, self._col, row, username_lower)
+                self._excel_object.write(worksheet, self._col+1, row, password_age_lower[username_lower])
+                self._excel_object.write(worksheet, self._col+2, row, num_machines_lower[username_lower][0])
                 row += 1
             self._col += 3
             self._excel_object.write(worksheet, self._col, 2, 'Potential Service Accounts', 'subheader')
@@ -259,14 +269,16 @@ class Output(object):
             self._excel_object.write(worksheet, self._col+2, 3, 'Number of Machines', 'subheader')
             row = 4
             for username2 in svc_domadm:
-                self._excel_object.write(worksheet, self._col, row, username2)
-                self._excel_object.write(worksheet, self._col+1, row, password_age[username2])
-                self._excel_object.write(worksheet, self._col+2, row, num_machines[username2][0])
+                username2_lower = username2.lower()
+                self._excel_object.write(worksheet, self._col, row, username2_lower)
+                self._excel_object.write(worksheet, self._col+1, row, password_age_lower[username2_lower])
+                self._excel_object.write(worksheet, self._col+2, row, num_machines_lower[username2_lower][0])
                 row += 1
             for username3 in svc_domadm2:
-                self._excel_object.write(worksheet, self._col, row, username3)
-                self._excel_object.write(worksheet, self._col+1, row, password_age[username3])
-                self._excel_object.write(worksheet, self._col+2, row, num_machines[username3][0])
+                username3_lower = username3.lower()
+                self._excel_object.write(worksheet, self._col, row, username3_lower)
+                self._excel_object.write(worksheet, self._col+1, row, password_age_lower[username3_lower])
+                self._excel_object.write(worksheet, self._col+2, row, num_machines_lower[username3_lower][0])
                 row += 1
         self._col = 0
 
@@ -291,7 +303,7 @@ class Output(object):
             data = 'Oldest Non-Compliant Username: {}\n' \
                     'Max Password Age: {} days ({:.1f} years)\n' \
                     'Total Avg Password Age: {} / {} = {:.2f} days ({:.1f} years)\n' \
-                    'Total Percent Non-Compliant: {} / {} = {:.2%}'.format(max_sorted[0][0],max_sorted[0][4],max_sorted[0][4]/365,
+                    'Total Percent Non-Compliant: {} / {} = {:.2%}'.format(max_sorted[0][0],max_sorted[0][3],max_sorted[0][3]/365,
                                                                         avg_sum,avg_len,avg_overall,avg_overall/365,percent_len,
                                                                         all_len,percent_overall)
             self._excel_object.write(worksheet, self._col, 0, data, 'row1')
@@ -377,7 +389,8 @@ class Output(object):
         all_len,
         percent_overall,
         password_age,
-        num_machines
+        num_machines,
+        max_grouped
     ):
         if max_sorted is not False:
             # Write bulk data to Excel workbook
@@ -392,18 +405,33 @@ class Output(object):
             self._excel_object.write(worksheet, self._col, 2, 'Username', 'subheader')
             self._excel_object.write(worksheet, self._col+2, 2, 'Avg Password Age (Days)', 'subheader')
             self._excel_object.write(worksheet, self._col+3, 2, 'Number of Machines', 'subheader')
+            count = 0
             row = 3
+            usernames = []
             for username,_,_,_,_ in max_sorted:
-                self._excel_object.write(worksheet, self._col, row, username)
-                self._excel_object.write(worksheet, self._col+2, row, password_age[username])
-                self._excel_object.write(worksheet, self._col+3, row, num_machines[username][0])
-                row += 1
+                if username not in usernames:
+                    self._excel_object.write(worksheet, self._col, row, username)
+                    self._excel_object.write(worksheet, self._col+2, row, password_age[username])
+                    self._excel_object.write(worksheet, self._col+3, row, len(num_machines[username]))
+                    usernames.append(username)
+                    row += 1
             self._col += 1
             self._excel_object.write(worksheet, self._col, 2, 'Address', 'subheader')
             row = 3
-            for _,_,address,_,_ in max_sorted:
-                self._excel_object.write(worksheet, self._col, row, address)
+            for value in max_grouped.items():
+                machines = []
+                for key in value:
+                    if not isinstance(key, str):
+                        if isinstance(key, list):
+                            for machine in key:
+                                machines.append(machine)
+                                count = len(key)
+                machines_list = ", ".join(machines)
+                self._excel_object.write(worksheet, self._col, row, machines_list)
                 row += 1
+            # for _,_,address,_,_ in max_sorted:
+            #     self._excel_object.write(worksheet, self._col, row, address)
+            #     row += 1
         self._col = 0
 
 
@@ -552,4 +580,342 @@ class Output(object):
                             self._excel_object.write(worksheet, self._col+2, row, num_machines[username][0])
                             row += 1
                         self._col += 3
+        self._col = 0
+
+
+    ######################
+    ## UNIX SCAN OUTPUT ##
+    ######################
+
+    ############################################
+    ## Expired Privileged Domain ID Passwords ##
+    ############################################
+    def unix_domain_expired(
+        self,
+        worksheet,
+        max_sorted,
+        avg_sum,
+        avg_len,
+        avg_overall,
+        percent_len,
+        all_len,
+        percent_overall,
+        password_age,
+        num_machines
+    ):
+        if max_sorted is not False:
+            # Write bulk data to Excel workbook
+            data = 'Oldest Non-Compliant Username: {}\n' \
+                    'Max Password Age: {} days ({:.1f} years)\n' \
+                    'Total Avg Password Age: {:.2f} / {} = {:.2f} days ({:.1f} years)\n' \
+                    'Total Percent Non-Compliant: {} / {} = {:.2%}'.format(max_sorted[0][0],max_sorted[0][3],max_sorted[0][3]/365,
+                                                                        avg_sum,avg_len,avg_overall,avg_overall/365,percent_len,all_len,percent_overall)
+            self._excel_object.write(worksheet, self._col, 0, data, 'row1')
+            self._excel_object.write(worksheet, self._col, 1, 'Expired Domain Privileged Passwords', 'header')
+            self._excel_object.write(worksheet, self._col, 2, 'Usernames', 'subheader')
+            self._excel_object.write(worksheet, self._col+1, 2, 'Avg Password Age (Days)', 'subheader')
+            self._excel_object.write(worksheet, self._col+2, 2, 'Number of Machines', 'subheader')
+            row = 3
+            for username,_,_,_ in max_sorted:
+                self._excel_object.write(worksheet, self._col, row, username)
+                self._excel_object.write(worksheet, self._col+1, row, password_age[username])
+                self._excel_object.write(worksheet, self._col+2, row, num_machines[username][0])
+                row += 1
+        self._col = 0
+
+
+    ###########################################
+    ## Expired Privileged Local ID Passwords ##
+    ###########################################
+    def unix_local_expired(
+        self,
+        worksheet,
+        max_sorted,
+        avg_sum,
+        avg_len,
+        avg_overall,
+        percent_len,
+        all_len,
+        percent_overall,
+        sqlcount,
+        unique_count,
+        password_age,
+        num_machines
+    ):
+        if max_sorted is not False and sqlcount != 0 and unique_count != 0:
+            # Write bulk data to Excel workbook
+            data = 'Oldest Non-Compliant Username: {}\n' \
+                    'Max Password Age: {} days ({:.1f} years)\n' \
+                    'Total Avg Password Age: {:.2f} / {} = {:.2f} days ({:.1f} years)\n' \
+                    'Total Percent Non-Compliant: {} / {} = {:.2%}\n' \
+                    'Total Unique Local Privileged Passwords: {}\n' \
+                    'Total Unique Local Privileged Password Names: {}'.format(max_sorted[0][0],max_sorted[0][3],max_sorted[0][3]/365,
+                                                                    avg_sum,avg_len,avg_overall,avg_overall/365,percent_len,
+                                                                    all_len,percent_overall,sqlcount,unique_count)
+            self._excel_object.write(worksheet, self._col, 0, data, 'row1')
+            self._excel_object.write(worksheet, self._col, 1, 'Expired Local Privileged Passwords', 'header')
+            self._excel_object.write(worksheet, self._col, 2, 'Usernames', 'subheader')
+            self._excel_object.write(worksheet, self._col+1, 2, 'Avg Password Age (Days)', 'subheader')
+            self._excel_object.write(worksheet, self._col+2, 2, 'Number of Machines', 'subheader')
+            row = 3
+            used_usernames = []
+            for username,_,_,_ in max_sorted:
+                if username not in used_usernames:
+                    self._excel_object.write(worksheet, self._col, row, username)
+                    self._excel_object.write(worksheet, self._col+1, row, password_age[username])
+                    self._excel_object.write(worksheet, self._col+2, row, num_machines[username])
+                    used_usernames.append(username)
+                    row += 1
+        self._col = 0
+
+
+    ##############################
+    ## Abandoned Local Accounts ##
+    ##############################
+    def unix_local_abandoned(
+        self,
+        worksheet,
+        abandoned_accounts,
+        count_accounts,
+        password_age,
+        num_machines
+    ):
+        if abandoned_accounts is not False:
+            # Write bulk data to Excel workbook
+            data = 'Total Abandoned / Total Overall: {} / {}'.format(len(abandoned_accounts), count_accounts)
+            self._excel_object.write(worksheet, self._col, 0, data, 'row1')
+            self._excel_object.write(worksheet, self._col, 1, 'Abandoned Local Accounts', 'header')
+            self._excel_object.write(worksheet, self._col, 2, 'Usernames', 'subheader')
+            self._excel_object.write(worksheet, self._col+1, 2, 'Avg Password Age (Days)', 'subheader')
+            self._excel_object.write(worksheet, self._col+2, 2, 'Number of Machines', 'subheader')
+            row = 3
+            for username,_,_,_ in abandoned_accounts:
+                self._excel_object.write(worksheet, self._col, row, username)
+                self._excel_object.write(worksheet, self._col+1, row, password_age[username])
+                self._excel_object.write(worksheet, self._col+2, row, num_machines[username][0])
+                row += 1
+        self._col = 0
+
+
+    ###############################
+    ## Abandoned Domain Accounts ##
+    ###############################
+    def unix_domain_abandoned(
+        self,
+        worksheet,
+        abandoned_accounts,
+        count_accounts,
+        password_age,
+        num_machines
+    ):
+        if abandoned_accounts is not False:
+            # Write bulk data to Excel workbook
+            data = 'Total Abandoned / Total Overall: {} / {}'.format(len(abandoned_accounts), count_accounts)
+            self._excel_object.write(worksheet, self._col, 0, data, 'row1')
+            self._excel_object.write(worksheet, self._col, 1, 'Abandoned Domain Accounts', 'header')
+            self._excel_object.write(worksheet, self._col, 2, 'Usernames', 'subheader')
+            self._excel_object.write(worksheet, self._col+1, 2, 'Avg Password Age (Days)', 'subheader')
+            row = 3
+            for username,_,isgroup,_,_ in abandoned_accounts:
+                if isgroup != 1:
+                    self._excel_object.write(worksheet, self._col, row, username)
+                    self._excel_object.write(worksheet, self._col+1, row, password_age[username])
+                    self._excel_object.write(worksheet, self._col+2, row, num_machines[username][0])
+                    row += 1
+                else:
+                    self._excel_object.write(worksheet, self._col, row, username, 'subheader')
+                    self._excel_object.write(worksheet, self._col+1, row, password_age[username], 'subheader')
+                    self._excel_object.write(worksheet, self._col+2, row, num_machines[username][0], 'subheader')
+                    row += 1
+        self._col = 0
+
+
+    ##############################################
+    ## Machines w/ Expired Root Public SSH Keys ##
+    ##############################################
+    def unix_root_pub_sshkeys(
+        self,
+        worksheet,
+        max_sorted,
+        avg_sum,
+        avg_len,
+        avg_overall,
+        percent_len,
+        all_len,
+        percent_overall,
+        password_age,
+        num_machines
+    ):
+        if max_sorted is not False:
+            # Write bulk data to Excel workbook
+            data = 'Max Key Age: {} days ({:.1f} years)\n' \
+                    'Total Avg Key Age: {:.2f} / {} = {:.2f} days ({:.1f} years)\n' \
+                    'Total Percent Non-Compliant: {} / {} = {:.2%}'.format(max_sorted[0][3],max_sorted[0][3]/365,
+                                                                        avg_sum,avg_len,avg_overall,avg_overall/365,percent_len,all_len,percent_overall)
+            self._excel_object.write(worksheet, self._col, 0, data, 'row1')
+            self._excel_object.write(worksheet, self._col, 1, 'Machines w/ Expired Root Public SSH Keys', 'header')
+            self._excel_object.write(worksheet, self._col, 2, 'Address', 'subheader')
+            self._excel_object.write(worksheet, self._col+1, 2, 'Avg Key Age (Days)', 'subheader')
+            self._excel_object.write(worksheet, self._col+2, 2, 'Number of Machines', 'subheader')
+            row = 3
+            for address,_,_,_ in max_sorted:
+                self._excel_object.write(worksheet, self._col, row, address)
+                self._excel_object.write(worksheet, self._col+1, row, password_age[address])
+                self._excel_object.write(worksheet, self._col+2, row, num_machines[address][0])
+                row += 1
+        self._col = 0
+
+
+    ########################################
+    ## Machines w/ Expired Root Passwords ##
+    ########################################
+    def unix_root_passwords(
+        self,
+        worksheet,
+        max_sorted,
+        avg_sum,
+        avg_len,
+        avg_overall,
+        percent_len,
+        all_len,
+        percent_overall,
+        password_age,
+        num_machines
+    ):
+        if max_sorted is not False:
+            # Write bulk data to Excel workbook
+            data = 'Max Password Age: {} days ({:.1f} years)\n' \
+                    'Total Avg Password Age: {:.2f} / {} = {:.2f} days ({:.1f} years)\n' \
+                    'Total Percent Non-Compliant: {} / {} = {:.2%}'.format(max_sorted[0][3],max_sorted[0][3]/365,
+                                                                        avg_sum,avg_len,avg_overall,avg_overall/365,percent_len,all_len,percent_overall)
+            self._excel_object.write(worksheet, self._col, 0, data, 'row1')
+            self._excel_object.write(worksheet, self._col, 1, 'Machines w/ Expired Passwords', 'header')
+            self._excel_object.write(worksheet, self._col, 2, 'Address', 'subheader')
+            self._excel_object.write(worksheet, self._col+1, 2, 'Avg Password Age (Days)', 'subheader')
+            self._excel_object.write(worksheet, self._col+2, 2, 'Number of Machines', 'subheader')
+            row = 3
+            for address,_,_,_ in max_sorted:
+                self._excel_object.write(worksheet, self._col, row, address)
+                self._excel_object.write(worksheet, self._col+1, row, password_age[address])
+                self._excel_object.write(worksheet, self._col+2, row, num_machines[address][0])
+                row += 1
+        self._col = 0
+
+
+    #################################
+    ## SSH Keys w/ 1024 bit length ##
+    #################################
+    def unix_sshkeys_1024(
+        self,
+        worksheet,
+        ssh_keys
+    ):
+        if ssh_keys is not False:
+            # Write bulk data to Excel workbook
+            data = 'Total SSH Keys w/ 1024 bit Length: {}'.format(len(ssh_keys))
+            self._excel_object.write(worksheet, self._col, 0, data, 'row1')
+            self._excel_object.write(worksheet, self._col, 1, 'SSH Keys w/ 1024 bit Length', 'header')
+            self._excel_object.write(worksheet, self._col, 2, 'Usernames', 'subheader')
+            row = 3
+            for username,_,_ in ssh_keys:
+                self._excel_object.write(worksheet, self._col, row, username)
+                row += 1
+        self._col = 0
+
+
+    ################################################
+    ## Instances of Insecure Privilege Escalation ##
+    ################################################
+    def unix_priv_escalation(
+        self,
+        worksheet,
+        instances,
+        unique_instances
+    ):
+        if instances is not False:
+            # Write bulk data to Excel workbook
+            data = 'Total Instances of Insecure Privilege Escalation: {} / {}'.format(len(instances), len(unique_instances))
+            self._excel_object.write(worksheet, self._col, 0, data, 'row1')
+            self._excel_object.write(worksheet, self._col, 1, 'Instances of Insecure Privilege Escalation', 'header')
+            self._excel_object.write(worksheet, self._col, 2, 'Address', 'subheader')
+            row = 3
+            for address,_,_ in instances:
+                self._excel_object.write(worksheet, self._col, row, address)
+                row += 1
+        self._col = 0
+
+
+    ####################################
+    ## Expired Local Service Accounts ##
+    ####################################
+    def unix_local_service_expired(
+        self,
+        worksheet,
+        max_sorted,
+        avg_sum,
+        avg_len,
+        avg_overall,
+        percent_len,
+        all_len,
+        percent_overall,
+        password_age,
+        num_machines
+    ):
+        if max_sorted is not False:
+            # Write bulk data to Excel workbook
+            data = 'Oldest Non-Compliant Address: {}\n' \
+                    'Max Password Age: {} days ({:.1f} years)\n' \
+                    'Total Avg Password Age: {:.2f} / {} = {:.2f} days ({:.1f} years)\n' \
+                    'Total Percent Non-Compliant: {} / {} = {:.2%}'.format(max_sorted[0][1],max_sorted[0][3],max_sorted[0][3]/365,
+                                                                    avg_sum,avg_len,avg_overall,avg_overall/365,percent_len,
+                                                                    all_len,percent_overall)
+            self._excel_object.write(worksheet, self._col, 0, data, 'row1')
+            self._excel_object.write(worksheet, self._col, 1, 'Expired Local Service Account Passwords', 'header')
+            self._excel_object.write(worksheet, self._col, 2, 'Address', 'subheader')
+            self._excel_object.write(worksheet, self._col+1, 2, 'Avg Password Age (Days)', 'subheader')
+            self._excel_object.write(worksheet, self._col+2, 2, 'Number of Machines', 'subheader')
+            row = 3
+            for username,address,_,_ in max_sorted:
+                self._excel_object.write(worksheet, self._col, row, address)
+                self._excel_object.write(worksheet, self._col+1, row, password_age[username])
+                self._excel_object.write(worksheet, self._col+2, row, num_machines[username])
+                row += 1
+        self._col = 0
+
+
+    #################################
+    ## Expired Domain SVC Accounts ##
+    #################################
+    def unix_domain_service_expired(
+        self,
+        worksheet,
+        max_sorted,
+        avg_sum,
+        avg_len,
+        avg_overall,
+        percent_len,
+        all_len,
+        percent_overall,
+        password_age,
+        num_machines
+    ):
+        if max_sorted is not False:
+            # Write bulk data to Excel workbook
+            data = 'Oldest Non-Compliant Address: {}\n' \
+                    'Max Password Age: {} days ({:.1f} years)\n' \
+                    'Total Avg Password Age: {:.2f} / {} = {:.2f} days ({:.1f} years)\n' \
+                    'Total Percent Non-Compliant: {} / {} = {:.2%}'.format(max_sorted[0][1],max_sorted[0][3],max_sorted[0][3]/365,
+                                                                    avg_sum,avg_len,avg_overall,avg_overall/365,percent_len,
+                                                                    all_len,percent_overall)
+            self._excel_object.write(worksheet, self._col, 0, data, 'row1')
+            self._excel_object.write(worksheet, self._col, 1, 'Expired Domain Service Account Passwords', 'header')
+            self._excel_object.write(worksheet, self._col, 2, 'Address', 'subheader')
+            self._excel_object.write(worksheet, self._col+1, 2, 'Avg Password Age (Days)', 'subheader')
+            self._excel_object.write(worksheet, self._col+2, 2, 'Number of Machines', 'subheader')
+            row = 3
+            for username,address,_,_ in max_sorted:
+                self._excel_object.write(worksheet, self._col, row, address)
+                self._excel_object.write(worksheet, self._col+1, row, password_age[username])
+                self._excel_object.write(worksheet, self._col+2, row, num_machines[username])
+                row += 1
         self._col = 0
