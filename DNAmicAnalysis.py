@@ -1075,7 +1075,7 @@ def main(cfg):
             u_expired_local_serviceNumMachines = Metrics.unix_number_of_machines(u_expired_local_service, metric_name)
             u_combinedNumMachines = dict()
             for username in u_localNumMachines:
-                u_combinedNumMachines[username] = sum(u_localNumMachines[username])
+                u_combinedNumMachines[username] = sum(u_expired_local_serviceNumMachines[username])
             worksheet = xlsx.add_worksheet(workbook, metric_name[:31])
         else:
             u_expired_local_serviceMaxSorted = False
@@ -1121,7 +1121,7 @@ def main(cfg):
             u_expired_domain_serviceNumMachines = Metrics.unix_number_of_machines(u_expired_domain_service, metric_name)
             u_combinedNumMachines = dict()
             for username in u_domainNumMachines:
-                u_combinedNumMachines[username] = sum(u_domainNumMachines[username])
+                u_combinedNumMachines[username] = sum(u_expired_domain_serviceNumMachines[username])
             worksheet = xlsx.add_worksheet(workbook, metric_name[:31])
         else:
             u_expired_domain_serviceMaxSorted = False
