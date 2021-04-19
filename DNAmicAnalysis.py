@@ -1063,8 +1063,8 @@ def main(cfg):
 
         print(status_pre + Fore.YELLOW + ' Starting ' + metric_name + status_post)
 
-        u_expired_local_service = db.exec_fromfile("data/sql/Unix_ExpiredLocalSvcAccts.sql", "Expired Local Service Accounts")
-        u_expired_local_service_count = db.exec_fromfile("data/sql/Unix_TotalSvcLocal.sql", "Local Service Accounts Total Count")
+        u_expired_local_service = db.exec_fromfile("data/sql/Unix_ExpiredLocalSvcAccts.sql", "Expired Local Service Accounts", True, svc_array)
+        u_expired_local_service_count = db.exec_fromfile("data/sql/Unix_TotalSvcLocal.sql", "Local Service Accounts Total Count", True, svc_array)
 
         if u_expired_local_service and u_expired_local_service_count:
 
@@ -1109,8 +1109,8 @@ def main(cfg):
 
         print(status_pre + Fore.YELLOW + ' Starting ' + metric_name + status_post)
 
-        u_expired_domain_service = db.exec_fromfile("data/sql/Unix_ExpiredDomainSvcAccts.sql", "Expired Domain Service Accounts")
-        u_expired_domain_service_count = db.exec_fromfile("data/sql/Unix_TotalSvcDomain.sql", "Domain Service Accounts Total Count")
+        u_expired_domain_service = db.exec_fromfile("data/sql/Unix_ExpiredDomainSvcAccts.sql", "Expired Domain Service Accounts", True, svc_array)
+        u_expired_domain_service_count = db.exec_fromfile("data/sql/Unix_TotalSvcDomain.sql", "Domain Service Accounts Total Count", True, svc_array)
 
         if u_expired_domain_service and u_expired_domain_service_count:
 
