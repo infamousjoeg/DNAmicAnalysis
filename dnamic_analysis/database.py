@@ -40,8 +40,9 @@ class Database(object):
                 dIndex = dnaIndex + 1
                 tIndex = dIndex + 1
                 dbFileTimeSplit = dbFileNameSplit[tIndex].split(".")
+                print(dbFileTimeSplit[0])
                 # Format as proper datetime value
-                inScanTime = datetime.strptime(dbFileTimeSplit[0].replace("-", " "), "%I %M %S %p")
+                inScanTime = datetime.strptime(dbFileTimeSplit[0].replace("-", " "), "%H %M %S %p")
                 # Strip 1900-01-01 placemarker date and format to 24-hour
                 scanTime = datetime.strftime(inScanTime, "%H:%M:%S")
                 # Combine datetime for SQL query
