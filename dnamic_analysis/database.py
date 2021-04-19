@@ -40,9 +40,14 @@ class Database(object):
                 dIndex = dnaIndex + 1
                 tIndex = dIndex + 1
                 dbFileTimeSplit = dbFileNameSplit[tIndex].split(".")
-                print(dbFileTimeSplit[0])
-                # Format as proper datetime value
-                inScanTime = datetime.strptime(dbFileTimeSplit[0].replace("-", " "), "%H %M %S %p")
+                try:
+                    # Format as proper datetime value
+                    inScanTime = datetime.strptime(dbFileTimeSplit[0].replace("-", " "), "%I %M %S %p")
+                except ValueError:
+                    print("DNAmic Analysis does not support 24-hour format in DNA database filenames:", dbFileTimeSplit[0])
+                    print("FIX: Either change the filename to 12-hour format or change your config YAML to override scan datetime.")
+                    print("--------------------------")
+                    raise
                 # Strip 1900-01-01 placemarker date and format to 24-hour
                 scanTime = datetime.strftime(inScanTime, "%H:%M:%S")
                 # Combine datetime for SQL query
