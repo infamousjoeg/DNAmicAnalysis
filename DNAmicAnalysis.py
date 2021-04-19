@@ -1095,7 +1095,7 @@ def main(cfg):
             u_expired_local_servicePercent[0],
             u_expired_local_servicePercent[1],
             u_expired_local_servicePercent[2],
-            u_localPasswordAge,
+            u_expired_local_servicePasswordAge,
             u_combinedNumMachines
         )
 
@@ -1141,7 +1141,7 @@ def main(cfg):
             u_expired_domain_servicePercent[0],
             u_expired_domain_servicePercent[1],
             u_expired_domain_servicePercent[2],
-            u_domainPasswordAge,
+            u_expired_domain_servicePasswordAge,
             u_combinedNumMachines
         )
 
