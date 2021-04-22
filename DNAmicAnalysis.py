@@ -18,7 +18,7 @@ from logzero import logger
 from dnamic_analysis import Database, DomainCheck, Xlsx, Metrics, Output
 
 __author__ = "Joe Garcia"
-__version__ = "3.0.0"
+__version__ = "3.0.1"
 __license__ = "MIT"
 
 log_timestamp = time.strftime("%Y-%m-%d_%H-%M-%S")
@@ -204,7 +204,6 @@ def main(cfg):
         localMaxGrouped = None
         if localMaxSorted is not False:
             localMaxGrouped = Metrics.local_expired_machines(localMaxSorted)
-            print(localMaxGrouped)
             worksheet = xlsx.add_worksheet(workbook, metric_name[:31])
 
         if localMaxGrouped and len(all_local_count) != 0:
@@ -289,8 +288,6 @@ def main(cfg):
 
         multi_machine_accts = db.exec_fromfile("data/sql/MultipleMachineAccounts.sql", "Multiple Machine Accounts")
         all_machines_count = db.exec_fromfile("data/sql/TotalMachinesCount.sql", "Total Machines Count")
-
-        print(all_machines_count)
 
         if multi_machine_accts and all_machines_count:
             multiMachineAccounts = Metrics.multi_machine_accts(multi_machine_accts, len(all_machines_count))
@@ -646,7 +643,7 @@ def main(cfg):
 
         if not risky_spns and not spns_count:
             risky_spns = False
-            spns_count[0][0] = None
+            spns_count = []
             spns_passwordage = None
             spns_num_machines = None
             worksheet = None
@@ -1063,8 +1060,8 @@ def main(cfg):
 
         print(status_pre + Fore.YELLOW + ' Starting ' + metric_name + status_post)
 
-        u_expired_local_service = db.exec_fromfile("data/sql/Unix_ExpiredLocalSvcAccts.sql", "Expired Local Service Accounts")
-        u_expired_local_service_count = db.exec_fromfile("data/sql/Unix_TotalSvcLocal.sql", "Local Service Accounts Total Count")
+        u_expired_local_service = db.exec_fromfile("data/sql/Unix_ExpiredLocalSvcAccts.sql", "Expired Local Service Accounts", True, svc_array)
+        u_expired_local_service_count = db.exec_fromfile("data/sql/Unix_TotalSvcLocal.sql", "Local Service Accounts Total Count", True, svc_array)
 
         if u_expired_local_service and u_expired_local_service_count:
 
@@ -1075,7 +1072,7 @@ def main(cfg):
             u_expired_local_serviceNumMachines = Metrics.unix_number_of_machines(u_expired_local_service, metric_name)
             u_combinedNumMachines = dict()
             for username in u_localNumMachines:
-                u_combinedNumMachines[username] = sum(u_localNumMachines[username])
+                u_combinedNumMachines[username] = sum(u_expired_local_serviceNumMachines[username])
             worksheet = xlsx.add_worksheet(workbook, metric_name[:31])
         else:
             u_expired_local_serviceMaxSorted = False
@@ -1095,7 +1092,7 @@ def main(cfg):
             u_expired_local_servicePercent[0],
             u_expired_local_servicePercent[1],
             u_expired_local_servicePercent[2],
-            u_localPasswordAge,
+            u_expired_local_servicePasswordAge,
             u_combinedNumMachines
         )
 
@@ -1109,8 +1106,8 @@ def main(cfg):
 
         print(status_pre + Fore.YELLOW + ' Starting ' + metric_name + status_post)
 
-        u_expired_domain_service = db.exec_fromfile("data/sql/Unix_ExpiredDomainSvcAccts.sql", "Expired Domain Service Accounts")
-        u_expired_domain_service_count = db.exec_fromfile("data/sql/Unix_TotalSvcDomain.sql", "Domain Service Accounts Total Count")
+        u_expired_domain_service = db.exec_fromfile("data/sql/Unix_ExpiredDomainSvcAccts.sql", "Expired Domain Service Accounts", True, svc_array)
+        u_expired_domain_service_count = db.exec_fromfile("data/sql/Unix_TotalSvcDomain.sql", "Domain Service Accounts Total Count", True, svc_array)
 
         if u_expired_domain_service and u_expired_domain_service_count:
 
@@ -1121,7 +1118,7 @@ def main(cfg):
             u_expired_domain_serviceNumMachines = Metrics.unix_number_of_machines(u_expired_domain_service, metric_name)
             u_combinedNumMachines = dict()
             for username in u_domainNumMachines:
-                u_combinedNumMachines[username] = sum(u_domainNumMachines[username])
+                u_combinedNumMachines[username] = sum(u_expired_domain_serviceNumMachines[username])
             worksheet = xlsx.add_worksheet(workbook, metric_name[:31])
         else:
             u_expired_domain_serviceMaxSorted = False
@@ -1141,7 +1138,7 @@ def main(cfg):
             u_expired_domain_servicePercent[0],
             u_expired_domain_servicePercent[1],
             u_expired_domain_servicePercent[2],
-            u_domainPasswordAge,
+            u_expired_domain_servicePasswordAge,
             u_combinedNumMachines
         )
 

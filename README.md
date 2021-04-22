@@ -168,6 +168,8 @@ account_regex:
   admin_account:
     - adm^
     - ^admin
+# OS Platform: windows or unix
+platform: windows
 # account expiration period in days to calculate compliance
 expiration_days: 90
 # yes or no: whether to include disabled accounts in metrics
@@ -203,11 +205,11 @@ The format for the Excel filename is `DNAmicAnalysis_<domain>_<date>_<time>.xlsx
 **Windows**
 ```shell
 > python.exe DNAmicAnalysis.py --version
-DNAmicAnalysis (version 1.0.4)
+DNAmicAnalysis (version 3.0.1)
 ```
 
 **UNIX or MacOS**
 ```shell
 $ ./DNAmicAnalysis --version
-DNAmicAnalysis (version 1.0.4)
+DNAmicAnalysis (version 3.0.1)
 ```
