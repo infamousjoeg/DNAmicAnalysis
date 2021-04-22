@@ -18,7 +18,7 @@ from logzero import logger
 from dnamic_analysis import Database, DomainCheck, Xlsx, Metrics, Output
 
 __author__ = "Joe Garcia"
-__version__ = "3.0.0"
+__version__ = "3.0.1"
 __license__ = "MIT"
 
 log_timestamp = time.strftime("%Y-%m-%d_%H-%M-%S")
@@ -204,7 +204,6 @@ def main(cfg):
         localMaxGrouped = None
         if localMaxSorted is not False:
             localMaxGrouped = Metrics.local_expired_machines(localMaxSorted)
-            print(localMaxGrouped)
             worksheet = xlsx.add_worksheet(workbook, metric_name[:31])
 
         if localMaxGrouped and len(all_local_count) != 0:
@@ -289,8 +288,6 @@ def main(cfg):
 
         multi_machine_accts = db.exec_fromfile("data/sql/MultipleMachineAccounts.sql", "Multiple Machine Accounts")
         all_machines_count = db.exec_fromfile("data/sql/TotalMachinesCount.sql", "Total Machines Count")
-
-        print(all_machines_count)
 
         if multi_machine_accts and all_machines_count:
             multiMachineAccounts = Metrics.multi_machine_accts(multi_machine_accts, len(all_machines_count))
