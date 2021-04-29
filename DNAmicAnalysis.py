@@ -1071,7 +1071,7 @@ def main(cfg):
             u_expired_local_servicePasswordAge = Metrics.password_age(u_expired_local_service)
             u_expired_local_serviceNumMachines = Metrics.unix_number_of_machines(u_expired_local_service, metric_name)
             u_combinedNumMachines = dict()
-            for username in u_localNumMachines:
+            for username in u_expired_local_serviceNumMachines:
                 u_combinedNumMachines[username] = sum(u_expired_local_serviceNumMachines[username])
             worksheet = xlsx.add_worksheet(workbook, metric_name[:31])
         else:
