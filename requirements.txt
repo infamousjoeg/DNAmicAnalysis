@@ -14,7 +14,7 @@ logzero==1.7.0
 pipenv==2020.11.15
 PyYAML==5.4.1
 requests==2.25.1
-six==1.15.0
+six==1.16.0
 urllib3==1.26.4
 virtualenv==20.4.3
 virtualenv-clone==0.5.4
