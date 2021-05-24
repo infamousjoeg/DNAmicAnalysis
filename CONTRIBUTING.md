@@ -71,11 +71,11 @@ For something that is bigger than a one or two line fix:
 
 1. Create your own fork of the code _(Note to Kevin: This could change depending on how this is released to the wild.)_
 2. Do the changes in your fork
-3. If you like the change and think the project could use it:
+3. Validate returned metrics during testing are correct. Review the [Metric Validation](#metric-validation) section for more details.
+4. If you like the change and think the project could use it:
     * Be sure you have followed the code style for the project.
     * Note the DNAmic Analysis Pull Request template checklist.
     * Send a pull request indicating that you have completed all items in the PR checklist.
-4. Request a review of the pull request from Kevin Naglich, Sean May and James Creamer.
 
 #### Small Contributions
 
@@ -89,6 +89,10 @@ As a rule of thumb, changes are obvious fixes if they do not introduce any new f
 * Adding logging messages or debugging output
 * Changes to ‘metadata’ files like requirements.txt, .gitignore, build scripts, etc.
 * Moving source files from one directory or package to another
+
+#### Metric Validation
+
+TODO
 
 # How to report a bug
 
