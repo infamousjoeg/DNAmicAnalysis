@@ -11,7 +11,7 @@ idna==2.10
 importlib-metadata==3.10.0
 keyring==23.0.1
 logzero==1.7.0
-pipenv==2020.11.15
+pipenv==2021.5.29
 PyYAML==5.4.1
 requests==2.25.1
 six==1.15.0
