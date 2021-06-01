@@ -30,6 +30,7 @@ Please, don't use the issue tracker for support questions. If you have support i
     - [Walkthrough of how to submit contribution](#walkthrough-of-how-to-submit-contribution)
       - [Large or Metric Contributions](#large-or-metric-contributions)
       - [Small Contributions](#small-contributions)
+      - [Metric Validation](#metric-validation)
 - [How to report a bug](#how-to-report-a-bug)
     - [Security-Related Bugs](#security-related-bugs)
     - [Bug Reports](#bug-reports)
@@ -92,7 +93,13 @@ As a rule of thumb, changes are obvious fixes if they do not introduce any new f
 
 #### Metric Validation
 
-TODO
+Prior to submitting a Pull Request to include metrics, please validate that the metrics are accurate.
+
+1. Download the [Manual DNA Analysis Toolkit](https://cyberark365.sharepoint.com/:f:/s/PASProgramsOffice/Eh_tR51LtrdPlC27AhEYiXQB0CxXMDFn6z0CqZLxMnoRNA?e=JrBOb1).
+2. Use the DNA Report associated with your test DNA database to complete a Manual Analysis to gather results.
+   1. If you don't have a test DNA Report and database, you may run DNA on the demo environment in SkyTap to generate one.
+3. Run `DNAmicAnalysis.py` against the test DNA database.
+4. If the manual and automated metrics match, upload both the manual metrics and automated report as part of the Pull Request.
 
 # How to report a bug
 
