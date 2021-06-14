@@ -42,7 +42,7 @@ Please, don't use the issue tracker for support questions. If you have support i
 ### Responsibilities
 
 * Ensure cross-platform compatibility for every change that's accepted. Windows, Mac, Debian & Ubuntu Linux. _This is typically done through this project's automated testing._
-* Create issues for any major changes and enhancements that you wish to make. Discuss things transparently and get PAS Program Office & community feedback.
+* Create issues for any major changes and enhancements that you wish to make. Discuss things transparently and get PAS Program Office & internal community feedback.
 * Don't add any classes to the codebase unless absolutely needed. Err on the side of using functions.
 * No further dependencies should be needed for the project. If your contribution requires introducing a new one, please make clear within the issue topic.
 * Keep feature versions as small as possible, preferably one new feature per version.
