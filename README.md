@@ -1,5 +1,7 @@
 # :bar_chart: DNAmic Analysis <!-- omit in toc -->
 
+**PROJECT IS NO LONGER BEING ACTIVELY DEVELOPED OR SUPPORTED**
+
 [![](https://github.com/infamousjoeg/DNAmicAnalysis/workflows/DNAmic%20Analysis%20Lint%20%26%20OS%20Tests/badge.svg)](https://github.com/infamousjoeg/DNAmicAnalysis/actions?workflow=DNAmic+Analysis+Lint+%26+OS+Tests)
 
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/c3c0f19291884a5fb58199644618b420)](https://www.codacy.com/app/infamousjoeg/DNAmicAnalysis?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=infamousjoeg/DNAmicAnalysis&amp;utm_campaign=Badge_Grade) [![Codacy Badge](https://api.codacy.com/project/badge/Coverage/c3c0f19291884a5fb58199644618b420)](https://www.codacy.com/app/infamousjoeg/DNAmicAnalysis?utm_source=github.com&utm_medium=referral&utm_content=infamousjoeg/DNAmicAnalysis&utm_campaign=Badge_Coverage) [![GitHub issues](https://img.shields.io/github/issues/infamousjoeg/DNAmicAnalysis)](https://github.com/infamousjoeg/DNAmicAnalysis/issues) [![GitHub license](https://img.shields.io/github/license/infamousjoeg/DNAmicAnalysis)](https://github.com/infamousjoeg/DNAmicAnalysis/blob/main/LICENSE)
